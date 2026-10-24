@@ -866,28 +866,16 @@ export default function Home() {
               Frequently Asked Questions
             </h2>
             <p className="text-stone-600 text-sm sm:text-base">
-              Clear answers about fees, launch plans, freelancer profiles, and milestones.
+              Clear answers about how GigOra works today.
             </p>
           </div>
 
           <div className="space-y-4" data-aos="fade-up" data-aos-delay="50">
             {[
-              {
-                q: 'How does the waitlist work?',
-                a: 'Submitted emails are stored only in your local browser (localStorage) for this preview demo; no invitations or emails are sent from this form.'
-              },
-              {
-                q: 'How are freelancer profiles reviewed?',
-                a: 'The freelancer review process is still in development; profiles are not currently being verified on the live site.'
-              },
-              {
-                q: 'How do milestones and payments work?',
-                a: 'The milestone workflow and payment processing are planned features; payments are not currently processed on GigOra.'
-              },
-              {
-                q: 'What are the platform fees?',
-                a: 'Future marketplace fees will be announced prior to launch. Exploring this preview is completely free.'
-              }
+              { q: 'Is GigOra free right now?', a: 'Yes. Browsing projects, posting them and sending proposals are free during preview. Payments run in demo mode, so no real money moves.' },
+              { q: 'How do milestones work?', a: 'Clients split a project into milestones. Freelancers submit work for each milestone, and clients review and approve it before it is marked complete.' },
+              { q: 'How are freelancer profiles reviewed?', a: 'Profiles are self-serve right now. You can view skills, bio and reviews on each public profile. Formal verification is not live yet.' },
+              { q: 'What are the platform fees?', a: 'No fees during preview. Fee details will be published before real payments go live.' }
             ].map((faq, idx) => (
               <div 
                 key={idx} 
