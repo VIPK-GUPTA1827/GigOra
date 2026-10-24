@@ -79,12 +79,12 @@ export default function Home() {
           }`}>
             
             {/* Brand Logo */}
-            <a href="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
+            <Link to="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
               <div className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-[#030B3D] text-white font-black text-base sm:text-lg shadow-sm group-hover:scale-105 transition-transform">
                 G
               </div>
               <span className="text-lg sm:text-xl font-display font-black text-[#030B3D] tracking-tight">GigOra</span>
-            </a>
+            </Link>
 
             {/* Desktop Navigation Links — only on lg (1024px+) to prevent any cramping */}
             <div className="hidden lg:flex items-center gap-6 xl:gap-8 text-[15px] font-medium text-[#030B3D]/80">
@@ -750,12 +750,12 @@ export default function Home() {
                   ))}
                 </ul>
               </div>
-              <a 
-                href="#waitlist" 
+              <Link 
+                to="/signup" 
                 className="rounded-full bg-[#030B3D] hover:bg-[#593CFF] text-white text-center py-3.5 px-6 font-bold text-sm shadow-sm hover:shadow-md transition-all block cursor-pointer"
               >
                 Join as Client
-              </a>
+              </Link>
             </div>
 
             {/* Freelancer Card */}
@@ -788,12 +788,12 @@ export default function Home() {
                   ))}
                 </ul>
               </div>
-              <a 
-                href="#waitlist" 
+              <Link 
+                to="/signup" 
                 className="rounded-full bg-[#593CFF] hover:bg-[#472fe0] text-white text-center py-3.5 px-6 font-bold text-sm shadow-sm hover:shadow-md transition-all block cursor-pointer"
               >
                 Join as Freelancer
-              </a>
+              </Link>
             </div>
 
           </div>
@@ -1639,7 +1639,7 @@ export default function Home() {
                   <li><a href="#choose-path" className="hover:text-white transition-colors">Clients &amp; Devs</a></li>
                   <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
                   <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
-                  <li><a href="/about" className="text-indigo-400 hover:text-white transition-colors font-bold">About GigOra</a></li>
+                  <li><Link to="/about" className="text-indigo-400 hover:text-white transition-colors font-bold">About GigOra</Link></li>
                 </ul>
               </div>
 
@@ -1656,8 +1656,8 @@ export default function Home() {
               <div className="col-span-2 sm:col-span-1">
                 <h5 className="font-bold text-white mb-3.5 uppercase tracking-wider text-[11px]">Legal &amp; Trust</h5>
                 <ul className="space-y-2.5 font-medium">
-                  <li><a href="/terms" className="hover:text-white transition-colors">Terms of Service</a></li>
-                  <li><a href="/privacy" className="hover:text-white transition-colors">Privacy Policy</a></li>
+                  <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+                  <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
                   <li><span className="text-slate-300">Milestone Workflow</span></li>
                   <li><span className="text-slate-300">Code Acceptance Criteria</span></li>
                 </ul>
@@ -1669,9 +1669,9 @@ export default function Home() {
           <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-slate-500 text-xs text-center sm:text-left">
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4">
               <p>© 2026 GigOra Technologies. All rights reserved.</p>
-              <a href="/terms" className="hover:text-slate-300 transition-colors">Terms</a>
-              <a href="/privacy" className="hover:text-slate-300 transition-colors">Privacy</a>
-              <a href="/about" className="hover:text-slate-300 transition-colors">About</a>
+              <Link to="/terms" className="hover:text-slate-300 transition-colors">Terms</Link>
+              <Link to="/privacy" className="hover:text-slate-300 transition-colors">Privacy</Link>
+              <Link to="/about" className="hover:text-slate-300 transition-colors">About</Link>
             </div>
             <p className="font-medium text-slate-400">Built for focused engineering. Zero noise.</p>
           </div>
