@@ -482,9 +482,8 @@ export default function Home() {
                 <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="min-w-0">
-                <h4 className="font-bold text-xs sm:text-sm text-[#030B3D] leading-tight flex items-center gap-1.5">
+                <h4 className="font-bold text-xs sm:text-sm text-[#030B3D] leading-tight">
                   Milestone Tracking
-                  <span className="text-[9px] font-bold bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded border border-amber-300">Preview</span>
                 </h4>
                 <p className="text-[10px] sm:text-xs text-stone-500 leading-tight mt-0.5 truncate sm:overflow-visible">Sandbox demo • No real currency</p>
               </div>
@@ -495,9 +494,8 @@ export default function Home() {
                 <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="min-w-0">
-                <h4 className="font-bold text-xs sm:text-sm text-[#030B3D] leading-tight flex items-center gap-1.5">
+                <h4 className="font-bold text-xs sm:text-sm text-[#030B3D] leading-tight">
                   Proof Portfolios
-                  <span className="text-[9px] font-bold bg-indigo-50 text-[#593CFF] px-1.5 py-0.2 rounded border border-indigo-200">Preview</span>
                 </h4>
                 <p className="text-[10px] sm:text-xs text-stone-500 leading-tight mt-0.5 truncate sm:overflow-visible">GitHub repos &amp; live prototypes</p>
               </div>
@@ -738,7 +736,7 @@ export default function Home() {
                   Build your product with clear milestones
                 </h3>
                 <p className="text-sm text-stone-600 mb-6 leading-relaxed">
-                  Discuss project requirements and agree on deliverables before work starts. Deliverables and acceptance criteria are planned upfront (Matching features under development).
+                  Discuss project requirements and agree on deliverables before work starts. Deliverables and acceptance criteria are agreed upfront.
                 </p>
                 <ul className="space-y-3 mb-8">
                   {[
@@ -938,7 +936,7 @@ export default function Home() {
                 </span>
               </div>
               <p className="text-slate-400 max-w-sm leading-relaxed text-xs">
-                India's milestone-based marketplace in the making, connecting technical talent with startup teams.
+                India's milestone-based marketplace for technical talent.
               </p>
               <div className="pt-1 text-[11px] text-slate-500 font-medium">
                 Milestone Workflow · Clear Criteria · Portfolio Showcase
