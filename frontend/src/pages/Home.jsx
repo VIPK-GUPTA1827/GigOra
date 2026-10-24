@@ -138,7 +138,7 @@ export default function Home() {
               initial={{ opacity: 0, y: -10, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10 }}
-              className="lg:hidden w-full mt-2 rounded-3xl bg-white/98 backdrop-blur-md border border-stone-200/80 shadow-[0_16px_36px_rgba(0,0,0,0.12)] p-4 space-y-2 text-sm font-semibold text-[#030B3D]"
+              className="lg:hidden w-full mt-2 rounded-3xl bg-white/95 backdrop-blur-md border border-stone-200/80 shadow-[0_16px_36px_rgba(0,0,0,0.12)] p-4 space-y-2 text-sm font-semibold text-[#030B3D]"
             >
               <a 
                 href="#how-it-works" 
@@ -1253,7 +1253,7 @@ export default function Home() {
                     <img 
                       src={current.photo} 
                       alt={current.photoAlt} 
-                      className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-500 ease-out"
+                      className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-500 ease-out"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                   </div>
@@ -1338,7 +1338,7 @@ export default function Home() {
                 <img 
                   src="/images/gigora_success_founder.jpg" 
                   alt="Founder smiling in modern office working with remote developer" 
-                  className="w-full h-full object-cover object-center group-hover:scale-103 transition-transform duration-500 ease-out"
+                  className="w-full h-full object-cover object-center group-hover:scale-[1.03] transition-transform duration-500 ease-out"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
               </div>
