@@ -549,13 +549,13 @@ export default function Home() {
           
           <div className="text-center max-w-2xl mx-auto mb-14" data-aos="fade-up">
             <span className="text-xs font-black uppercase tracking-[0.12em] text-[#593CFF] bg-[#593CFF]/10 px-4 py-1.5 rounded-full border border-[#593CFF]/20">
-              PLANNED WORKFLOW PREVIEW
+              HOW IT WORKS
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-[#030B3D] tracking-tight mt-3 mb-3">
-              How GigOra Is Planned to Work
+              How GigOra Works
             </h2>
             <p className="text-stone-600 text-sm sm:text-base">
-              A preview of our planned collaboration model, designed for clear milestone delivery.
+              A transparent milestone-based collaboration model, designed for clear project delivery.
             </p>
           </div>
 
@@ -639,10 +639,10 @@ export default function Home() {
 
           </div>
 
-          {/* Planned Workflow Note */}
-          <div className="mt-10 p-4 sm:p-5 rounded-2xl bg-amber-500/10 border border-amber-500/20 max-w-3xl mx-auto text-center" data-aos="fade-up">
-            <p className="text-xs sm:text-sm font-medium text-amber-950">
-              📌 <strong>Notice:</strong> This workflow is still being developed. Project matching, milestone reviews, and payments are not live on GigOra yet.
+          {/* Live Workflow Note */}
+          <div className="mt-10 p-4 sm:p-5 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 max-w-3xl mx-auto text-center" data-aos="fade-up">
+            <p className="text-xs sm:text-sm font-medium text-indigo-950">
+              📌 <strong>Notice:</strong> Proposals, milestones, reviews and delivery tracking are live. Payments are demo-only for now.
             </p>
           </div>
 
@@ -685,10 +685,10 @@ export default function Home() {
                 </p>
                 <ul className="space-y-3 mb-8">
                   {[
-                    'Planned milestone deliverables, sprint dates & budgets upfront',
-                    'GitHub PR & live staging inspection workflow (Planned for launch)',
-                    'Milestone review and confirmation workflow (Planned for launch)',
-                    'Join preview cohort for upcoming platform launch'
+                    'Milestone deliverables, sprint dates & budgets upfront',
+                    'GitHub PR & live staging inspection workflow',
+                    'Milestone review and confirmation workflow',
+                    'Active workspace for founders and technical talent'
                   ].map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-stone-700">
                       <Check className="w-4 h-4 text-[#593CFF] shrink-0 mt-0.5" />
@@ -723,10 +723,10 @@ export default function Home() {
                 </p>
                 <ul className="space-y-3 mb-8">
                   {[
-                    'Showcase GitHub repos, commits, and live prototypes (Preview)',
-                    'Milestone scopes agreed and locked before kickoff (Planned for launch)',
-                    'Direct rupee milestone agreements (Planned for launch)',
-                    'Join early preview cohort for technical talent onboarding'
+                    'Showcase GitHub repos, commits, and live prototypes',
+                    'Milestone scopes agreed and locked before kickoff',
+                    'Direct rupee milestone agreements (demo mode)',
+                    'Verified talent onboarding & instant proposal submissions'
                   ].map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-stone-700">
                       <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
@@ -782,28 +782,28 @@ export default function Home() {
             {(() => {
               const categoryDetails = {
                 'Web & App': {
-                  subtitle: 'Whatever the web or mobile stack (React, Next.js, Node, Flutter), clear milestones help align deliverable expectations and sprint reviews upon code inspection (Planned feature).',
+                  subtitle: 'Whatever the web or mobile stack (React, Next.js, Node, Flutter), clear milestones help align deliverable expectations and sprint reviews upon code inspection.',
                   photo: '/images/gigora_web_dev_exact.jpg',
                   photoAlt: 'Fullstack & Mobile developer working on clean web app architecture',
                   cards: [
                     {
                       icon: ShieldCheck,
                       title: 'Keep milestone deliverables clear',
-                      desc: 'Deliverables and acceptance criteria planned before kickoff. Milestone review workflow is planned for launch.',
+                      desc: 'Deliverables and acceptance criteria agreed before kickoff with structured review checkpoints.',
                       color: 'text-[#593CFF]',
                       hoverBg: 'group-hover:bg-[#593CFF]'
                     },
                     {
                       icon: Wallet,
-                      title: 'Planned domestic INR terms',
-                      desc: 'Planned milestone agreements in Indian Rupees without foreign conversion fees (Planned for launch).',
+                      title: 'Domestic INR terms (demo mode)',
+                      desc: 'Milestone agreements in Indian Rupees without foreign conversion fees (demo mode).',
                       color: 'text-indigo-600',
                       hoverBg: 'group-hover:bg-indigo-600'
                     },
                     {
                       icon: Terminal,
                       title: 'Inspect live code & test environments',
-                      desc: 'Planned GitHub pull request & staging URL review workflows designed to keep project scope aligned (Planned for launch).',
+                      desc: 'GitHub pull request & staging URL review workflows designed to keep project scope aligned.',
                       color: 'text-emerald-600',
                       hoverBg: 'group-hover:bg-emerald-600'
                     }
@@ -935,8 +935,8 @@ export default function Home() {
                     },
                     {
                       icon: Terminal,
-                      title: 'Production URL & code ownership (Planned)',
-                      desc: 'Staging verification on Vercel/AWS and intellectual property transfer terms are planned for upcoming launch.',
+                      title: 'Production URL & code ownership',
+                      desc: 'Staging verification on Vercel/AWS and clean intellectual property transfer terms upon milestone sign-off.',
                       color: 'text-indigo-600',
                       hoverBg: 'group-hover:bg-indigo-600'
                     },
@@ -999,21 +999,21 @@ export default function Home() {
                   {
                     icon: ShieldCheck,
                     title: 'Keep milestone deliverables clear',
-                    desc: 'Deliverables and acceptance criteria planned before kickoff. Milestone review workflow is planned for launch.',
+                    desc: 'Deliverables and acceptance criteria agreed before kickoff with structured review checkpoints.',
                     color: 'text-[#593CFF]',
                     hoverBg: 'group-hover:bg-[#593CFF]'
                   },
                   {
                     icon: Wallet,
-                    title: 'Planned domestic INR terms',
-                    desc: 'Planned milestone agreements in Indian Rupees without foreign conversion fees (Planned for launch).',
+                    title: 'Domestic INR terms (demo mode)',
+                    desc: 'Milestone agreements in Indian Rupees without foreign conversion fees (demo mode).',
                     color: 'text-indigo-600',
                     hoverBg: 'group-hover:bg-indigo-600'
                   },
                   {
                     icon: Terminal,
                     title: 'Inspect live code & test environments',
-                    desc: 'Planned GitHub pull request & staging URL review workflows designed to keep project scope aligned (Planned for launch).',
+                    desc: 'GitHub pull request & staging URL review workflows designed to keep project scope aligned.',
                     color: 'text-emerald-600',
                     hoverBg: 'group-hover:bg-emerald-600'
                   }
