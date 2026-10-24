@@ -405,32 +405,38 @@ export default function Home() {
                   </Link>
                 </div>
 
-                {/* Dynamic Gigs from Database */}
-                {featuredGigs.map((gig) => (
-                  <Link
-                    key={gig._id}
-                    to={`/gigs/${gig._id}`}
-                    className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-indigo-300 hover:shadow-xs transition"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
-                        {gig.category}
-                      </span>
-                      <span className="text-[11px] font-bold text-slate-900">
-                        ₹{Number(gig.budget || 0).toLocaleString('en-IN')}
-                      </span>
-                    </div>
-                    <h4 className="mt-2 text-xs font-bold text-slate-900 line-clamp-1">{gig.title}</h4>
-                    <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">{gig.description}</p>
-                    <div className="mt-2.5 flex gap-1 border-t border-slate-100 pt-2">
-                      {(gig.skillsRequired || []).slice(0, 2).map((s) => (
-                        <span key={s} className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium text-[10px]">
-                          {s}
+                {/* Dynamic Gigs from Database or Empty State */}
+                {featuredGigs.length === 0 ? (
+                  <p className="text-[11px] text-slate-500 text-center py-6">
+                    No open projects right now. Check back soon.
+                  </p>
+                ) : (
+                  featuredGigs.map((gig) => (
+                    <Link
+                      key={gig._id}
+                      to={`/gigs/${gig._id}`}
+                      className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-indigo-300 hover:shadow-xs transition"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
+                          {gig.category}
                         </span>
-                      ))}
-                    </div>
-                  </Link>
-                ))}
+                        <span className="text-[11px] font-bold text-slate-900">
+                          ₹{Number(gig.budget || 0).toLocaleString('en-IN')}
+                        </span>
+                      </div>
+                      <h4 className="mt-2 text-xs font-bold text-slate-900 line-clamp-1">{gig.title}</h4>
+                      <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">{gig.description}</p>
+                      <div className="mt-2.5 flex gap-1 border-t border-slate-100 pt-2">
+                        {(gig.skillsRequired || []).slice(0, 2).map((s) => (
+                          <span key={s} className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium text-[10px]">
+                            {s}
+                          </span>
+                        ))}
+                      </div>
+                    </Link>
+                  ))
+                )}
               </div>
 
               {/* Bottom Quick Bar */}
