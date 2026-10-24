@@ -159,7 +159,7 @@ export default function ClientDashboard() {
         state: user.location?.state || 'Maharashtra'
       });
     }
-  }, [user]);
+  }, [user?._id, user?.role]);
 
   // Handle Save Company Profile
   const handleSaveCompanyProfile = async (e) => {
