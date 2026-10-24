@@ -66,7 +66,7 @@ export default function Home() {
       {/* 1. TOP FLOATING PILL NAVBAR */}
       <div className={`fixed top-0 left-0 right-0 z-50 transition-colors py-3 sm:py-3.5 px-3 sm:px-4 flex justify-center ${
         isScrolled 
-          ? 'bg-[#FAF6EF]/95 backdrop-blur-md border-b border-stone-200/80 shadow-xs' 
+          ? 'bg-[#FAF8F5]/95 backdrop-blur-md border-b border-stone-200/80 shadow-xs' 
           : 'bg-transparent'
       }`}>
         <div className="w-full max-w-[1240px] flex flex-col items-center">
@@ -188,7 +188,7 @@ export default function Home() {
       </div>
 
       {/* 2. HERO SECTION — Clean product-first hero */}
-      <section className="relative min-h-[620px] md:min-h-[720px] lg:h-[88vh] lg:min-h-[720px] lg:max-h-[860px] flex items-center bg-[#FAF6EF] border-b border-stone-200/40 overflow-hidden">
+      <section className="relative min-h-[620px] md:min-h-[720px] lg:h-[88vh] lg:min-h-[720px] lg:max-h-[860px] flex items-center bg-[#FAF8F5] border-b border-stone-200/40 overflow-hidden">
         
         {/* Clean brand backdrop glows */}
         <div className="absolute inset-0 pointer-events-none">
@@ -198,7 +198,7 @@ export default function Home() {
 
         {/* Hero Content Container */}
         <div className="relative z-10 w-full max-w-[1520px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 pt-32 pb-14 md:pt-28 md:pb-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-14 items-center">
-          <div className="lg:col-span-7 xl:col-span-7 w-full max-w-xl lg:max-w-none bg-[#FAF6EF]/85 sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none p-5 sm:p-0 rounded-3xl border border-[#030B3D]/10 sm:border-0 shadow-xs sm:shadow-none">
+          <div className="lg:col-span-7 xl:col-span-7 w-full max-w-xl lg:max-w-none bg-[#FAF8F5]/85 sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none p-5 sm:p-0 rounded-3xl border border-[#030B3D]/10 sm:border-0 shadow-xs sm:shadow-none">
             
             {/* Audience-Specific Choice Switcher */}
             <motion.div
@@ -282,7 +282,7 @@ export default function Home() {
                   <p 
                     className="font-medium text-[#030B3D] leading-[1.45] max-w-[32em] text-xs sm:text-sm bg-[#593CFF]/8 border border-[#593CFF]/20 px-3.5 py-2.5 rounded-xl"
                   >
-                    📌 <strong>GigOra is in preview.</strong> Marketplace and workspaces are live; payments run in demo mode, so no real money moves yet.
+                    <strong>GigOra is in preview.</strong> Marketplace and workspaces are live; payments run in demo mode, so no real money moves yet.
                   </p>
                 </div>
 
@@ -349,7 +349,7 @@ export default function Home() {
                   <p 
                     className="font-medium text-[#030B3D] leading-[1.45] max-w-[32em] text-xs sm:text-sm bg-[#593CFF]/8 border border-[#593CFF]/20 px-3.5 py-2.5 rounded-xl"
                   >
-                    📌 <strong>GigOra is in preview.</strong> Marketplace and workspaces are live; payments run in demo mode, so no real money moves yet.
+                    <strong>GigOra is in preview.</strong> Marketplace and workspaces are live; payments run in demo mode, so no real money moves yet.
                   </p>
                 </div>
 
@@ -705,7 +705,7 @@ export default function Home() {
       </section>
 
       {/* 5. CHOOSE YOUR PATH (Audience Specific Cards for Client & Freelancer) */}
-      <section id="choose-path" className="scroll-mt-28 py-20 lg:py-24 bg-white border-b border-stone-200/80">
+      <section id="choose-path" className="scroll-mt-28 py-14 lg:py-20 bg-white border-b border-stone-200/80">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-14" data-aos="fade-up">
@@ -804,7 +804,7 @@ export default function Home() {
       </section>
 
       {/* 9. CORE FEATURES */}
-      <section id="features" className="scroll-mt-28 py-20 lg:py-28 bg-white relative">
+      <section id="features" className="scroll-mt-28 py-14 lg:py-20 bg-[#FAF8F5] border-b border-stone-200/80 relative">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
@@ -832,7 +832,7 @@ export default function Home() {
                 key={idx} 
                 data-aos="fade-up"
                 data-aos-delay={idx * 25}
-                className={`group p-8 rounded-3xl bg-[#FAF6EF]/60 border border-stone-200/80 ${feature.border} hover:bg-white hover:shadow-[0_20px_40px_-15px_rgba(3,11,61,0.08)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between`}
+                className={`group p-8 rounded-3xl bg-white border border-stone-200/80 ${feature.border} hover:shadow-[0_20px_40px_-15px_rgba(3,11,61,0.08)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between`}
               >
                 <div>
                   <div className="w-12 h-12 rounded-2xl bg-white border border-stone-200 flex items-center justify-center text-[#593CFF] shadow-xs group-hover:scale-110 group-hover:bg-[#593CFF] group-hover:text-white transition-all duration-300 mb-5">
@@ -853,7 +853,7 @@ export default function Home() {
       </section>
 
       {/* 10. TRANSPARENT FAQ: Fees, Launch Timing, Verification, Payment Protection */}
-      <section id="faq" className="scroll-mt-28 py-20 lg:py-28 bg-[#FAF6EF] border-t border-stone-200/80">
+      <section id="faq" className="scroll-mt-28 py-14 lg:py-20 bg-white border-b border-stone-200/80">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-14" data-aos="fade-up">
@@ -946,7 +946,7 @@ export default function Home() {
             {/* Nav Columns: 2 cols on mobile, 3 on sm/md */}
             <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-6">
               <div>
-                <h5 className="font-bold text-white mb-3.5 uppercase tracking-wider text-[11px]">Product</h5>
+                <h4 className="font-bold text-white mb-3.5 uppercase tracking-wider text-[11px]">Product</h4>
                 <ul className="space-y-2.5 font-medium">
                   <li><a href="#how-it-works" className="hover:text-white transition-colors">How it works</a></li>
                   <li><a href="#choose-path" className="hover:text-white transition-colors">Clients &amp; Devs</a></li>
@@ -957,7 +957,7 @@ export default function Home() {
               </div>
 
               <div>
-                <h5 className="font-bold text-white mb-3.5 uppercase tracking-wider text-[11px]">Solutions</h5>
+                <h4 className="font-bold text-white mb-3.5 uppercase tracking-wider text-[11px]">Solutions</h4>
                 <ul className="space-y-2.5 font-medium">
                   <li><span className="text-slate-300">Web &amp; Mobile Apps</span></li>
                   <li><span className="text-slate-300">AI &amp; Automation</span></li>
@@ -967,7 +967,7 @@ export default function Home() {
               </div>
 
               <div className="col-span-2 sm:col-span-1">
-                <h5 className="font-bold text-white mb-3.5 uppercase tracking-wider text-[11px]">Legal &amp; Trust</h5>
+                <h4 className="font-bold text-white mb-3.5 uppercase tracking-wider text-[11px]">Legal &amp; Trust</h4>
                 <ul className="space-y-2.5 font-medium">
                   <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
                   <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>

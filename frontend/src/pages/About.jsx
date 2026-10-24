@@ -61,7 +61,7 @@ export default function About() {
 
           {/* 3 Pillars */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2">
-            <div className="p-5 rounded-2xl bg-[#FAF6EF] border border-stone-200/80 space-y-2">
+            <div className="p-5 rounded-2xl bg-[#FAF8F5] border border-stone-200/80 space-y-2">
               <div className="h-10 w-10 rounded-xl bg-white border border-stone-200 text-[#593CFF] flex items-center justify-center font-bold">
                 <Code2 className="h-5 w-5" />
               </div>
@@ -71,7 +71,7 @@ export default function About() {
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-[#FAF6EF] border border-stone-200/80 space-y-2">
+            <div className="p-5 rounded-2xl bg-[#FAF8F5] border border-stone-200/80 space-y-2">
               <div className="h-10 w-10 rounded-xl bg-white border border-stone-200 text-indigo-600 flex items-center justify-center font-bold">
                 <ShieldCheck className="h-5 w-5" />
               </div>
@@ -81,7 +81,7 @@ export default function About() {
               </p>
             </div>
 
-            <div className="p-5 rounded-2xl bg-[#FAF6EF] border border-stone-200/80 space-y-2">
+            <div className="p-5 rounded-2xl bg-[#FAF8F5] border border-stone-200/80 space-y-2">
               <div className="h-10 w-10 rounded-xl bg-white border border-stone-200 text-emerald-600 flex items-center justify-center font-bold">
                 <Compass className="h-5 w-5" />
               </div>
