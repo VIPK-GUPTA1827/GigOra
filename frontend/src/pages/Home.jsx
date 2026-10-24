@@ -28,6 +28,10 @@ import {
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import api from '../utils/api';
+
+const formatINR = (n) =>
+  new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n || 0);
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState('client');
@@ -36,6 +40,13 @@ export default function Home() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [waitlistDone, setWaitlistDone] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [featuredGigs, setFeaturedGigs] = useState([]);
+
+  useEffect(() => {
+    api.get('/api/gigs?status=open&limit=2')
+      .then(res => setFeaturedGigs(res.data || []))
+      .catch(() => setFeaturedGigs([]));
+  }, []);
 
   useEffect(() => {
     AOS.refresh();
@@ -177,30 +188,13 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 2. HERO SECTION — Natural full-bleed editorial hero */}
+      {/* 2. HERO SECTION — Clean product-first hero */}
       <section className="relative min-h-[620px] md:min-h-[720px] lg:h-[88vh] lg:min-h-[720px] lg:max-h-[860px] flex items-center bg-[#FAF6EF] border-b border-stone-200/40 overflow-hidden">
         
-        {/* Full-bleed background workspace photo */}
-        <div className="absolute inset-0 w-full h-full pointer-events-none">
-          <img
-            src="/images/gigora_hero_clean.jpg"
-            alt="Indian Software Engineer Working at Workstation"
-            className="w-full h-full object-cover object-center"
-          />
-          {/* Desktop editorial gradient overlay: 0.85 on left and 0.60 mid-way to keep photo visible while text stays sharp */}
-          <div 
-            className="absolute inset-0 hidden lg:block" 
-            style={{
-              background: 'linear-gradient(90deg, rgba(250, 247, 241, 0.85) 0%, rgba(250, 247, 241, 0.60) 45%, rgba(250, 247, 241, 0.08) 100%)'
-            }} 
-          />
-          {/* Mobile and Tablet backdrop overlay: strong solid cream directly behind text, fading at the bottom to show photo */}
-          <div 
-            className="absolute inset-0 lg:hidden" 
-            style={{
-              background: 'linear-gradient(180deg, rgba(250, 247, 241, 1) 0%, rgba(250, 247, 241, 0.98) 55%, rgba(250, 247, 241, 0.94) 75%, rgba(250, 247, 241, 0.70) 88%, rgba(250, 247, 241, 0.25) 100%)'
-            }} 
-          />
+        {/* Clean brand backdrop glows */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute -top-32 -left-24 w-[420px] h-[420px] rounded-full bg-[#593CFF]/10 blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-[520px] h-[520px] rounded-full bg-[#E7A4FF]/20 blur-3xl" />
         </div>
 
         {/* Hero Content Container */}
@@ -382,11 +376,8 @@ export default function Home() {
 
           {/* Right Column: Floating Product Browser Mockup Card */}
           <div className="lg:col-span-5 xl:col-span-5 hidden lg:block relative" data-aos="fade-left" data-aos-delay="150">
-            {/* Ambient Background Glow */}
-            <div className="absolute -inset-2 bg-gradient-to-tr from-[#593CFF]/20 to-[#E7A4FF]/30 rounded-3xl blur-2xl pointer-events-none"></div>
-
             {/* Browser Frame */}
-            <div className="relative rounded-2xl border border-slate-200/90 bg-white/95 backdrop-blur-md shadow-[0_24px_50px_-12px_rgba(3,11,61,0.18)] overflow-hidden">
+            <div className="relative max-w-[460px] ml-auto rounded-2xl border border-slate-200 bg-white shadow-[0_24px_60px_-15px_rgba(3,11,61,0.18)] overflow-hidden">
               {/* Window Header */}
               <div className="flex items-center justify-between px-4 py-2.5 bg-slate-100/90 border-b border-slate-200">
                 <div className="flex items-center gap-1.5">
@@ -409,66 +400,102 @@ export default function Home() {
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800">Featured Open Gigs</span>
                   <Link to="/marketplace" className="text-[11px] font-semibold text-indigo-600 hover:underline">
-                    View all (12+) →
+                    View all →
                   </Link>
                 </div>
 
-                {/* Project Card 1 */}
-                <Link
-                  to="/marketplace"
-                  className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-indigo-300 hover:shadow-xs transition"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
-                      Web Development
-                    </span>
-                    <span className="text-[11px] font-bold text-slate-900">₹45,000</span>
-                  </div>
-                  <h4 className="mt-2 text-xs font-bold text-slate-900 line-clamp-1">
-                    Full-Stack SaaS Platform (Next.js + Fastify)
-                  </h4>
-                  <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">
-                    Build multi-tenant auth, dashboard analytics, and Stripe billing.
-                  </p>
-                  <div className="mt-2.5 flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-100 pt-2">
-                    <div className="flex gap-1">
-                      <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">React</span>
-                      <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">Node.js</span>
-                    </div>
-                    <span className="text-emerald-600 font-semibold">3 Milestones</span>
-                  </div>
-                </Link>
+                {/* Dynamic Gigs from Database or High-Quality Fallbacks */}
+                {featuredGigs && featuredGigs.length > 0 ? (
+                  featuredGigs.slice(0, 2).map((gig) => (
+                    <Link
+                      key={gig._id}
+                      to={`/gigs/${gig._id}`}
+                      className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-indigo-300 hover:shadow-xs transition"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
+                          {gig.category || 'Tech'}
+                        </span>
+                        <span className="text-[11px] font-bold text-slate-900">{formatINR(gig.budget)}</span>
+                      </div>
+                      <h4 className="mt-2 text-xs font-bold text-slate-900 line-clamp-1">
+                        {gig.title}
+                      </h4>
+                      <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">
+                        {gig.description}
+                      </p>
+                      <div className="mt-2.5 flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-100 pt-2">
+                        <div className="flex gap-1 flex-wrap">
+                          {(gig.skillsRequired || []).slice(0, 2).map((skill) => (
+                            <span key={skill} className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                        <span className="text-emerald-600 font-semibold">
+                          {gig.milestones?.length ? `${gig.milestones.length} Milestones` : 'Open for Bid'}
+                        </span>
+                      </div>
+                    </Link>
+                  ))
+                ) : (
+                  <>
+                    <Link
+                      to="/marketplace"
+                      className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-indigo-300 hover:shadow-xs transition"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
+                          Web Development
+                        </span>
+                        <span className="text-[11px] font-bold text-slate-900">₹45,000</span>
+                      </div>
+                      <h4 className="mt-2 text-xs font-bold text-slate-900 line-clamp-1">
+                        Full-Stack SaaS Platform (Next.js + Fastify)
+                      </h4>
+                      <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">
+                        Build multi-tenant auth, dashboard analytics, and Stripe billing.
+                      </p>
+                      <div className="mt-2.5 flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-100 pt-2">
+                        <div className="flex gap-1">
+                          <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">React</span>
+                          <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">Node.js</span>
+                        </div>
+                        <span className="text-emerald-600 font-semibold">3 Milestones</span>
+                      </div>
+                    </Link>
 
-                {/* Project Card 2 */}
-                <Link
-                  to="/marketplace"
-                  className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-indigo-300 hover:shadow-xs transition"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="text-[10px] font-semibold uppercase tracking-wider text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">
-                      Data Science &amp; AI
-                    </span>
-                    <span className="text-[11px] font-bold text-slate-900">₹65,000</span>
-                  </div>
-                  <h4 className="mt-2 text-xs font-bold text-slate-900 line-clamp-1">
-                    AI RAG Knowledge Engine &amp; Vector Search
-                  </h4>
-                  <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">
-                    Fine-tune embeddings, LangChain pipeline, and hybrid search.
-                  </p>
-                  <div className="mt-2.5 flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-100 pt-2">
-                    <div className="flex gap-1">
-                      <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">Python</span>
-                      <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">FastAPI</span>
-                    </div>
-                    <span className="text-emerald-600 font-semibold">2 Milestones</span>
-                  </div>
-                </Link>
+                    <Link
+                      to="/marketplace"
+                      className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-indigo-300 hover:shadow-xs transition"
+                    >
+                      <div className="flex items-center justify-between">
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">
+                          Data Science &amp; AI
+                        </span>
+                        <span className="text-[11px] font-bold text-slate-900">₹65,000</span>
+                      </div>
+                      <h4 className="mt-2 text-xs font-bold text-slate-900 line-clamp-1">
+                        AI RAG Knowledge Engine &amp; Vector Search
+                      </h4>
+                      <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">
+                        Fine-tune embeddings, LangChain pipeline, and hybrid search.
+                      </p>
+                      <div className="mt-2.5 flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-100 pt-2">
+                        <div className="flex gap-1">
+                          <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">Python</span>
+                          <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">FastAPI</span>
+                        </div>
+                        <span className="text-emerald-600 font-semibold">2 Milestones</span>
+                      </div>
+                    </Link>
+                  </>
+                )}
               </div>
 
               {/* Bottom Quick Bar */}
               <div className="px-4 py-2.5 bg-white border-t border-slate-100 flex items-center justify-between text-xs">
-                <span className="text-slate-500 text-[11px]">Milestones locked in escrow</span>
+                <span className="text-slate-500 text-[11px]">Demo data · No real payments</span>
                 <Link
                   to="/marketplace"
                   className="inline-flex items-center gap-1 font-bold text-[11px] text-indigo-600 hover:text-indigo-700"
@@ -476,12 +503,6 @@ export default function Home() {
                   Explore marketplace →
                 </Link>
               </div>
-            </div>
-
-            {/* Floating Trust Pill Badge */}
-            <div className="absolute -bottom-3 -left-3 bg-[#030B3D] text-white px-3.5 py-1.5 rounded-full shadow-lg border border-white/20 flex items-center gap-2 text-xs font-bold">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
-              <span>Direct INR Milestones</span>
             </div>
           </div>
         </div>
