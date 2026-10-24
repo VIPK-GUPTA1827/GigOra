@@ -960,6 +960,27 @@ export default function Home() {
         </div>
       </section>
 
+      {/* FINAL PRODUCT CTA BANNER */}
+      <section className="py-24 lg:py-28 bg-[#030B3D] text-white relative overflow-hidden">
+        <div className="absolute -top-20 right-1/4 w-96 h-96 bg-[#593CFF]/30 rounded-full blur-3xl pointer-events-none" />
+        <div className="mx-auto max-w-4xl px-4 text-center relative z-10" data-aos="fade-up">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-5 text-balance">
+            Ready to start your next project?
+          </h2>
+          <p className="text-base sm:text-lg text-white/70 mb-9 max-w-2xl mx-auto">
+            Post a project or find work with clear milestones. Free during preview, payments in demo mode.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <Link to="/signup" className="rounded-full bg-[#593CFF] hover:bg-[#472fe0] px-8 py-4 font-bold text-sm active:scale-95 transition-all text-center">
+              Post a project
+            </Link>
+            <Link to="/marketplace" className="rounded-full bg-white/10 border border-white/20 hover:bg-white/15 px-8 py-4 font-bold text-sm active:scale-95 transition-all text-center">
+              Browse projects
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* 12. RESPONSIVE BALANCED FOOTER */}
       <footer className="bg-slate-900 text-slate-400 py-14 border-t border-slate-800 text-xs">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
