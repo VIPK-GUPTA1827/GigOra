@@ -123,6 +123,8 @@ export default function Home() {
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label="Toggle Navigation Menu"
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-nav-menu"
                 className="lg:hidden p-2 rounded-full bg-stone-100 text-[#030B3D] hover:bg-stone-200 transition-colors cursor-pointer"
               >
                 {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -133,6 +135,7 @@ export default function Home() {
           {/* Mobile Dropdown Menu (below pill navbar) */}
           {mobileMenuOpen && (
             <motion.div
+              id="mobile-nav-menu"
               initial={{ opacity: 0, y: -10, scale: 0.98 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10 }}
@@ -374,9 +377,9 @@ export default function Home() {
           </div>
 
           {/* Right Column: Floating Product Browser Mockup Card */}
-          <div className="lg:col-span-5 xl:col-span-5 hidden lg:block relative" data-aos="fade-up" data-aos-delay="150">
+          <div className="lg:col-span-5 xl:col-span-5 block mt-8 lg:mt-0 relative" data-aos="fade-up" data-aos-delay="150">
             {/* Browser Frame */}
-            <div className="relative max-w-[460px] ml-auto rounded-2xl border border-slate-200 bg-white shadow-[0_24px_60px_-15px_rgba(3,11,61,0.18)] overflow-hidden">
+            <div className="relative max-w-[460px] mx-auto lg:ml-auto rounded-2xl border border-slate-200 bg-white shadow-[0_24px_60px_-15px_rgba(3,11,61,0.18)] overflow-hidden">
               {/* Window Header */}
               <div className="flex items-center justify-between px-4 py-2.5 bg-slate-100/90 border-b border-slate-200">
                 <div className="flex items-center gap-1.5">
@@ -881,6 +884,9 @@ export default function Home() {
               >
                 <button
                   onClick={() => toggleFaq(idx)}
+                  id={`faq-btn-${idx}`}
+                  aria-expanded={openFaq === idx}
+                  aria-controls={`faq-answer-${idx}`}
                   className="w-full flex items-center justify-between p-6 text-left text-base sm:text-lg font-display font-bold text-[#030B3D] hover:text-[#593CFF] transition-colors cursor-pointer"
                 >
                   <span>{faq.q}</span>
@@ -889,7 +895,12 @@ export default function Home() {
                   </div>
                 </button>
                 {openFaq === idx && (
-                  <div className="px-6 pb-6 pt-1 text-sm sm:text-base text-stone-600 border-t border-stone-100 leading-relaxed">
+                  <div 
+                    id={`faq-answer-${idx}`}
+                    role="region"
+                    aria-labelledby={`faq-btn-${idx}`}
+                    className="px-6 pb-6 pt-1 text-sm sm:text-base text-stone-600 border-t border-stone-100 leading-relaxed"
+                  >
                     {faq.a}
                   </div>
                 )}

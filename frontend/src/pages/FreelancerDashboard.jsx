@@ -652,7 +652,7 @@ export default function FreelancerDashboard() {
             <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
               <div className="w-8 h-8 rounded-full bg-[#593CFF] text-white flex items-center justify-center font-bold text-xs uppercase shadow-xs">
                 {user.avatar ? (
-                  <img src={user.avatar} alt={user.name} className="w-full h-full rounded-full object-cover" />
+                  <img src={user.avatar} alt={user.name} loading="lazy" width="32" height="32" className="w-full h-full rounded-full object-cover" />
                 ) : (
                   (user.name || user.username || 'U').charAt(0)
                 )}
@@ -1847,7 +1847,7 @@ export default function FreelancerDashboard() {
                 <div className="flex items-center gap-3 mb-2">
                   <div className="w-12 h-12 rounded-full bg-slate-100 border-2 border-[#593CFF] overflow-hidden flex items-center justify-center shrink-0 shadow-xs">
                     {profileForm.avatar ? (
-                      <img src={profileForm.avatar} alt="Avatar Preview" className="w-full h-full object-cover" />
+                      <img src={profileForm.avatar} alt="Avatar Preview" loading="lazy" width="48" height="48" className="w-full h-full object-cover" />
                     ) : (
                       <span className="font-black text-sm text-[#593CFF]">{(profileForm.name || 'U').charAt(0)}</span>
                     )}
