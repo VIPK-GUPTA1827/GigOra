@@ -14,6 +14,7 @@ import ClientDashboard from './pages/ClientDashboard';
 import FreelancerDashboard from './pages/FreelancerDashboard';
 import FreelancerSetupWizard from './pages/FreelancerSetupWizard';
 import PublicProfile from './pages/PublicProfile';
+import ProtectedRoute from './components/ProtectedRoute';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import AOS from 'aos';
@@ -46,11 +47,9 @@ function App() {
                 <Route path="/reset-password/:token" element={<ResetPassword />} />
                 <Route path="/check-email" element={<CheckEmail />} />
                 <Route path="/verify-email/:token" element={<VerifyEmail />} />
-                <Route path="/client/dashboard" element={<ClientDashboard />} />
-                <Route path="/client-dashboard" element={<ClientDashboard />} />
-                <Route path="/freelancer/dashboard" element={<FreelancerDashboard />} />
-                <Route path="/freelancer-dashboard" element={<FreelancerDashboard />} />
-                <Route path="/freelancer/setup" element={<FreelancerSetupWizard />} />
+                <Route path="/client/dashboard" element={<ProtectedRoute role="client"><ClientDashboard /></ProtectedRoute>} />
+                <Route path="/freelancer/dashboard" element={<ProtectedRoute role="freelancer"><FreelancerDashboard /></ProtectedRoute>} />
+                <Route path="/freelancer/setup" element={<ProtectedRoute role="freelancer"><FreelancerSetupWizard /></ProtectedRoute>} />
                 <Route path="/profile/:id" element={<PublicProfile />} />
                 <Route path="/profile" element={<PublicProfile />} />
                 <Route path="/profile/me" element={<PublicProfile />} />
