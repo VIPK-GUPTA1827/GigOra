@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
   ShieldCheck, 
@@ -34,6 +34,7 @@ const formatINR = (n) =>
   new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n || 0);
 
 export default function Home() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('client');
   const [activeCategory, setActiveCategory] = useState('Web & App');
   const [openFaq, setOpenFaq] = useState(null);
@@ -509,11 +510,7 @@ export default function Home() {
             
             {/* 1. AI & ML Services */}
             <button 
-              onClick={() => {
-                setActiveCategory('AI & ML');
-                const el = document.getElementById('category-details');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onClick={() => navigate('/marketplace?category=Data%20Science%20%26%20AI')}
               data-aos="fade-up" 
               data-aos-delay="0"
               className="text-left group p-3.5 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-purple-400 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
@@ -527,11 +524,7 @@ export default function Home() {
 
             {/* 2. Fullstack & Web */}
             <button 
-              onClick={() => {
-                setActiveCategory('Web & App');
-                const el = document.getElementById('category-details');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onClick={() => navigate('/marketplace?category=Web%20Development')}
               data-aos="fade-up" 
               data-aos-delay="30"
               className="text-left group p-3.5 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
@@ -545,11 +538,7 @@ export default function Home() {
 
             {/* 3. Mobile Apps */}
             <button 
-              onClick={() => {
-                setActiveCategory('Web & App');
-                const el = document.getElementById('category-details');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onClick={() => navigate('/marketplace?category=Mobile%20App%20Development')}
               data-aos="fade-up" 
               data-aos-delay="60"
               className="text-left group p-3.5 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
@@ -563,11 +552,7 @@ export default function Home() {
 
             {/* 4. UI/UX & Design */}
             <button 
-              onClick={() => {
-                setActiveCategory('UI/UX Design');
-                const el = document.getElementById('category-details');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onClick={() => navigate('/marketplace?category=UI%2FUX%20Design')}
               data-aos="fade-up" 
               data-aos-delay="90"
               className="text-left group p-3.5 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-pink-400 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
@@ -581,11 +566,7 @@ export default function Home() {
 
             {/* 5. Cloud & DevOps */}
             <button 
-              onClick={() => {
-                setActiveCategory('DevOps & Cloud');
-                const el = document.getElementById('category-details');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onClick={() => navigate('/marketplace?category=DevOps%20%26%20Cloud')}
               data-aos="fade-up" 
               data-aos-delay="120"
               className="text-left group p-3.5 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-amber-400 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
@@ -599,11 +580,7 @@ export default function Home() {
 
             {/* 6. Data & Backend */}
             <button 
-              onClick={() => {
-                setActiveCategory('Backend APIs');
-                const el = document.getElementById('category-details');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onClick={() => navigate('/marketplace?category=Backend%20%26%20APIs')}
               data-aos="fade-up" 
               data-aos-delay="150"
               className="text-left group p-3.5 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-cyan-400 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
