@@ -22,7 +22,8 @@ import {
   Check,
   Globe,
   Menu,
-  X
+  X,
+  Lock
 } from 'lucide-react';
 
 import AOS from 'aos';
@@ -203,8 +204,8 @@ export default function Home() {
         </div>
 
         {/* Hero Content Container */}
-        <div className="relative z-10 w-full max-w-[1520px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 pt-32 pb-14 md:pt-28 md:pb-16 flex items-center">
-          <div className="w-full max-w-xl lg:max-w-[580px] xl:max-w-[620px] bg-[#FAF6EF]/85 sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none p-5 sm:p-0 rounded-3xl border border-[#030B3D]/10 sm:border-0 shadow-xs sm:shadow-none">
+        <div className="relative z-10 w-full max-w-[1520px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 pt-32 pb-14 md:pt-28 md:pb-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-14 items-center">
+          <div className="lg:col-span-7 xl:col-span-7 w-full max-w-xl lg:max-w-none bg-[#FAF6EF]/85 sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none p-5 sm:p-0 rounded-3xl border border-[#030B3D]/10 sm:border-0 shadow-xs sm:shadow-none">
             
             {/* Audience-Specific Choice Switcher */}
             <motion.div
@@ -293,16 +294,22 @@ export default function Home() {
                 </div>
 
                 {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-5 w-full">
-                  <a
-                    href="#waitlist"
-                    className="rounded-full bg-gradient-to-r from-[#595CFF] to-[#E7A4FF] px-8 py-3.5 text-base md:text-lg font-bold text-white shadow-[0_16px_32px_-16px_rgba(89,60,255,0.7)] hover:brightness-105 active:scale-95 transition-all text-center min-h-[48px] flex items-center justify-center cursor-pointer"
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full">
+                  <Link
+                    to="/marketplace"
+                    className="rounded-full bg-gradient-to-r from-[#595CFF] to-[#E7A4FF] px-7 py-3.5 text-sm md:text-base font-bold text-white shadow-[0_16px_32px_-16px_rgba(89,60,255,0.7)] hover:brightness-105 active:scale-95 transition-all text-center min-h-[48px] flex items-center justify-center cursor-pointer"
                   >
-                    Join Early Access
-                  </a>
+                    Browse open projects
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="rounded-full bg-white border border-[#030B3D]/20 text-[#030B3D] hover:bg-stone-50 px-6 py-3.5 text-sm md:text-base font-bold shadow-xs active:scale-95 transition-all text-center min-h-[48px] flex items-center justify-center cursor-pointer"
+                  >
+                    Post a project →
+                  </Link>
                   <a
                     href="#how-it-works"
-                    className="text-base md:text-[17px] font-bold text-[#030B3D] underline underline-offset-4 hover:no-underline text-center sm:text-left py-2 min-h-[48px] flex items-center justify-center sm:justify-start cursor-pointer"
+                    className="text-xs sm:text-sm font-bold text-[#030B3D] underline underline-offset-4 hover:no-underline text-center sm:text-left py-2 flex items-center justify-center sm:justify-start cursor-pointer"
                   >
                     See how milestones work →
                   </a>
@@ -354,16 +361,16 @@ export default function Home() {
                 </div>
 
                 {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-5 w-full">
-                  <a
-                    href="#waitlist"
-                    className="rounded-full bg-[#030B3D] hover:bg-[#593CFF] px-8 py-3.5 text-base md:text-lg font-bold text-white shadow-md active:scale-95 transition-all text-center min-h-[48px] flex items-center justify-center cursor-pointer"
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full">
+                  <Link
+                    to="/marketplace"
+                    className="rounded-full bg-[#030B3D] hover:bg-[#593CFF] px-8 py-3.5 text-sm md:text-base font-bold text-white shadow-md active:scale-95 transition-all text-center min-h-[48px] flex items-center justify-center cursor-pointer"
                   >
-                    Join Early Access as Dev
-                  </a>
+                    Find work as a freelancer
+                  </Link>
                   <a
                     href="#choose-path"
-                    className="text-base md:text-[17px] font-bold text-[#030B3D] underline underline-offset-4 hover:no-underline text-center sm:text-left py-2 min-h-[48px] flex items-center justify-center sm:justify-start cursor-pointer"
+                    className="text-xs sm:text-sm font-bold text-[#030B3D] underline underline-offset-4 hover:no-underline text-center sm:text-left py-2 flex items-center justify-center sm:justify-start cursor-pointer"
                   >
                     See developer perks →
                   </a>
@@ -371,6 +378,111 @@ export default function Home() {
               </div>
             )}
 
+          </div>
+
+          {/* Right Column: Floating Product Browser Mockup Card */}
+          <div className="lg:col-span-5 xl:col-span-5 hidden lg:block relative" data-aos="fade-left" data-aos-delay="150">
+            {/* Ambient Background Glow */}
+            <div className="absolute -inset-2 bg-gradient-to-tr from-[#593CFF]/20 to-[#E7A4FF]/30 rounded-3xl blur-2xl pointer-events-none"></div>
+
+            {/* Browser Frame */}
+            <div className="relative rounded-2xl border border-slate-200/90 bg-white/95 backdrop-blur-md shadow-[0_24px_50px_-12px_rgba(3,11,61,0.18)] overflow-hidden">
+              {/* Window Header */}
+              <div className="flex items-center justify-between px-4 py-2.5 bg-slate-100/90 border-b border-slate-200">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2.5 h-2.5 rounded-full bg-rose-400 inline-block"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span>
+                </div>
+                <div className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-white border border-slate-200 text-[11px] text-slate-500 font-mono">
+                  <Lock className="w-3 h-3 text-emerald-600" />
+                  <span>gigora.in/marketplace</span>
+                </div>
+                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                  Live
+                </span>
+              </div>
+
+              {/* Window Body: Real Marketplace Preview */}
+              <div className="p-4 space-y-3 bg-slate-50/50">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-800">Featured Open Gigs</span>
+                  <Link to="/marketplace" className="text-[11px] font-semibold text-indigo-600 hover:underline">
+                    View all (12+) →
+                  </Link>
+                </div>
+
+                {/* Project Card 1 */}
+                <Link
+                  to="/marketplace"
+                  className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-indigo-300 hover:shadow-xs transition"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
+                      Web Development
+                    </span>
+                    <span className="text-[11px] font-bold text-slate-900">₹45,000</span>
+                  </div>
+                  <h4 className="mt-2 text-xs font-bold text-slate-900 line-clamp-1">
+                    Full-Stack SaaS Platform (Next.js + Fastify)
+                  </h4>
+                  <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">
+                    Build multi-tenant auth, dashboard analytics, and Stripe billing.
+                  </p>
+                  <div className="mt-2.5 flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-100 pt-2">
+                    <div className="flex gap-1">
+                      <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">React</span>
+                      <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">Node.js</span>
+                    </div>
+                    <span className="text-emerald-600 font-semibold">3 Milestones</span>
+                  </div>
+                </Link>
+
+                {/* Project Card 2 */}
+                <Link
+                  to="/marketplace"
+                  className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-indigo-300 hover:shadow-xs transition"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">
+                      Data Science &amp; AI
+                    </span>
+                    <span className="text-[11px] font-bold text-slate-900">₹65,000</span>
+                  </div>
+                  <h4 className="mt-2 text-xs font-bold text-slate-900 line-clamp-1">
+                    AI RAG Knowledge Engine &amp; Vector Search
+                  </h4>
+                  <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">
+                    Fine-tune embeddings, LangChain pipeline, and hybrid search.
+                  </p>
+                  <div className="mt-2.5 flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-100 pt-2">
+                    <div className="flex gap-1">
+                      <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">Python</span>
+                      <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">FastAPI</span>
+                    </div>
+                    <span className="text-emerald-600 font-semibold">2 Milestones</span>
+                  </div>
+                </Link>
+              </div>
+
+              {/* Bottom Quick Bar */}
+              <div className="px-4 py-2.5 bg-white border-t border-slate-100 flex items-center justify-between text-xs">
+                <span className="text-slate-500 text-[11px]">Milestones locked in escrow</span>
+                <Link
+                  to="/marketplace"
+                  className="inline-flex items-center gap-1 font-bold text-[11px] text-indigo-600 hover:text-indigo-700"
+                >
+                  Explore marketplace →
+                </Link>
+              </div>
+            </div>
+
+            {/* Floating Trust Pill Badge */}
+            <div className="absolute -bottom-3 -left-3 bg-[#030B3D] text-white px-3.5 py-1.5 rounded-full shadow-lg border border-white/20 flex items-center gap-2 text-xs font-bold">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Direct INR Milestones</span>
+            </div>
           </div>
         </div>
       </section>
