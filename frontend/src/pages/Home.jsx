@@ -817,54 +817,18 @@ export default function Home() {
               Designed for serious technical projects
             </h2>
             <p className="text-base sm:text-lg text-stone-600 max-w-2xl mx-auto">
-              Planned tools designed to support milestone tracking and deliverable reviews without administrative clutter.
+              Everything you need to run a project, built into one workspace.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[
-              {
-                title: 'Milestone-Based Approvals (Planned)',
-                desc: 'Milestones and acceptance criteria planned before work begins, assuring both sides of clear delivery expectations (Planned for launch).',
-                icon: ShieldCheck,
-                badge: 'Planned',
-                border: 'hover:border-purple-300'
-              },
-              {
-                title: 'Domestic INR Clarity (Planned)',
-                desc: 'Planned direct INR milestone agreements designed for Indian businesses and developers without exchange hurdles (In development).',
-                icon: Wallet,
-                badge: 'Planned',
-                border: 'hover:border-emerald-300'
-              },
-              {
-                title: 'Proof-Led Portfolios',
-                desc: 'Evaluate developers through real GitHub commits, live staged apps, and design artifacts rather than generic CV resumes.',
-                icon: CheckCircle2,
-                badge: 'Portfolios',
-                border: 'hover:border-blue-300'
-              },
-              {
-                title: 'Early Access Priority',
-                desc: 'Join during our early community rollout to connect with our founding team and participate in early preview cohort access.',
-                icon: Zap,
-                badge: 'Rollout',
-                border: 'hover:border-amber-300'
-              },
-              {
-                title: 'Sprint Previews (Planned)',
-                desc: 'Planned sprint feedback loops, test environments, and branch commits tracked directly against active milestones (Under development).',
-                icon: Layers,
-                badge: 'Planned',
-                border: 'hover:border-violet-300'
-              },
-              {
-                title: 'Dispute Mediation (Planned)',
-                desc: 'A structured mediation protocol under development to help resolve milestone discrepancies objectively once production launches.',
-                icon: Users,
-                badge: 'Under Development',
-                border: 'hover:border-rose-300'
-              }
+              { title: 'Proposals & Bidding', desc: 'Clients post projects, freelancers send bids, clients compare and accept.', icon: Users, border: 'hover:border-purple-300' },
+              { title: 'Milestone Tracking', desc: 'Split projects into milestones and approve each deliverable step by step.', icon: ShieldCheck, border: 'hover:border-emerald-300' },
+              { title: 'Real-time Chat', desc: 'Message your client or freelancer instantly, with read receipts.', icon: Zap, border: 'hover:border-blue-300' },
+              { title: 'Reviews & Ratings', desc: 'Clients and freelancers build trust with reviews after completion.', icon: CheckCircle2, border: 'hover:border-amber-300' },
+              { title: 'Document Uploads', desc: 'Share briefs, designs and PDFs securely with file validation.', icon: Layers, border: 'hover:border-violet-300' },
+              { title: 'Smart Notifications', desc: 'Get updates for proposals, milestones and messages in real time.', icon: Wallet, border: 'hover:border-rose-300' }
             ].map((feature, idx) => (
               <div 
                 key={idx} 
@@ -873,13 +837,8 @@ export default function Home() {
                 className={`group p-8 rounded-3xl bg-[#FAF6EF]/60 border border-stone-200/80 ${feature.border} hover:bg-white hover:shadow-[0_20px_40px_-15px_rgba(3,11,61,0.08)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between`}
               >
                 <div>
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="w-12 h-12 rounded-2xl bg-white border border-stone-200 flex items-center justify-center text-[#593CFF] shadow-xs group-hover:scale-110 group-hover:bg-[#593CFF] group-hover:text-white transition-all duration-300">
-                      <feature.icon className="h-6 w-6" />
-                    </div>
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-stone-500 bg-white px-2.5 py-1 rounded-full border border-stone-200/80">
-                      {feature.badge}
-                    </span>
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-stone-200 flex items-center justify-center text-[#593CFF] shadow-xs group-hover:scale-110 group-hover:bg-[#593CFF] group-hover:text-white transition-all duration-300 mb-5">
+                    <feature.icon className="h-6 w-6" />
                   </div>
                   <h3 className="text-xl font-display font-bold text-[#030B3D] mb-2.5 group-hover:text-[#593CFF] transition-colors">
                     {feature.title}
@@ -887,11 +846,6 @@ export default function Home() {
                   <p className="text-sm text-stone-600 leading-relaxed font-normal">
                     {feature.desc}
                   </p>
-                </div>
-                
-                <div className="mt-6 pt-4 border-t border-stone-200/60 flex items-center text-xs font-bold text-[#030B3D] group-hover:text-[#593CFF] transition-colors">
-                  <span>Learn more</span>
-                  <ChevronRight className="h-3.5 w-3.5 ml-1 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>
             ))}
