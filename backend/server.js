@@ -68,7 +68,9 @@ app.use('/api/freelancer', freelancerRoutes);
 app.use('/api/upload', uploadRoutes);
 
 // Serve uploaded files statically
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
+  setHeaders: (res) => res.setHeader('X-Content-Type-Options', 'nosniff')
+}));
 
 // Health Check Route
 app.get('/api/health', (req, res) => {
