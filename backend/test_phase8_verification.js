@@ -452,13 +452,11 @@ async function runPhase8Verification() {
         assert(badUploadRes.status === 400, `Expected 400 for executable upload, got ${badUploadRes.status}`);
         assert(!badUploadData.success, 'Executable upload should not succeed');
 
-        // 3. Valid Image Upload (JPEG/PNG)
-        const validPayload = 
-            `--${boundary}\r\n` +
-            `Content-Disposition: form-data; name="file"; filename="sample_avatar.png"\r\n` +
-            `Content-Type: image/png\r\n\r\n` +
-            `FakePNGImagePayloadBytes12345\r\n` +
-            `--${boundary}--\r\n`;
+        // 3. Valid Image Upload (JPEG/PNG with valid magic bytes)
+        const validHeader = Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0x00, 0x00, 0x00, 0x0D]);
+        const partBefore = Buffer.from(`--${boundary}\r\nContent-Disposition: form-data; name="file"; filename="sample_avatar.png"\r\nContent-Type: image/png\r\n\r\n`);
+        const partAfter = Buffer.from(`\r\n--${boundary}--\r\n`);
+        const validPayloadBuffer = Buffer.concat([partBefore, validHeader, partAfter]);
 
         const goodUploadRes = await fetch(`${BASE_URL}/upload`, {
             method: 'POST',
@@ -466,7 +464,7 @@ async function runPhase8Verification() {
                 'Authorization': `Bearer ${tokenClientA}`,
                 'Content-Type': `multipart/form-data; boundary=${boundary}`
             },
-            body: validPayload
+            body: validPayloadBuffer
         });
         const goodUploadData = await goodUploadRes.json();
         assert(goodUploadRes.status === 200, `Expected 200 for valid image upload, got ${goodUploadRes.status}`);
