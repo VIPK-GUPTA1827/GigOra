@@ -291,7 +291,7 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full">
                   <Link
                     to="/marketplace"
-                    className="rounded-full bg-gradient-to-r from-[#595CFF] to-[#E7A4FF] px-7 py-3.5 text-sm md:text-base font-bold text-white shadow-[0_16px_32px_-16px_rgba(89,60,255,0.7)] hover:brightness-105 active:scale-95 transition-all text-center min-h-[48px] flex items-center justify-center cursor-pointer"
+                    className="rounded-full bg-[#593CFF] hover:bg-[#472fe0] px-7 py-3.5 text-sm md:text-base font-bold text-white shadow-[0_16px_32px_-16px_rgba(89,60,255,0.7)] active:scale-95 transition-all text-center min-h-[48px] flex items-center justify-center cursor-pointer"
                   >
                     Browse open projects
                   </Link>
@@ -342,7 +342,7 @@ export default function Home() {
                   className="text-[#030B3D] leading-[1.55] max-w-[32em] font-medium mb-3.5 md:mb-4"
                   style={{ fontSize: 'clamp(0.95rem, 1.05vw + 0.15rem, 1.15rem)' }}
                 >
-                  Showcase your work and explore our planned milestone-based freelance collaboration model.
+                  Showcase your work and explore milestone-based freelance collaboration.
                 </motion.p>
 
                 {/* Offer Line */}
