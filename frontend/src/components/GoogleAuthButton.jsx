@@ -44,6 +44,11 @@ export default function GoogleAuthButton({ role = 'client', isSignup = false, te
     }
   };
 
+  const handlerRef = useRef(handleCredentialResponse);
+  useEffect(() => {
+    handlerRef.current = handleCredentialResponse;
+  });
+
   useEffect(() => {
     let interval;
     const initializeGoogleButton = () => {
@@ -51,7 +56,7 @@ export default function GoogleAuthButton({ role = 'client', isSignup = false, te
         setScriptLoaded(true);
         try {
           // Keep active component's callback synced globally
-          window.__gigoraGsiCallback = handleCredentialResponse;
+          window.__gigoraGsiCallback = (response) => handlerRef.current(response);
 
           // Prevent multiple initializations that trigger GSI warning
           if (!window.__gigoraGsiInitialized) {
