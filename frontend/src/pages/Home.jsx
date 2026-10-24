@@ -284,7 +284,7 @@ export default function Home() {
                   <p 
                     className="font-medium text-[#030B3D] leading-[1.45] max-w-[32em] text-xs sm:text-sm bg-[#593CFF]/8 border border-[#593CFF]/20 px-3.5 py-2.5 rounded-xl"
                   >
-                    📌 <strong>GigOra is in development.</strong> Explore this preview—marketplace and payment features are not live yet.
+                    📌 <strong>GigOra is in preview.</strong> Marketplace and workspaces are live; payments run in demo mode, so no real money moves yet.
                   </p>
                 </div>
 
@@ -345,7 +345,7 @@ export default function Home() {
                   <p 
                     className="font-medium text-[#030B3D] leading-[1.45] max-w-[32em] text-xs sm:text-sm bg-[#593CFF]/8 border border-[#593CFF]/20 px-3.5 py-2.5 rounded-xl"
                   >
-                    📌 <strong>GigOra is in development.</strong> Explore this preview—marketplace and payment features are not live yet.
+                    📌 <strong>GigOra is in preview.</strong> Marketplace and workspaces are live; payments run in demo mode, so no real money moves yet.
                   </p>
                 </div>
 
