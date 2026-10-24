@@ -15,6 +15,7 @@ import FreelancerDashboard from './pages/FreelancerDashboard';
 import FreelancerSetupWizard from './pages/FreelancerSetupWizard';
 import PublicProfile from './pages/PublicProfile';
 import Marketplace from './pages/Marketplace';
+import GigDetail from './pages/GigDetail';
 import ProtectedRoute from './components/ProtectedRoute';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
@@ -56,6 +57,7 @@ function App() {
                 <Route path="/profile/me" element={<PublicProfile />} />
                 <Route path="/marketplace" element={<Marketplace />} />
                 <Route path="/gigs" element={<Marketplace />} />
+                <Route path="/gigs/:id" element={<GigDetail />} />
                 <Route path="/jobs" element={<Marketplace />} />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
