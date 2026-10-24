@@ -39,9 +39,9 @@ export default function Home() {
   useEffect(() => {
     AOS.refresh();
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      setIsScrolled(window.scrollY > 24);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -53,8 +53,12 @@ export default function Home() {
     <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-indigo-600 selection:text-white relative">
       
       {/* 1. TOP FLOATING PILL NAVBAR */}
-      <div className="fixed top-3.5 sm:top-5 left-0 right-0 z-50 px-3 sm:px-4 pointer-events-none flex justify-center">
-        <div className="pointer-events-auto w-full max-w-[1240px] flex flex-col items-center">
+      <div className={`fixed top-0 left-0 right-0 z-50 transition-colors py-3 sm:py-3.5 px-3 sm:px-4 flex justify-center ${
+        isScrolled 
+          ? 'bg-[#FAF6EF]/95 backdrop-blur-md border-b border-stone-200/80 shadow-xs' 
+          : 'bg-transparent'
+      }`}>
+        <div className="w-full max-w-[1240px] flex flex-col items-center">
           <nav className={`w-full rounded-full backdrop-blur-md px-4 sm:px-7 py-2.5 sm:py-3.5 flex items-center justify-between transition-all duration-300 ${
             isScrolled 
               ? 'bg-white/95 border border-slate-200/90 shadow-[0_12px_36px_rgba(3,11,61,0.12)]' 
@@ -427,7 +431,7 @@ export default function Home() {
       </section>
 
       {/* 3. POPULAR TECH SERVICES QUICK ROW */}
-      <section id="categories" className="py-8 sm:py-10 bg-slate-50/70 border-b border-slate-200/80 w-full">
+      <section id="categories" className="scroll-mt-28 py-8 sm:py-10 bg-slate-50/70 border-b border-slate-200/80 w-full">
         <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-14">
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 xl:gap-5">
             
@@ -544,7 +548,7 @@ export default function Home() {
       </section>
 
       {/* 4. HOW IT WORKS: 3 SIMPLE STEPS (Clear & Consolidated) */}
-      <section id="how-it-works" className="py-16 sm:py-20 bg-[#FAF8F5] border-b border-stone-200/80">
+      <section id="how-it-works" className="scroll-mt-28 py-16 sm:py-20 bg-[#FAF8F5] border-b border-stone-200/80">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-14" data-aos="fade-up">
@@ -650,7 +654,7 @@ export default function Home() {
       </section>
 
       {/* 5. CHOOSE YOUR PATH (Audience Specific Cards for Client & Freelancer) */}
-      <section id="choose-path" className="py-20 lg:py-24 bg-white border-b border-stone-200/80">
+      <section id="choose-path" className="scroll-mt-28 py-20 lg:py-24 bg-white border-b border-stone-200/80">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-14" data-aos="fade-up">
@@ -749,7 +753,7 @@ export default function Home() {
       </section>
 
       {/* 6. CATEGORY DEEP-DIVE: "What do you build on GigOra?" */}
-      <section id="category-details" className="py-20 lg:py-24 bg-[#FAF8F5] border-b border-stone-200/80">
+      <section id="category-details" className="scroll-mt-28 py-20 lg:py-24 bg-[#FAF8F5] border-b border-stone-200/80">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           
           {/* Section Header: Question + Pill Filter Tags */}
@@ -1342,7 +1346,7 @@ export default function Home() {
       </section>
 
       {/* 9. CORE FEATURES */}
-      <section id="features" className="py-20 lg:py-28 bg-white relative">
+      <section id="features" className="scroll-mt-28 py-20 lg:py-28 bg-white relative">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
@@ -1437,7 +1441,7 @@ export default function Home() {
       </section>
 
       {/* 10. TRANSPARENT FAQ: Fees, Launch Timing, Verification, Payment Protection */}
-      <section id="faq" className="py-20 lg:py-28 bg-[#FAF6EF] border-t border-stone-200/80">
+      <section id="faq" className="scroll-mt-28 py-20 lg:py-28 bg-[#FAF6EF] border-t border-stone-200/80">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-14" data-aos="fade-up">
@@ -1497,7 +1501,7 @@ export default function Home() {
       </section>
 
       {/* 11. EARLY ACCESS WAITLIST CTA */}
-      <section id="waitlist" className="py-24 lg:py-32 bg-[#030B3D] text-white relative overflow-hidden">
+      <section id="waitlist" className="scroll-mt-28 py-24 lg:py-32 bg-[#030B3D] text-white relative overflow-hidden">
         {/* Luxury Ambient Glows */}
         <div className="absolute top-0 right-1/4 w-96 h-96 bg-[#593CFF]/30 rounded-full blur-3xl pointer-events-none"></div>
         <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-[#E7A4FF]/15 rounded-full blur-3xl pointer-events-none"></div>
