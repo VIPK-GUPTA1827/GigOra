@@ -404,93 +404,32 @@ export default function Home() {
                   </Link>
                 </div>
 
-                {/* Dynamic Gigs from Database or High-Quality Fallbacks */}
-                {featuredGigs && featuredGigs.length > 0 ? (
-                  featuredGigs.slice(0, 2).map((gig) => (
-                    <Link
-                      key={gig._id}
-                      to={`/gigs/${gig._id}`}
-                      className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-indigo-300 hover:shadow-xs transition"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
-                          {gig.category || 'Tech'}
+                {/* Dynamic Gigs from Database */}
+                {featuredGigs.map((gig) => (
+                  <Link
+                    key={gig._id}
+                    to={`/gigs/${gig._id}`}
+                    className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-indigo-300 hover:shadow-xs transition"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
+                        {gig.category}
+                      </span>
+                      <span className="text-[11px] font-bold text-slate-900">
+                        ₹{Number(gig.budget || 0).toLocaleString('en-IN')}
+                      </span>
+                    </div>
+                    <h4 className="mt-2 text-xs font-bold text-slate-900 line-clamp-1">{gig.title}</h4>
+                    <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">{gig.description}</p>
+                    <div className="mt-2.5 flex gap-1 border-t border-slate-100 pt-2">
+                      {(gig.skillsRequired || []).slice(0, 2).map((s) => (
+                        <span key={s} className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium text-[10px]">
+                          {s}
                         </span>
-                        <span className="text-[11px] font-bold text-slate-900">{formatINR(gig.budget)}</span>
-                      </div>
-                      <h4 className="mt-2 text-xs font-bold text-slate-900 line-clamp-1">
-                        {gig.title}
-                      </h4>
-                      <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">
-                        {gig.description}
-                      </p>
-                      <div className="mt-2.5 flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-100 pt-2">
-                        <div className="flex gap-1 flex-wrap">
-                          {(gig.skillsRequired || []).slice(0, 2).map((skill) => (
-                            <span key={skill} className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">
-                              {skill}
-                            </span>
-                          ))}
-                        </div>
-                        <span className="text-emerald-600 font-semibold">
-                          {gig.milestones?.length ? `${gig.milestones.length} Milestones` : 'Open for Bid'}
-                        </span>
-                      </div>
-                    </Link>
-                  ))
-                ) : (
-                  <>
-                    <Link
-                      to="/marketplace"
-                      className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-indigo-300 hover:shadow-xs transition"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
-                          Web Development
-                        </span>
-                        <span className="text-[11px] font-bold text-slate-900">₹45,000</span>
-                      </div>
-                      <h4 className="mt-2 text-xs font-bold text-slate-900 line-clamp-1">
-                        Full-Stack SaaS Platform (Next.js + Fastify)
-                      </h4>
-                      <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">
-                        Build multi-tenant auth, dashboard analytics, and Stripe billing.
-                      </p>
-                      <div className="mt-2.5 flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-100 pt-2">
-                        <div className="flex gap-1">
-                          <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">React</span>
-                          <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">Node.js</span>
-                        </div>
-                        <span className="text-emerald-600 font-semibold">3 Milestones</span>
-                      </div>
-                    </Link>
-
-                    <Link
-                      to="/marketplace"
-                      className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-indigo-300 hover:shadow-xs transition"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-semibold uppercase tracking-wider text-purple-600 bg-purple-50 px-2 py-0.5 rounded-full">
-                          Data Science &amp; AI
-                        </span>
-                        <span className="text-[11px] font-bold text-slate-900">₹65,000</span>
-                      </div>
-                      <h4 className="mt-2 text-xs font-bold text-slate-900 line-clamp-1">
-                        AI RAG Knowledge Engine &amp; Vector Search
-                      </h4>
-                      <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">
-                        Fine-tune embeddings, LangChain pipeline, and hybrid search.
-                      </p>
-                      <div className="mt-2.5 flex items-center justify-between text-[10px] text-slate-400 border-t border-slate-100 pt-2">
-                        <div className="flex gap-1">
-                          <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">Python</span>
-                          <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">FastAPI</span>
-                        </div>
-                        <span className="text-emerald-600 font-semibold">2 Milestones</span>
-                      </div>
-                    </Link>
-                  </>
-                )}
+                      ))}
+                    </div>
+                  </Link>
+                ))}
               </div>
 
               {/* Bottom Quick Bar */}
