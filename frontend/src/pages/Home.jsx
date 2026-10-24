@@ -375,7 +375,7 @@ export default function Home() {
           </div>
 
           {/* Right Column: Floating Product Browser Mockup Card */}
-          <div className="lg:col-span-5 xl:col-span-5 hidden lg:block relative" data-aos="fade-left" data-aos-delay="150">
+          <div className="lg:col-span-5 xl:col-span-5 hidden lg:block relative" data-aos="fade-up" data-aos-delay="150">
             {/* Browser Frame */}
             <div className="relative max-w-[460px] ml-auto rounded-2xl border border-slate-200 bg-white shadow-[0_24px_60px_-15px_rgba(3,11,61,0.18)] overflow-hidden">
               {/* Window Header */}
@@ -1265,7 +1265,7 @@ export default function Home() {
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
                 
                 {/* Left: Authentic Photo */}
-                <div className="lg:col-span-7" data-aos="fade-right" data-aos-delay="0">
+                <div className="lg:col-span-7" data-aos="fade-up" data-aos-delay="0">
                   <div className="relative rounded-3xl overflow-hidden shadow-sm border border-stone-200/90 aspect-[16/10] bg-stone-100 group">
                     <img 
                       src={current.photo} 
@@ -1283,7 +1283,7 @@ export default function Home() {
                     return (
                       <div 
                         key={idx}
-                        data-aos="fade-left" 
+                        data-aos="fade-up" 
                         data-aos-delay={idx * 50}
                         className="bg-[#FAF6EF] rounded-2xl p-5 sm:p-6 border border-stone-200/90 hover:bg-white hover:border-[#593CFF]/40 hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 group"
                       >
@@ -1317,7 +1317,7 @@ export default function Home() {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
             
             {/* Left: Text & Checkmark List */}
-            <div className="lg:col-span-6 space-y-6 text-left" data-aos="fade-right">
+            <div className="lg:col-span-6 space-y-6 text-left" data-aos="fade-up">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-[#030B3D] tracking-tight leading-tight">
                 Can I hire technical talent across India with milestone clarity?
               </h2>
@@ -1350,7 +1350,7 @@ export default function Home() {
             </div>
 
             {/* Right: Authentic Photograph */}
-            <div className="lg:col-span-6" data-aos="fade-left" data-aos-delay="50">
+            <div className="lg:col-span-6" data-aos="fade-up" data-aos-delay="50">
               <div className="relative rounded-3xl overflow-hidden shadow-sm border border-stone-200/90 aspect-[4/3] bg-stone-100 group">
                 <img 
                   src="/images/gigora_success_founder.jpg" 

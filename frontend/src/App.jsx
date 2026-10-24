@@ -36,7 +36,7 @@ function App() {
     <ThemeProvider>
       <AuthProvider>
         <Router>
-          <div className="min-h-screen text-slate-900 flex flex-col selection:bg-indigo-100">
+          <div className="min-h-screen text-slate-900 flex flex-col selection:bg-indigo-100 overflow-x-hidden">
             <main className="flex-grow">
               <Routes>
                 <Route path="/" element={<Home />} />
