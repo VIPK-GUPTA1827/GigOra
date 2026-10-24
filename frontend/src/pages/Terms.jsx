@@ -1,0 +1,119 @@
+import React from 'react';
+import { ArrowLeft, AlertTriangle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+
+export default function Terms() {
+  return (
+    <div className="min-h-screen bg-[#FAF8F5] text-slate-900 font-sans selection:bg-indigo-600 selection:text-white">
+      {/* Header */}
+      <header className="border-b border-stone-200/80 bg-white/90 backdrop-blur-md sticky top-0 z-50 py-4 px-6 sm:px-12 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-2 text-sm font-bold text-[#030B3D] hover:text-[#593CFF] transition-colors">
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back to GigOra</span>
+        </Link>
+        <div className="flex items-center gap-2">
+          <div className="h-7 w-7 rounded-full bg-[#030B3D] text-white flex items-center justify-center font-bold text-xs">G</div>
+          <span className="font-display font-black text-lg text-[#030B3D]">GigOra</span>
+        </div>
+      </header>
+
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+        <div className="mb-6 text-left">
+          <span className="text-xs font-mono font-bold text-[#593CFF] bg-[#593CFF]/10 px-3 py-1 rounded-full uppercase tracking-wider">
+            Terms of Service
+          </span>
+          <h1 className="text-3xl sm:text-5xl font-display font-black text-[#030B3D] tracking-tight mt-3 mb-2">
+            Terms of Service
+          </h1>
+          <p className="text-stone-500 text-sm">Preview Draft · Subject to revision prior to service launch</p>
+        </div>
+
+        {/* Mandatory Preview Draft Note */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-amber-50 border border-amber-300/80 text-amber-950 text-xs sm:text-sm leading-relaxed mb-8 text-left flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+          <div>
+            <span className="font-bold block text-amber-950 mb-1">Preview Draft Notice</span>
+            <p className="text-amber-900/90 leading-relaxed font-medium">
+              Preview draft — GigOra is still in development. These terms are not final and may change before the service launches. Please don’t rely on any payment, escrow, payout, dispute-resolution, or tax features being available yet.
+            </p>
+          </div>
+        </div>
+
+        <div className="bg-white rounded-3xl p-6 sm:p-10 border border-stone-200/90 shadow-sm space-y-8 text-left text-stone-700 leading-relaxed text-sm sm:text-base">
+          
+          {/* Section 1 */}
+          <section className="space-y-3">
+            <h2 className="text-xl sm:text-2xl font-display font-bold text-[#030B3D]">
+              1. Platform Status & Scope
+            </h2>
+            <p>
+              GigOra is currently an early-stage preview exploring freelance marketplace concepts for technical talent in India. This website is a preview draft intended to gather interest and feedback from founders and software engineers.
+            </p>
+            <p>
+              The platform is planned to focus initially on <strong>Software Development, Cloud & DevOps, AI/ML, and Product UI/UX</strong>. Actual service availability and operational features will be announced upon formal launch.
+            </p>
+          </section>
+
+          {/* Section 2 */}
+          <section className="space-y-3">
+            <h2 className="text-xl sm:text-2xl font-display font-bold text-[#030B3D]">
+              2. Planned Milestone Workflow (Under Development)
+            </h2>
+            <p>
+              We intend to build structured milestone tools to assist users in defining project scope, timelines, and deliverables:
+            </p>
+            <ul className="space-y-2 list-disc list-inside text-stone-600 text-sm">
+              <li><strong>Scope Definition:</strong> Encouraging clients and freelancers to agree on clear acceptance criteria before work begins.</li>
+              <li><strong>Deliverable Review:</strong> Providing mechanisms for reviewing code changes, pull requests, and staging environments.</li>
+              <li><strong>Planned Feature Notice:</strong> Milestone facilitation features, tracking dashboards, and formal resolution mechanisms are currently under development and not yet live.</li>
+            </ul>
+          </section>
+
+          {/* Section 3 */}
+          <section className="space-y-3">
+            <h2 className="text-xl sm:text-2xl font-display font-bold text-[#030B3D]">
+              3. Payment & Settlement Terms (Planned Feature / Sandbox Demo)
+            </h2>
+            <p>
+              Specific payment methods, transactional rails, invoicing formats, and settlement timelines will be formally outlined and governed by updated terms prior to the launch of commercial services. 
+            </p>
+            <p className="text-xs text-amber-900 bg-amber-50 p-3 rounded-xl border border-amber-200 font-semibold">
+              ⚠️ Sandbox Simulation • No Real Currency: All wallet balances, escrow contract numbers, and payout calculations displayed in the dashboard and preview mockups are simulated for workflow demonstration purposes only. No real currency is held, transferred, or processed.
+            </p>
+          </section>
+
+          {/* Section 4 */}
+          <section className="space-y-3">
+            <h2 className="text-xl sm:text-2xl font-display font-bold text-[#030B3D]">
+              4. Intellectual Property & Work Ownership
+            </h2>
+            <p>
+              In our planned framework, intellectual property rights and code ownership for custom deliverables are intended to transfer to the client upon mutual agreement and full milestone sign-off, unless otherwise specified in custom project agreements.
+            </p>
+          </section>
+
+          {/* Section 5 */}
+          <section className="space-y-3">
+            <h2 className="text-xl sm:text-2xl font-display font-bold text-[#030B3D]">
+              5. Community Conduct
+            </h2>
+            <p>
+              We expect all participants in the GigOra community to interact professionally and honestly. Misrepresenting skills, engaging in abusive behavior, or attempting unauthorized access to preview services will result in removal from early access lists.
+            </p>
+          </section>
+
+          {/* Section 6 */}
+          <section className="space-y-3">
+            <h2 className="text-xl sm:text-2xl font-display font-bold text-[#030B3D]">
+              6. Updates to These Terms
+            </h2>
+            <p>
+              As our platform and backend workflows are finalized, these preview terms will be replaced by comprehensive, binding production Terms of Service. For inquiries, contact <span className="font-mono text-[#593CFF] font-semibold">support@gigora.in</span>.
+            </p>
+          </section>
+
+        </div>
+      </main>
+    </div>
+  );
+}
