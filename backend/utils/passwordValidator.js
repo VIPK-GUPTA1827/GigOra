@@ -10,7 +10,6 @@ const COMMON_DISALLOWED_PASSWORDS = new Set([
     'admin1234567',
     'administrator1',
     'gigora123456',
-    'skillsphere12',
     'welcome12345',
     'iloveyou1234',
     'letmein12345'
