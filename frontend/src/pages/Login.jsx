@@ -9,6 +9,7 @@ export default function Login() {
   const { login, user } = useAuth();
 
   React.useEffect(() => {
+    document.title = 'Sign In — GigOra';
     if (user) {
       if (user.role === 'client') {
         navigate('/client/dashboard', { replace: true });

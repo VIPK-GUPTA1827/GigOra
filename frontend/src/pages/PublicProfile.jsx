@@ -82,6 +82,7 @@ export default function PublicProfile() {
         // Handle both shapes (data.user or data.data)
         const userObj = data.data || data.user;
         setProfileData(userObj);
+        document.title = `${userObj?.name || userObj?.username || 'Profile'} — GigOra`;
       } catch (err) {
         console.error('Profile fetch failed:', err);
         setError(err.message || 'Failed to load user profile');

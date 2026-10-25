@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ArrowLeft, Info, Shield, Lock, FileCode, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Privacy() {
+  useEffect(() => {
+    document.title = 'Privacy — GigOra';
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-slate-900 font-sans selection:bg-indigo-600 selection:text-white">
       {/* Header */}
@@ -32,9 +36,9 @@ export default function Privacy() {
         <div className="p-4 sm:p-5 rounded-2xl bg-indigo-50 border border-indigo-200 text-indigo-950 text-xs sm:text-sm leading-relaxed mb-8 text-left flex items-start gap-3">
           <Shield className="w-5 h-5 text-[#593CFF] shrink-0 mt-0.5" />
           <div>
-            <span className="font-bold block text-indigo-950 mb-1">Early Access Architecture Disclosure</span>
+            <span className="font-bold block text-indigo-950 mb-1">Live Preview Architecture Disclosure</span>
             <p className="text-indigo-900/90 leading-relaxed font-medium">
-              GigOra currently operates as an Early Access Developer Marketplace and Architecture Showcase. Account creation, profile management, and project milestone tracking are fully functional in our development environment. Financial transactions operate strictly in <strong>Simulated Sandbox Escrow (simulated testing without real currency)</strong> mode without real banking charges.
+              GigOra currently operates as a live preview developer marketplace. Account creation, profile management, and project milestone tracking are live on GigOra's preview deployment. Financial transactions operate strictly in <strong>Simulated Sandbox Escrow (simulated testing without real currency)</strong> mode without real banking charges.
             </p>
           </div>
         </div>
@@ -104,19 +108,81 @@ export default function Privacy() {
             </ul>
           </section>
 
-          {/* Section 5: User Rights & Contact */}
+          {/* Section 5: Third-Party Processors & Infrastructure */}
           <section className="space-y-3">
             <h2 className="text-xl sm:text-2xl font-display font-bold text-[#030B3D]">
-              5. Your Rights & Data Inquiries
+              5. Third-Party Infrastructure & Sub-processors
             </h2>
             <p>
-              You have the right to inspect, update, or request the deletion of your account and associated data. For any questions or data requests, please contact our team at <span className="font-mono text-[#593CFF] font-semibold">support@gigora.dev</span>.
+              To provide reliable services, we rely on established technical service providers:
+            </p>
+            <ul className="space-y-2 list-disc list-inside text-stone-600 text-sm">
+              <li><strong>Database Hosting:</strong> MongoDB Atlas (cloud database with encryption in transit and at rest).</li>
+              <li><strong>Email Delivery:</strong> Brevo / Sendinblue (transactional email routing for verification and account security).</li>
+              <li><strong>Authentication:</strong> Google Identity Services (OAuth 2.0 verification).</li>
+              <li><strong>Application Hosting:</strong> Vercel and Render (cloud container and static edge infrastructure).</li>
+            </ul>
+          </section>
+
+          {/* Section 6: Uploaded Files & Attachments */}
+          <section className="space-y-3">
+            <h2 className="text-xl sm:text-2xl font-display font-bold text-[#030B3D]">
+              6. Uploaded Files & Document Attachments
+            </h2>
+            <p>
+              Files uploaded for project briefs, deliverable submissions, or user avatars are checked against strict MIME type rules and binary magic-byte signatures (JPEG, PNG, WEBP, PDF) before being stored. Uploads are strictly restricted to legitimate project documentation and workspace communication.
             </p>
           </section>
 
-          <div className="pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-stone-200 text-xs text-stone-500">
+          {/* Section 7: Data Retention & Account Deletion */}
+          <section className="space-y-3">
+            <h2 className="text-xl sm:text-2xl font-display font-bold text-[#030B3D]">
+              7. Data Retention & Account Deletion
+            </h2>
+            <p>
+              Your data is retained for as long as your account remains active. If you request account deletion by emailing <a href="mailto:support@gigora.in" className="text-[#593CFF] font-medium hover:underline">support@gigora.in</a>, all personal identity records and active profile listings will be permanently deleted within 30 days, except where retention is strictly required to comply with statutory legal or tax obligations.
+            </p>
+          </section>
+
+          {/* Section 8: Indian DPDP Act 2023 Compliance */}
+          <section className="space-y-3">
+            <h2 className="text-xl sm:text-2xl font-display font-bold text-[#030B3D]">
+              8. Rights Under the Digital Personal Data Protection (DPDP) Act 2023 (India)
+            </h2>
+            <p>
+              In accordance with India's DPDP Act 2023, Indian users have specific statutory rights:
+            </p>
+            <ul className="space-y-2 list-disc list-inside text-stone-600 text-sm">
+              <li><strong>Right to Access:</strong> You may request a summary of the personal data held about you and the processing activities performed.</li>
+              <li><strong>Right to Correction & Erasure:</strong> You may request correction of inaccurate data or deletion of data no longer necessary for the purpose it was collected.</li>
+              <li><strong>Grievance Redressal:</strong> If you have concerns regarding your data privacy, you may contact our Grievance Officer at <a href="mailto:support@gigora.in" className="text-[#593CFF] font-medium hover:underline">support@gigora.in</a>. We respond to all formal grievance requests within 30 business days.</li>
+            </ul>
+          </section>
+
+          {/* Section 9: Contact */}
+          <section className="space-y-3">
+            <h2 className="text-xl sm:text-2xl font-display font-bold text-[#030B3D]">
+              9. Contact & Support
+            </h2>
+            <p>
+              For privacy-related questions, data export requests, or general inquiries, please contact our team at <a href="mailto:support@gigora.in" className="font-mono text-[#593CFF] font-semibold hover:underline">support@gigora.in</a>.
+            </p>
+          </section>
+
+          {/* Navigation Cross Links */}
+          <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-stone-500 pt-4 border-t border-stone-200">
+            <Link to="/about" className="hover:text-[#593CFF] transition-colors">About</Link>
+            <span>•</span>
+            <Link to="/terms" className="hover:text-[#593CFF] transition-colors">Terms of Service</Link>
+            <span>•</span>
+            <Link to="/privacy" className="text-[#593CFF] font-bold">Privacy Policy</Link>
+            <span>•</span>
+            <Link to="/marketplace" className="hover:text-[#593CFF] transition-colors">Marketplace</Link>
+          </div>
+
+          <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-stone-100 text-xs text-stone-400">
             <span>GigOra Technologies · Privacy Policy</span>
-            <span className="font-medium text-[#030B3D]">Last updated: October 2026</span>
+            <span className="font-medium text-stone-500">Last updated: October 2026</span>
           </div>
 
         </div>

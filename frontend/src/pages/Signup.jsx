@@ -10,6 +10,7 @@ export default function Signup() {
   const { register, user } = useAuth();
 
   React.useEffect(() => {
+    document.title = 'Create Account — GigOra';
     if (user) {
       if (user.role === 'client') {
         navigate('/client/dashboard', { replace: true });

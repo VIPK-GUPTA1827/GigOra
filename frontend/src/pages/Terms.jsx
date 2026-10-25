@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ArrowLeft, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Terms() {
+  useEffect(() => {
+    document.title = 'Terms — GigOra';
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-slate-900 font-sans selection:bg-indigo-600 selection:text-white">
       {/* Header */}
@@ -157,6 +161,22 @@ export default function Terms() {
               These are preview terms. They will be replaced by binding production Terms of Service before real payments go live. For inquiries, contact <a href="mailto:support@gigora.in" className="font-mono text-[#593CFF] font-semibold hover:underline">support@gigora.in</a>.
             </p>
           </section>
+
+          {/* Navigation Cross Links */}
+          <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-stone-500 pt-4 border-t border-stone-200">
+            <Link to="/about" className="hover:text-[#593CFF] transition-colors">About</Link>
+            <span>•</span>
+            <Link to="/terms" className="text-[#593CFF] font-bold">Terms of Service</Link>
+            <span>•</span>
+            <Link to="/privacy" className="hover:text-[#593CFF] transition-colors">Privacy Policy</Link>
+            <span>•</span>
+            <Link to="/marketplace" className="hover:text-[#593CFF] transition-colors">Marketplace</Link>
+          </div>
+
+          <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-stone-100 text-xs text-stone-400">
+            <span>GigOra Technologies · Terms of Service</span>
+            <span className="font-medium text-stone-500">Last updated: October 2026</span>
+          </div>
 
         </div>
       </main>

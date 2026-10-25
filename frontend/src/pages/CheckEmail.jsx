@@ -11,6 +11,10 @@ export default function CheckEmail() {
   const [errorMsg, setErrorMsg] = useState('');
   const [etherealUrl, setEtherealUrl] = useState('');
 
+  React.useEffect(() => {
+    document.title = 'Check Your Email — GigOra';
+  }, []);
+
   const handleResend = async () => {
     if (!email) {
       setErrorMsg('Email address not specified.');

@@ -31,6 +31,7 @@ export default function GigDetail() {
         const res = await api.get(`/api/gigs/${id}`);
         if (!cancelled) {
           setGig(res.data);
+          document.title = res.data?.title ? `${res.data.title} — GigOra` : 'Project Detail — GigOra';
           setBidAmount(String(res.data.budget || ''));
         }
       } catch (err) {

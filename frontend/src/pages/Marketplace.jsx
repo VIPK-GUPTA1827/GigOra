@@ -52,6 +52,7 @@ export default function Marketplace() {
   }, [search, minBudget, maxBudget]);
 
   useEffect(() => {
+    document.title = 'Marketplace — GigOra';
     let cancelled = false;
 
     const load = async () => {

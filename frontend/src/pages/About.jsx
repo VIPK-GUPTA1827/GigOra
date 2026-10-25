@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ArrowLeft, ShieldCheck, Code2, Users, AlertCircle, Compass } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function About() {
+  useEffect(() => {
+    document.title = 'About — GigOra';
+  }, []);
+
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-slate-900 font-sans selection:bg-indigo-600 selection:text-white">
       {/* Header */}
@@ -115,9 +119,20 @@ export default function About() {
             </Link>
           </div>
 
-          <div className="pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-stone-200 text-xs text-stone-500">
+          {/* Navigation Cross Links */}
+          <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-stone-500 pt-4 border-t border-stone-200">
+            <Link to="/about" className="text-[#593CFF] font-bold">About</Link>
+            <span>•</span>
+            <Link to="/terms" className="hover:text-[#593CFF] transition-colors">Terms of Service</Link>
+            <span>•</span>
+            <Link to="/privacy" className="hover:text-[#593CFF] transition-colors">Privacy Policy</Link>
+            <span>•</span>
+            <Link to="/marketplace" className="hover:text-[#593CFF] transition-colors">Marketplace</Link>
+          </div>
+
+          <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-stone-100 text-xs text-stone-400">
             <span>GigOra Technologies · Live Preview</span>
-            <span className="font-medium text-[#030B3D]">Building for India's tech ecosystem</span>
+            <span className="font-medium text-stone-500">Building for India's tech ecosystem</span>
           </div>
 
         </div>
