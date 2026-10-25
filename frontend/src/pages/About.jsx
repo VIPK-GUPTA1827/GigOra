@@ -26,7 +26,7 @@ export default function About() {
             Building a better way to work together
           </h1>
           <p className="text-stone-600 text-base sm:text-lg max-w-2xl leading-relaxed">
-            GigOra is a freelance marketplace in the making, built to help businesses connect with skilled tech professionals. We’re working towards a simpler way to discover talent, discuss projects, and collaborate.
+            GigOra is a milestone-based freelance marketplace for technical talent in India. It helps founders discover developers, agree on scope, and manage delivery milestone by milestone.
           </p>
         </div>
 
