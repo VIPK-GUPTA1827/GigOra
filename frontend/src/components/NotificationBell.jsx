@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 import io from 'socket.io-client';
 
+const BASE = import.meta.env.VITE_API_URL || '';
+
 export default function NotificationBell({ userRole = 'freelancer', onNavigateToGig }) {
   const [notifications, setNotifications] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
@@ -26,7 +28,7 @@ export default function NotificationBell({ userRole = 'freelancer', onNavigateTo
   const fetchNotifications = async () => {
     try {
       setLoading(true);
-      const res = await fetch('/api/notifications', {
+      const res = await fetch(`${BASE}/api/notifications`, {
         credentials: 'include'
       });
       const data = await res.json();
@@ -78,7 +80,7 @@ export default function NotificationBell({ userRole = 'freelancer', onNavigateTo
   const handleNotificationClick = async (notif) => {
     try {
       if (!notif.read) {
-        await fetch(`/api/notifications/mark-read/${notif._id}`, {
+        await fetch(`${BASE}/api/notifications/mark-read/${notif._id}`, {
           method: 'PUT',
           credentials: 'include'
         });
@@ -113,7 +115,7 @@ export default function NotificationBell({ userRole = 'freelancer', onNavigateTo
   // Mark all as read
   const handleMarkAllRead = async () => {
     try {
-      await fetch('/api/notifications/mark-read', {
+      await fetch(`${BASE}/api/notifications/mark-read`, {
         method: 'PUT',
         credentials: 'include'
       });

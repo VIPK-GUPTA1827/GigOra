@@ -343,7 +343,7 @@ export default function ClientDashboard() {
           duration: formData.duration,
           deadline: formData.deadline || null,
           skillsRequired: formData.skillsRequired,
-          status: targetStatus
+          status: editingGigId && !isEditingDraft ? undefined : targetStatus
         })
       });
 

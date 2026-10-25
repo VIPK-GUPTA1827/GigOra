@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext();
+const BASE = import.meta.env.VITE_API_URL || '';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -12,7 +13,7 @@ export const AuthProvider = ({ children }) => {
 
     const checkAuth = async (retries = 1) => {
       try {
-        const res = await fetch('/api/auth/me', {
+        const res = await fetch(`${BASE}/api/auth/me`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include'
@@ -52,7 +53,7 @@ export const AuthProvider = ({ children }) => {
   // Register function
   const register = async ({ name, username, email, password, role }) => {
     try {
-      const res = await fetch('/api/auth/register', {
+      const res = await fetch(`${BASE}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -65,7 +66,6 @@ export const AuthProvider = ({ children }) => {
         throw new Error(data.message || 'Registration failed');
       }
 
-      setUser(data.user);
       return data.user;
     } catch (err) {
       throw err;
@@ -75,7 +75,7 @@ export const AuthProvider = ({ children }) => {
   // Login function
   const login = async ({ email, password }) => {
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch(`${BASE}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -98,7 +98,7 @@ export const AuthProvider = ({ children }) => {
   // Google Login function
   const loginWithGoogle = async (credential, role = 'client', isSignup = false) => {
     try {
-      const res = await fetch('/api/auth/google', {
+      const res = await fetch(`${BASE}/api/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -121,7 +121,7 @@ export const AuthProvider = ({ children }) => {
   // Switch role between Client and Freelancer
   const switchRole = async () => {
     try {
-      const res = await fetch('/api/auth/switch-role', {
+      const res = await fetch(`${BASE}/api/auth/switch-role`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include'
@@ -143,7 +143,7 @@ export const AuthProvider = ({ children }) => {
   // Logout function
   const logout = async () => {
     try {
-      await fetch('/api/auth/logout', {
+      await fetch(`${BASE}/api/auth/logout`, {
         method: 'POST',
         credentials: 'include'
       });
