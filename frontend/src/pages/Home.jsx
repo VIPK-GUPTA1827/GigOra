@@ -5,12 +5,10 @@ import {
   ShieldCheck, 
   Zap, 
   Users, 
-  Search, 
   CheckCircle2, 
   Code2, 
   Wallet,
   ChevronDown,
-  Sparkles,
   Layers,
   ChevronRight,
   Cpu,
@@ -29,9 +27,6 @@ import {
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import api from '../utils/api';
-
-const formatINR = (n) =>
-  new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n || 0);
 
 export default function Home() {
   const navigate = useNavigate();
@@ -195,8 +190,7 @@ export default function Home() {
         
         {/* Clean brand backdrop glows */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-32 -left-24 w-[420px] h-[420px] rounded-full bg-[#593CFF]/10 blur-3xl" />
-          <div className="absolute bottom-0 right-0 w-[520px] h-[520px] rounded-full bg-[#E7A4FF]/20 blur-3xl" />
+          <div className="absolute -top-32 -left-24 w-[420px] h-[420px] rounded-full bg-[#593CFF]/8 blur-3xl" />
         </div>
 
         {/* Hero Content Container */}
@@ -277,7 +271,7 @@ export default function Home() {
                   className="text-[#030B3D] leading-[1.55] max-w-[32em] font-medium mb-3.5 md:mb-4"
                   style={{ fontSize: 'clamp(0.95rem, 1.05vw + 0.15rem, 1.15rem)' }}
                 >
-                  Discover Indian tech talent, agree on project expectations, and preview milestone workflows.
+                  Discover Indian tech talent, agree on project expectations, and see how milestone workflows run.
                 </motion.p>
 
                 {/* Offer Line */}
@@ -488,7 +482,7 @@ export default function Home() {
                 <h4 className="font-bold text-xs sm:text-sm text-[#030B3D] leading-tight">
                   Milestone Tracking
                 </h4>
-                <p className="text-[10px] sm:text-xs text-stone-500 leading-tight mt-0.5 truncate sm:overflow-visible">Sandbox demo • No real currency</p>
+                <p className="text-[10px] sm:text-xs text-stone-500 leading-tight mt-0.5 truncate sm:overflow-visible">Live tracking • Demo payments</p>
               </div>
             </div>
 
@@ -687,11 +681,11 @@ export default function Home() {
                   3. Review the work
                 </h3>
                 <p className="text-sm text-stone-600 leading-relaxed">
-                  Review planned deliverables through a demo walkthrough or GitHub pull request before confirming sprint completion.
+                  Review deliverables through a demo walkthrough or GitHub pull request before confirming sprint completion.
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-stone-100 flex items-center text-xs font-semibold text-emerald-600">
-                Planned Review · Sprint Confirmation
+                Review · Sprint Confirmation
               </div>
             </div>
 
@@ -700,7 +694,7 @@ export default function Home() {
           {/* Live Workflow Note */}
           <div className="mt-10 p-4 sm:p-5 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 max-w-3xl mx-auto text-center" data-aos="fade-up">
             <p className="text-xs sm:text-sm font-medium text-indigo-950">
-              📌 <strong>Notice:</strong> Proposals, milestones, reviews and delivery tracking are live. Payments are demo-only for now.
+              <strong>Notice:</strong> Proposals, milestones, reviews and delivery tracking are live. Payments are demo-only for now.
             </p>
           </div>
 
