@@ -30,13 +30,13 @@ export default function About() {
           </p>
         </div>
 
-        {/* Short Development Note Callout */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-amber-50/80 border border-amber-200/80 text-amber-900 text-xs sm:text-sm flex items-start gap-3 mb-8 text-left">
-          <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+        {/* Live Preview Callout */}
+        <div className="p-4 sm:p-5 rounded-2xl bg-indigo-50/80 border border-indigo-200/80 text-indigo-950 text-xs sm:text-sm flex items-start gap-3 mb-8 text-left">
+          <AlertCircle className="w-5 h-5 text-[#593CFF] shrink-0 mt-0.5" />
           <div>
-            <span className="font-bold block text-amber-950 mb-0.5">Development In Progress</span>
-            <p className="text-amber-900/90 leading-relaxed">
-              We’re still building GigOra. Features and processes may change before launch.
+            <span className="font-bold block text-indigo-950 mb-0.5">Live Preview</span>
+            <p className="text-indigo-900/90 leading-relaxed">
+              The marketplace and workspaces are live. Payments run in demo mode, so no real money moves yet.
             </p>
           </div>
         </div>
@@ -105,8 +105,18 @@ export default function About() {
             </p>
           </section>
 
+          {/* Action CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 pt-2">
+            <Link to="/marketplace" className="rounded-full bg-[#593CFF] hover:bg-[#472fe0] text-white text-center py-3 px-6 font-bold text-sm active:scale-95 transition-all">
+              Browse projects
+            </Link>
+            <Link to="/signup" className="rounded-full border border-[#030B3D]/20 text-[#030B3D] text-center py-3 px-6 font-bold text-sm hover:bg-stone-50 active:scale-95 transition-all">
+              Post a project
+            </Link>
+          </div>
+
           <div className="pt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-stone-200 text-xs text-stone-500">
-            <span>GigOra Technologies · Early Access Preview</span>
+            <span>GigOra Technologies · Live Preview</span>
             <span className="font-medium text-[#030B3D]">Building for India's tech ecosystem</span>
           </div>
 
