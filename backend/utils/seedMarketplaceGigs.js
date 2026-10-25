@@ -18,7 +18,7 @@ const DEMO_GIGS = [
     skillsRequired: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Razorpay API'],
     description: 'We are launching an artisanal D2C merchandise brand and need a high-performance, responsive e-commerce web application. Deliverables include server-side rendered catalog pages, filterable search, cart/checkout flow, Razorpay payment gateway integration, and order management dashboard.',
     status: 'open',
-    isDemo: true,
+    isDemo: false,
     milestones: [
       {
         title: 'Architecture & Product Catalog SSR pages',
@@ -68,7 +68,7 @@ const DEMO_GIGS = [
     skillsRequired: ['React Native', 'Expo', 'Redux Toolkit', 'Node.js', 'Firebase'],
     description: 'Seeking a talented mobile engineer to build a cross-platform mobile app for iOS and Android. Features include workout logging, calorie & macro tracking, real-time sync with backend REST APIs, and push notifications for daily reminders.',
     status: 'open',
-    isDemo: true,
+    isDemo: false,
     milestones: [
       {
         title: 'Authentication & UI Design Implementation',
@@ -117,7 +117,7 @@ const DEMO_GIGS = [
     skillsRequired: ['Figma', 'UI/UX Design', 'Design Systems', 'Wireframing', 'Prototyping'],
     description: 'Need an experienced UI/UX designer to craft an ultra-clean, modern web analytics dashboard for financial portfolios. Project covers user persona research, dark/light theme tokens, 12 core dashboard views, interactive Figma prototype, and component library handoff for React developers.',
     status: 'open',
-    isDemo: true,
+    isDemo: false,
     milestones: [
       {
         title: 'Information architecture & low-fidelity wireframes',
@@ -166,7 +166,7 @@ const DEMO_GIGS = [
     skillsRequired: ['Python', 'scikit-learn', 'FastAPI', 'Pandas', 'OpenAI/Gemini API'],
     description: 'Build an end-to-end data pipeline that ingests customer subscription logs, trains an XGBoost classifier for churn risk, and deploys a FastAPI inference endpoint. In addition, connect an automated FAQ assistant using LLM embeddings for customer support escalation.',
     status: 'open',
-    isDemo: true,
+    isDemo: false,
     milestones: [
       {
         title: 'EDA, Feature Engineering & ML Model Training',
@@ -215,7 +215,7 @@ const DEMO_GIGS = [
     skillsRequired: ['Node.js', 'Express', 'MongoDB', 'Redis', 'JWT', 'REST API'],
     description: 'We require a senior backend engineer to architect a modular RESTful microservice handling high-volume order transactions. Scope includes multi-tenant JWT auth, rate limiting, distributed Redis caching for catalog reads, and database indexing for sub-50ms latency.',
     status: 'open',
-    isDemo: true,
+    isDemo: false,
     milestones: [
       {
         title: 'Database schema optimization & core CRUD controllers',
@@ -264,7 +264,7 @@ const DEMO_GIGS = [
     skillsRequired: ['AWS', 'Kubernetes', 'Docker', 'Terraform', 'GitHub Actions'],
     description: 'Set up a production-ready AWS environment using Terraform for infrastructure as code. Requirements include an Elastic Kubernetes Service (EKS) cluster, VPC with public/private subnets, automated zero-downtime rolling deployments via GitHub Actions, and Prometheus/Grafana monitoring alerts.',
     status: 'open',
-    isDemo: true,
+    isDemo: false,
     milestones: [
       {
         title: 'Terraform IaC provisioning',
@@ -313,7 +313,7 @@ const DEMO_GIGS = [
     skillsRequired: ['Technical Writing', 'Markdown', 'API Documentation', 'Postman', 'SDK Guides'],
     description: 'Looking for a technical writer who understands software development to create crystal-clear documentation for our B2B logistics API. Deliverables include a getting-started guide, authentication walkthrough, code samples in cURL/Node.js/Python, and error code troubleshooting tables.',
     status: 'open',
-    isDemo: true,
+    isDemo: false,
     milestones: [
       {
         title: 'API overview & Quickstart Guide',
@@ -351,7 +351,7 @@ const DEMO_GIGS = [
     skillsRequired: ['Adobe Illustrator', 'Photoshop', 'Brand Identity', 'Vector Graphics', 'Typography'],
     description: 'Create a distinctive, futuristic brand identity for an AI-powered SaaS product. Includes primary and secondary vector logos, color palette, typography guidelines, presentation deck template, and social media banner templates for LinkedIn, Twitter, and YouTube.',
     status: 'open',
-    isDemo: true,
+    isDemo: false,
     milestones: [
       {
         title: 'Concept proposals & moodboards',
@@ -400,7 +400,7 @@ const DEMO_GIGS = [
     skillsRequired: ['React', 'Tailwind CSS', 'Recharts', 'Lucide Icons', 'REST API'],
     description: 'Build an interactive, modular web dashboard for monitoring live fleet tracking metrics. Features include responsive KPI summary cards, interactive charts using Recharts, live data polling, export-to-CSV functionality, and clean mobile responsiveness.',
     status: 'open',
-    isDemo: true,
+    isDemo: false,
     milestones: [
       {
         title: 'Layout shell & responsive KPI metric cards',
@@ -450,17 +450,7 @@ async function seed() {
     await mongoose.connect(mongoUri);
     console.log('Connected to MongoDB');
 
-    // 1. Delete junk test gigs (timestamp suffixes or known test titles)
-    const deleteRes = await Gig.deleteMany({
-      $or: [
-        { title: { $regex: /\d{5,}/ } },
-        { title: { $regex: /(Security Audit|Project to Protect|Confidential Draft|Automated Test|Automated E-Commerce|NextGen Web|Fullstack Microservices Development)/i } },
-        { isDemo: true }
-      ]
-    });
-    console.log(`Cleaned up ${deleteRes.deletedCount} junk/previous test gigs.`);
-
-    // 2. Find or create a professional demo client
+    // 1. Find or create a professional demo client
     let client = await User.findOne({ email: 'client@gigora.in' });
     if (!client) {
       client = await User.create({
@@ -476,6 +466,17 @@ async function seed() {
       });
       console.log('Created official demo client user: Aura Systems India');
     }
+
+    // 2. Delete junk test gigs and previous demo client gigs
+    const deleteRes = await Gig.deleteMany({
+      $or: [
+        { title: { $regex: /\d{5,}/ } },
+        { title: { $regex: /(Security Audit|Project to Protect|Confidential Draft|Automated Test|Automated E-Commerce|NextGen Web|Fullstack Microservices Development)/i } },
+        { isDemo: true },
+        { client: client._id }
+      ]
+    });
+    console.log(`Cleaned up ${deleteRes.deletedCount} junk/previous test gigs.`);
 
     // 3. Insert realistic demo gigs
     const gigsToInsert = DEMO_GIGS.map((g) => ({

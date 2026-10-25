@@ -71,13 +71,6 @@ router.post('/', createProposalLimiter, protect, authorize('freelancer', 'admin'
             return res.status(400).json({ success: false, message: 'This gig is no longer accepting proposals' });
         }
 
-        if (gig.isDemo || gig.isSample) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'This is a Demo / Sample listing for preview only. Real proposals cannot be submitted on demo projects.' 
-            });
-        }
-
         // Validate bid amount
         const parsedBid = Number(bidAmount);
         if (isNaN(parsedBid) || parsedBid <= 0) {

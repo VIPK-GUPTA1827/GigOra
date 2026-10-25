@@ -172,9 +172,8 @@ router.post('/register', authLimiter, async (req, res) => {
             emailVerificationExpire: verificationExpire
         });
 
-        // Generate token and attach secure HTTP-only cookie
+        // Generate token for client response (do not set session cookie until verified)
         const token = generateToken(user._id);
-        res.cookie('token', token, getCookieOptions());
 
         // Send verification email via Nodemailer
         const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
