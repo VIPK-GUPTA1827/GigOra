@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Search, MapPin, Clock, Briefcase, Loader2 } from 'lucide-react';
+import { Search, ArrowLeft, MapPin, Clock, Briefcase, Loader2 } from 'lucide-react';
 import api from '../utils/api';
 
 const CATEGORIES = [
@@ -88,7 +88,18 @@ export default function Marketplace() {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <header className="border-b border-slate-200 bg-white">
+      <header className="border-b border-stone-200/80 bg-white/90 backdrop-blur-md sticky top-0 z-50 py-4 px-6 sm:px-12 flex items-center justify-between">
+        <Link to="/" className="flex items-center gap-2 text-sm font-bold text-[#030B3D] hover:text-[#593CFF] transition-colors">
+          <ArrowLeft className="h-4 w-4" />
+          <span>Back to GigOra</span>
+        </Link>
+        <div className="flex items-center gap-2">
+          <div className="h-7 w-7 rounded-full bg-[#030B3D] text-white flex items-center justify-center font-bold text-xs">G</div>
+          <span className="font-display font-black text-lg text-[#030B3D]">GigOra</span>
+        </div>
+      </header>
+
+      <div className="border-b border-slate-200 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
           <h1 className="text-2xl font-bold text-slate-900">Find your next project</h1>
           <p className="text-sm text-slate-500 mt-1">Browse open projects posted by clients on GigOra.</p>
@@ -151,7 +162,7 @@ export default function Marketplace() {
             ))}
           </div>
         </div>
-      </header>
+      </div>
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
         {error && (
