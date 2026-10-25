@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ArrowLeft, Info, Shield, Lock, FileCode, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, Shield, Lock, FileCode, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function Privacy() {
