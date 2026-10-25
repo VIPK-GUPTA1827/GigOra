@@ -966,7 +966,7 @@ export default function Home() {
                 <h4 className="font-bold text-white mb-3.5 uppercase tracking-wider text-[11px]">Solutions</h4>
                 <ul className="space-y-2.5 font-medium">
                   <li><Link to="/marketplace?category=Web%20Development" className="text-slate-300 hover:text-white transition-colors">Web &amp; Mobile Apps</Link></li>
-                  <li><Link to="/marketplace?category=AI%20%26%20Machine%20Learning" className="text-slate-300 hover:text-white transition-colors">AI &amp; Automation</Link></li>
+                  <li><Link to="/marketplace?category=Data%20Science%20%26%20AI" className="text-slate-300 hover:text-white transition-colors">AI &amp; Automation</Link></li>
                   <li><Link to="/marketplace?category=UI%2FUX%20Design" className="text-slate-300 hover:text-white transition-colors">Product Design UI/UX</Link></li>
                   <li><Link to="/marketplace?category=DevOps%20%26%20Cloud" className="text-slate-300 hover:text-white transition-colors">Cloud &amp; DevOps</Link></li>
                 </ul>
