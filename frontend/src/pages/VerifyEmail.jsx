@@ -3,6 +3,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { CheckCircle2, AlertCircle, Loader2, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
+const BASE = import.meta.env.VITE_API_URL || '';
+
 export default function VerifyEmail() {
   const { token } = useParams();
   const navigate = useNavigate();
@@ -29,7 +31,7 @@ export default function VerifyEmail() {
       }
 
       try {
-        const res = await fetch(`/api/auth/verify-email/${token}`, {
+        const res = await fetch(`${BASE}/api/auth/verify-email/${token}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include'

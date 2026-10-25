@@ -53,6 +53,8 @@ const CATEGORIES = [
   'Graphic Design'
 ];
 
+const BASE = import.meta.env.VITE_API_URL || '';
+
 export default function ClientDashboard() {
   const { user, logout, switchRole, loading: authLoading, updateUser } = useAuth();
   const navigate = useNavigate();
@@ -118,7 +120,7 @@ export default function ClientDashboard() {
     setLoadingData(true);
     try {
       // 1. Fetch Client's Gigs
-      const gigsRes = await fetch('/api/gigs/client/my-gigs', {
+      const gigsRes = await fetch(`${BASE}/api/gigs/client/my-gigs`, {
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include'
       });
@@ -128,7 +130,7 @@ export default function ClientDashboard() {
       }
 
       // 2. Fetch All Proposals Received for Client's Gigs
-      const propRes = await fetch('/api/proposals/client/all-proposals', {
+      const propRes = await fetch(`${BASE}/api/proposals/client/all-proposals`, {
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include'
       });
@@ -189,7 +191,7 @@ export default function ClientDashboard() {
         }
       };
 
-      const res = await fetch('/api/auth/profile', {
+      const res = await fetch(`${BASE}/api/auth/profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -325,7 +327,7 @@ export default function ClientDashboard() {
 
     try {
       setIsSubmittingGig(true);
-      const url = editingGigId ? `/api/gigs/${editingGigId}` : '/api/gigs';
+      const url = editingGigId ? `${BASE}/api/gigs/${editingGigId}` : `${BASE}/api/gigs`;
       const method = editingGigId ? 'PUT' : 'POST';
 
       const res = await fetch(url, {
@@ -374,7 +376,7 @@ export default function ClientDashboard() {
   const handleQuickPublish = async (gigId) => {
     try {
       setActionLoadingId(gigId);
-      const res = await fetch(`/api/gigs/${gigId}`, {
+      const res = await fetch(`${BASE}/api/gigs/${gigId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -395,7 +397,7 @@ export default function ClientDashboard() {
   const handleSetStatus = async (gigId, newStatus) => {
     try {
       setActionLoadingId(gigId);
-      const res = await fetch(`/api/gigs/${gigId}`, {
+      const res = await fetch(`${BASE}/api/gigs/${gigId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -429,7 +431,7 @@ export default function ClientDashboard() {
     if (!window.confirm('Are you sure you want to delete this project listing?')) return;
     try {
       setActionLoadingId(gigId);
-      const res = await fetch(`/api/gigs/${gigId}`, {
+      const res = await fetch(`${BASE}/api/gigs/${gigId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -452,7 +454,7 @@ export default function ClientDashboard() {
     setSuccessMsg('');
     try {
       setActionLoadingId(proposalId);
-      const res = await fetch(`/api/proposals/${proposalId}`, {
+      const res = await fetch(`${BASE}/api/proposals/${proposalId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -482,7 +484,7 @@ export default function ClientDashboard() {
     setErrorMsg('');
     setSuccessMsg('');
     try {
-      const res = await fetch(`/api/gigs/${gigId}/milestones/${milestoneId}/approve`, {
+      const res = await fetch(`${BASE}/api/gigs/${gigId}/milestones/${milestoneId}/approve`, {
         method: 'PUT',
         credentials: 'include'
       });
@@ -519,7 +521,7 @@ export default function ClientDashboard() {
     setRevisionError('');
     try {
       const { gigId, milestone } = selectedMilestoneForRevision;
-      const res = await fetch(`/api/gigs/${gigId}/milestones/${milestone._id}/revision`, {
+      const res = await fetch(`${BASE}/api/gigs/${gigId}/milestones/${milestone._id}/revision`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

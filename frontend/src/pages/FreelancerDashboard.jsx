@@ -40,6 +40,8 @@ const getGreeting = () => {
 
 const CURRENT_YEAR = new Date().getFullYear();
 
+const BASE = import.meta.env.VITE_API_URL || '';
+
 export default function FreelancerDashboard() {
   const { user, logout, switchRole, loading, updateUser } = useAuth();
   const navigate = useNavigate();
@@ -100,7 +102,7 @@ export default function FreelancerDashboard() {
   // Helper to re-fetch contracts after milestone submission
   const fetchContracts = async () => {
     try {
-      const res = await fetch('/api/gigs/freelancer/my-contracts', { credentials: 'include' });
+      const res = await fetch(`${BASE}/api/gigs/freelancer/my-contracts`, { credentials: 'include' });
       const data = await res.json();
       if (data.success) {
         setContracts(data.data || []);
@@ -117,7 +119,7 @@ export default function FreelancerDashboard() {
       // Fetch rule-matched gigs from backend
       let loadedGigs = [];
       try {
-        const matchedRes = await fetch('/api/freelancer/matched-gigs', { credentials: 'include' });
+        const matchedRes = await fetch(`${BASE}/api/freelancer/matched-gigs`, { credentials: 'include' });
         const matchedData = await matchedRes.json();
         if (matchedData.success) {
           loadedGigs = matchedData.allGigs || matchedData.matchedGigs || [];
@@ -127,7 +129,7 @@ export default function FreelancerDashboard() {
       }
 
       if (loadedGigs.length === 0) {
-        const gigsRes = await fetch('/api/gigs?status=open');
+        const gigsRes = await fetch(`${BASE}/api/gigs?status=open`);
         const gigsData = await gigsRes.json();
         if (gigsData.success) {
           loadedGigs = gigsData.data || [];
@@ -136,7 +138,7 @@ export default function FreelancerDashboard() {
 
       // Also merge closed gigs so freelancers can inspect past/archive projects under Closed Projects tab
       try {
-        const allRes = await fetch('/api/gigs?status=all');
+        const allRes = await fetch(`${BASE}/api/gigs?status=all`);
         const allData = await allRes.json();
         if (allData.success && Array.isArray(allData.data)) {
           const openIds = new Set(loadedGigs.map(g => String(g._id)));
@@ -150,7 +152,7 @@ export default function FreelancerDashboard() {
       setGigs(loadedGigs);
 
       // Fetch My Proposals
-      const propRes = await fetch('/api/proposals/my-proposals', { credentials: 'include' });
+      const propRes = await fetch(`${BASE}/api/proposals/my-proposals`, { credentials: 'include' });
       const propData = await propRes.json();
       if (propData.success) {
         setProposals(propData.data || []);
@@ -158,7 +160,7 @@ export default function FreelancerDashboard() {
 
       // Fetch My Active & Completed Contracts (Step 6 Work Tracking)
       try {
-        const bookRes = await fetch('/api/gigs/freelancer/my-contracts', { credentials: 'include' });
+        const bookRes = await fetch(`${BASE}/api/gigs/freelancer/my-contracts`, { credentials: 'include' });
         const bookData = await bookRes.json();
         if (bookData.success) {
           setContracts(bookData.data || []);
@@ -261,7 +263,7 @@ export default function FreelancerDashboard() {
         .map(s => s.trim())
         .filter(Boolean);
 
-      const res = await fetch('/api/auth/profile', {
+      const res = await fetch(`${BASE}/api/auth/profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -307,7 +309,7 @@ export default function FreelancerDashboard() {
         .map(t => t.trim())
         .filter(Boolean);
 
-      const res = await fetch('/api/auth/portfolio', {
+      const res = await fetch(`${BASE}/api/auth/portfolio`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -399,7 +401,7 @@ export default function FreelancerDashboard() {
     }
 
     try {
-      const res = await fetch('/api/proposals', {
+      const res = await fetch(`${BASE}/api/proposals`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -433,7 +435,7 @@ export default function FreelancerDashboard() {
   const handleWithdrawProposal = async (proposalId) => {
     if (!window.confirm('Are you sure you want to withdraw this proposal?')) return;
     try {
-      const res = await fetch(`/api/proposals/${proposalId}`, {
+      const res = await fetch(`${BASE}/api/proposals/${proposalId}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -469,7 +471,7 @@ export default function FreelancerDashboard() {
     setDeliverableError('');
     try {
       const { gigId, milestone } = selectedContractMilestone;
-      const res = await fetch(`/api/gigs/${gigId}/milestones/${milestone._id}/submit`, {
+      const res = await fetch(`${BASE}/api/gigs/${gigId}/milestones/${milestone._id}/submit`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',

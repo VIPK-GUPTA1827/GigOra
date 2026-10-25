@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Mail, CheckCircle2, AlertCircle, Loader2, ArrowLeft } from 'lucide-react';
 
+const BASE = import.meta.env.VITE_API_URL || '';
+
 export default function CheckEmail() {
   const [searchParams] = useSearchParams();
   const email = searchParams.get('email') || '';
@@ -26,7 +28,7 @@ export default function CheckEmail() {
     setErrorMsg('');
 
     try {
-      const res = await fetch('/api/auth/resend-verification', {
+      const res = await fetch(`${BASE}/api/auth/resend-verification`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })

@@ -36,6 +36,8 @@ const POPULAR_SKILLS = [
   'UI/UX Design', 'SQL', 'Docker', 'Machine Learning'
 ];
 
+const BASE = import.meta.env.VITE_API_URL || '';
+
 const FreelancerSetupWizard = () => {
   const { user, loading, updateUser } = useAuth();
   const navigate = useNavigate();
@@ -219,7 +221,7 @@ const FreelancerSetupWizard = () => {
         isProfileComplete: formData.skills.length > 0 && formData.bio.trim().length >= 10
       };
 
-      const res = await fetch('/api/freelancer/profile', {
+      const res = await fetch(`${BASE}/api/freelancer/profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -234,7 +236,7 @@ const FreelancerSetupWizard = () => {
       // 2. If portfolio data provided, submit portfolio
       if (!isSkippingPortfolio && formData.portfolioTitle.trim()) {
         try {
-          await fetch('/api/auth/portfolio', {
+          await fetch(`${BASE}/api/auth/portfolio`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',

@@ -3,6 +3,8 @@ import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Lock, Eye, EyeOff, AlertCircle, CheckCircle2, Loader2, ArrowLeft, RefreshCw } from 'lucide-react';
 import PasswordStrengthMeter, { evaluatePassword } from '../components/PasswordStrengthMeter';
 
+const BASE = import.meta.env.VITE_API_URL || '';
+
 export default function ResetPassword() {
   const { token } = useParams();
   const navigate = useNavigate();
@@ -40,7 +42,7 @@ export default function ResetPassword() {
     setSubmitting(true);
 
     try {
-      const res = await fetch(`/api/auth/reset-password/${token}`, {
+      const res = await fetch(`${BASE}/api/auth/reset-password/${token}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password, confirmPassword })

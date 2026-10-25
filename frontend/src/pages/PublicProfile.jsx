@@ -44,6 +44,8 @@ const TwitterIcon = ({ className = "w-4 h-4" }) => (
   </svg>
 );
 
+const BASE = import.meta.env.VITE_API_URL || '';
+
 export default function PublicProfile() {
   const { id } = useParams();
   const { user: currentUser } = useAuth();
@@ -69,7 +71,7 @@ export default function PublicProfile() {
           endpoint = `/api/auth/user/${id}`;
         }
 
-        const res = await fetch(endpoint, {
+        const res = await fetch(`${BASE}${endpoint}`, {
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include'
         });
