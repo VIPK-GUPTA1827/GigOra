@@ -3,6 +3,7 @@ const cors = require('cors');
 const http = require('http');
 const socketio = require('socket.io');
 const cookieParser = require('cookie-parser');
+const helmet = require('helmet');
 require('dotenv').config();
 
 const connectDB = require('./config/db');
@@ -31,6 +32,7 @@ const PORT = process.env.PORT || 5000;
 connectDB();
 
 // Middleware
+app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use(cors({
     origin: [clientUrl, 'http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173'],
     credentials: true
