@@ -25,16 +25,16 @@ export default function Terms() {
           <h1 className="text-3xl sm:text-5xl font-display font-black text-[#030B3D] tracking-tight mt-3 mb-2">
             Terms of Service
           </h1>
-          <p className="text-stone-500 text-sm">Preview Draft · Subject to revision prior to service launch</p>
+          <p className="text-stone-500 text-sm">Preview Terms · Last updated October 2026</p>
         </div>
 
-        {/* Mandatory Preview Draft Note */}
+        {/* Live Preview Notice */}
         <div className="p-4 sm:p-5 rounded-2xl bg-amber-50 border border-amber-300/80 text-amber-950 text-xs sm:text-sm leading-relaxed mb-8 text-left flex items-start gap-3">
           <AlertTriangle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
           <div>
-            <span className="font-bold block text-amber-950 mb-1">Preview Draft Notice</span>
+            <span className="font-bold block text-amber-950 mb-1">Live Preview Notice</span>
             <p className="text-amber-900/90 leading-relaxed font-medium">
-              Preview draft — GigOra is still in development. These terms are not final and may change before the service launches. Please don’t rely on any payment, escrow, payout, dispute-resolution, or tax features being available yet.
+              GigOra is running as a live preview. Marketplace features are functional. Payments run in demo mode only — no real money is held, transferred, or processed.
             </p>
           </div>
         </div>
