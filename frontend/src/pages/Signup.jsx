@@ -75,8 +75,12 @@ export default function Signup() {
         role: role
       });
 
-      // Redirect to Check Email verification screen
-      navigate(`/check-email?email=${encodeURIComponent(user.email || formData.email.trim())}`);
+      // Seamless instant redirect to dashboard based on role
+      if (user?.role === 'client' || role === 'client') {
+        navigate('/client/dashboard');
+      } else {
+        navigate('/freelancer/dashboard');
+      }
     } catch (err) {
       setError(err.message || 'Registration failed. Please try again.');
     } finally {

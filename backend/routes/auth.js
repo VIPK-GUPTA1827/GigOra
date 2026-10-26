@@ -160,86 +160,57 @@ router.post('/register', authLimiter, async (req, res) => {
             .digest('hex');
         const verificationExpire = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
 
-        // Create user in unverified state
+        // Create user (auto-verified for seamless preview experience)
         const user = await User.create({
             name: displayName,
             username: displayUsername,
             email: email.toLowerCase().trim(),
             password,
             role: assignedRole,
-            isEmailVerified: false,
+            isEmailVerified: true,
             emailVerificationToken: hashedVerificationToken,
             emailVerificationExpire: verificationExpire
         });
 
-        // Generate token for client response (do not set session cookie until verified)
+        // Generate token and attach secure HTTP-only cookie
         const token = generateToken(user._id);
+        res.cookie('token', token, getCookieOptions());
 
-        // Send verification email via Nodemailer
+        // Background non-blocking email notification (never blocks or delays HTTP response)
         const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
         const verifyUrl = `${clientUrl}/verify-email/${rawVerificationToken}`;
-        let etherealUrl = null;
 
-        try {
-            const transporter = await getTransporter();
-            if (transporter) {
-                const info = await transporter.sendMail({
-                    from: getSenderEmail(),
-                    to: user.email,
-                    subject: 'Verify your email address - GigOra',
-                    text: `Welcome to GigOra! Please verify your email by opening: ${verifyUrl}`,
-                    html: `
-                        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; border: 1px solid #E2E8F0; border-radius: 16px; background-color: #FAF8F5;">
-                            <div style="display: flex; align-items: center; margin-bottom: 24px;">
-                                <div style="background-color: #030B3D; color: white; width: 36px; height: 36px; border-radius: 8px; font-weight: 900; font-size: 18px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 36px;">G</div>
-                                <span style="margin-left: 10px; font-size: 20px; font-weight: 800; color: #030B3D;">GigOra</span>
-                            </div>
-                            <h2 style="color: #030B3D; margin-top: 0; font-size: 22px;">Confirm your email address</h2>
-                            <p style="color: #475569; font-size: 14px; line-height: 1.6;">Hi ${displayName}, thanks for signing up for GigOra. Please verify your email to activate your account and start collaborating:</p>
-                            <div style="margin: 28px 0;">
-                                <a href="${verifyUrl}" style="background-color: #593CFF; color: #ffffff; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block;">Verify Email Address</a>
-                            </div>
-                            <p style="color: #64748B; font-size: 12px; line-height: 1.5;">This link will expire in 24 hours.<br />Or copy and paste this link in your browser: <a href="${verifyUrl}" style="color: #593CFF;">${verifyUrl}</a></p>
-                        </div>
-                    `
-                });
-
-                etherealUrl = nodemailer.getTestMessageUrl(info);
-                await EmailLog.create({
-                    recipient: user.email.toLowerCase(),
-                    userId: user._id,
-                    subject: 'Verify your email address - GigOra',
-                    type: 'verification',
-                    status: 'sent',
-                    messageId: info.messageId || ''
-                });
-
-                console.log('----------------------------------------------------');
-                console.log('✉️ VERIFICATION EMAIL SENT TO:', user.email);
-                if (etherealUrl) {
-                    console.log('🔗 ETHEREAL INBOX PREVIEW:', etherealUrl);
-                }
-                console.log('----------------------------------------------------');
-            }
-        } catch (mailErr) {
-            console.error('Mail dispatch error:', mailErr.message);
+        (async () => {
             try {
-                await EmailLog.create({
-                    recipient: user.email.toLowerCase(),
-                    userId: user._id,
-                    subject: 'Verify your email address - GigOra',
-                    type: 'verification',
-                    status: 'failed',
-                    error: mailErr.message
-                });
-            } catch (e) {}
-        }
+                if (process.env.SMTP_HOST && process.env.SMTP_USER) {
+                    const transporter = await getTransporter();
+                    if (transporter) {
+                        await transporter.sendMail({
+                            from: getSenderEmail(),
+                            to: user.email,
+                            subject: 'Welcome to GigOra',
+                            text: `Welcome to GigOra! Your account is active. Open ${clientUrl} to get started.`,
+                            html: `
+                                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; border: 1px solid #E2E8F0; border-radius: 16px; background-color: #FAF8F5;">
+                                    <h2 style="color: #030B3D; margin-top: 0; font-size: 22px;">Welcome to GigOra</h2>
+                                    <p style="color: #475569; font-size: 14px; line-height: 1.6;">Hi ${displayName}, your account is active and ready to use!</p>
+                                    <div style="margin: 28px 0;">
+                                        <a href="${clientUrl}" style="background-color: #593CFF; color: #ffffff; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block;">Go to Workspace</a>
+                                    </div>
+                                </div>
+                            `
+                        });
+                    }
+                }
+            } catch (mailErr) {
+                console.warn('Background mail dispatch warning:', mailErr.message);
+            }
+        })();
 
         return res.status(201).json({
             success: true,
-            message: 'Registration successful! Verification email sent.',
+            message: 'Registration successful! Welcome to GigOra.',
             token,
-            etherealUrl,
             user: formatUserResponse(user)
         });
     } catch (error) {

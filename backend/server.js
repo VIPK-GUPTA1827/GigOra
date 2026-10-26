@@ -75,7 +75,15 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
   setHeaders: (res) => res.setHeader('X-Content-Type-Options', 'nosniff')
 }));
 
-// Health Check Route
+// Root & Health Check Routes (compatible with UptimeRobot & Render pings)
+app.get('/', (req, res) => {
+    res.status(200).json({
+        status: 'ok',
+        message: 'GigOra Backend is running successfully.',
+        timestamp: new Date()
+    });
+});
+
 app.get('/api/health', (req, res) => {
     res.status(200).json({
         status: 'ok',
