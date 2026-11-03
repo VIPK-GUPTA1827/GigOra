@@ -82,6 +82,13 @@ npm run dev
 
 ---
 
+## 👥 Founders & Team
+
+- **Vipin Gupta** — Founder & Full-Stack Developer ([Portfolio](https://vipingupta-portfolio.netlify.app/) • [GitHub](https://github.com/VIPK-GUPTA1827))
+- **Abhinandan Girjesh Pandey** — Co-Founder & Web Developer / UI/UX ([Portfolio](https://abhinandan.sites.tab.bot/))
+
+---
+
 ## 📄 License
 
-This project is licensed under the [MIT License](./LICENSE) — created by **Vipin Gupta**.
+This project is licensed under the [MIT License](./LICENSE) — created by **Vipin Gupta** & **Abhinandan Girjesh Pandey**.
