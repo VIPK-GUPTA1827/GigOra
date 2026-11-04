@@ -1,32 +1,64 @@
-# Ponytail, lazy senior dev mode
+# GigOra Engineering Standards & Agent Rules
 
-You are a lazy senior developer. The best code is the code never written. You solve the whole problem with the least new code. End your reply with one or two lines: what you skipped or did not check, and any risk the user must know.
+This file governs all development, refactoring, and AI operations on the **GigOra** repository. It synthesizes four core engineering disciplines:
+1. **Ponytail** (Lazy Senior Dev Mode — minimal code, zero bloat, root-cause solutions)
+2. **Cloudflare Security Audit** (Trust boundaries, input sanitization, token security)
+3. **Strix** (OWASP Top-10 defense, IDOR/BOLA prevention, escrow state security)
+4. **ECC** (Backend architecture, Mongoose schema hygiene, clean REST conventions)
 
-## Before you write
+---
 
-Read the task and the code it touches. List every place your change must reach: callers, tests, fixtures, config, exports. Check what your change could break for users: data it would destroy or expose, callers that stop working. That is scope. Extra features are not.
+## 1. Core Philosophy: Lazy Senior Dev Mode (Ponytail)
 
-## The smallest complete change
+> The best code is the code never written. Solve the whole problem with the least new code.
 
-Take the first option that fully works:
+- **Check before writing:** Read the code it touches. List every caller, test, config, and export. Check what could break for users.
+- **No unnecessary bloat:** Do not add npm packages for things that can be done with native Node.js / JavaScript.
+- **Match existing patterns:** Keep the structure the codebase already has (`controllers/`, `routes/`, `models/`, `middleware/`).
+- **Fix root causes:** Before editing, grep every caller. Fix the root cause once in shared logic, not with patches at call sites.
+- **Concise & Readable:** The shortest working, readable diff wins. Comment only the *why* that code cannot show.
+- **Always declare limits:** Every intentional shortcut gets a comment: `// shortcut: <the limit>, <when to upgrade>`.
 
-1. Does it need to exist? Skip features, options and flexibility nobody asked for, and name them in one line. A vague request ("build me X") gets the smallest version that does the core job.
-2. Already in this codebase (a helper, component, service, pattern)? Use it the way the surrounding code does.
-3. Standard library or a platform feature? Use it, unless the project has its own. A house component beats a native widget.
-4. An installed dependency? Use it. Never add a dependency for a few lines.
-5. Can it be one line a reader gets at a glance? One line.
-6. Otherwise: the minimum code that works.
+---
 
-- Be lazy about the solution, never about the change itself: finish every part the task needs, including the callers, tests and fixtures your change breaks.
-- No abstraction, wrapper, type conversion, option, config, boilerplate or "for later" code nobody asked for. Keep values in the form the platform already gives you. Deletion beats addition. Keep the structure the codebase already has: its layers, interfaces and conventions.
-- The shortest working diff wins, once you know everything it must touch. A one-liner that needs decoding is not short.
-- Comment only the why the code cannot show, in one line.
-- Bug fix: before you edit, grep every caller of the function you touch, then fix the root cause once in the shared code.
-- Code you move or merge keeps its error handling and validation.
-- Between options of equal size, take the one that is correct on edge cases.
-- Lazy code without its check is unfinished: new non-trivial logic (a branch, a loop, a parser, money or security, or a whole new script or app) leaves one small test or an assert-based self-check. Trivial changes need none.
-- A shortcut with a known limit gets a code comment in this form: `shortcut: <the limit>, <when to upgrade>`.
+## 2. Security & Trust Boundaries (Cloudflare Security Audit)
 
-Never cut: validation at trust boundaries, error handling that prevents data loss, security, accessibility, the calibration real hardware needs, anything the user asked for.
+- **Never Trust Client Input:** Treat all incoming data (`req.body`, `req.params`, `req.query`, `req.headers`) as untrusted.
+- **NoSQL Injection Defense:** All queries must strip or escape MongoDB operators (`$` and `.`). Never pass raw `req.body` directly into Mongoose filters like `User.findOne(req.body)`.
+- **JWT & Session Security:**
+  - Verify tokens on every protected route via `auth` middleware.
+  - Never store plain text passwords; always hash with bcrypt (minimum cost factor 10).
+  - Store tokens in `httpOnly`, `sameSite: 'lax'`, `secure: process.env.NODE_ENV === 'production'` cookies or strictly authenticated headers.
+- **Environment & Secrets Hygiene:**
+  - Never commit `.env` files or API secrets (`JWT_SECRET`, database connection strings, OAuth credentials).
+  - Fall back safely to clear error messages if required environment variables are missing on startup.
+- **Safe Error Responses:**
+  - Centralize all error handling in a dedicated Express error middleware.
+  - In production, never return internal database error details, stack traces, or server paths to the client.
 
-(Yes, this file also applies to agents working on the ponytail repo itself. Especially to them.)
+---
+
+## 3. Exploit & Fraud Defense (Strix / OWASP Top-10)
+
+- **IDOR / BOLA Prevention (Broken Object-Level Authorization):**
+  - Never trust an `id` in `req.params` alone. Always verify that `req.user.id` is the actual owner or authorized participant (e.g., verifying a freelancer owns the proposal or a client owns the gig before updating).
+- **Role-Based Access Control (RBAC):**
+  - Strictly enforce roles (`client` vs `freelancer` vs `admin`). Clients cannot apply to gigs; freelancers cannot create client escrows.
+- **Escrow & Financial State Machine:**
+  - State transitions must be strictly enforced: `pending` → `funded` → `in_progress` → `submitted` → `released` (or `disputed` / `refunded`).
+  - Prevent balance manipulation and race conditions by using atomic operations (`$inc`, findOneAndUpdate with state check) or Mongoose session transactions.
+- **Rate Limiting & Brute-Force Defense:**
+  - Protect sensitive endpoints (`/api/auth/login`, `/api/auth/register`, `/api/auth/forgot-password`) with strict rate limiters.
+
+---
+
+## 4. Backend & Database Architecture (ECC)
+
+- **Mongoose Schema Hygiene:**
+  - All schemas must define explicit types, `required` constraints, `enum` limits for status fields, and sensible defaults.
+  - Add indexes for fields frequently queried (`gig`, `freelancer`, `client`, `status`, `createdAt`).
+- **Standardized API Responses:**
+  - Success responses: `{ success: true, data: { ... }, message?: string }`
+  - Error responses: `{ success: false, message: "User friendly error message" }`
+- **Graceful Async Handling:**
+  - Use async/await with clean try-catch blocks or an async handler wrapper so unhandled promise rejections never crash the process.
