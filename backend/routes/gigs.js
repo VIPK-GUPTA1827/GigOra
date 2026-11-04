@@ -132,7 +132,8 @@ router.post('/', createGigLimiter, protect, authorize('client', 'admin'), requir
                         'new_gig',
                         'New Gig Posted!',
                         `A new gig "${title}" has been posted in category "${category}" with a budget of ₹${Number(budget).toLocaleString('en-IN')}.`,
-                        gig._id
+                        gig._id,
+                        { email: false }
                     );
                 });
             } catch (notifErr) {
@@ -520,7 +521,8 @@ router.put('/:id', protect, async (req, res) => {
                         'new_gig',
                         'New Gig Published!',
                         `A newly published gig "${gig.title}" is now open for proposals with a budget of ₹${Number(gig.budget).toLocaleString('en-IN')}.`,
-                        gig._id
+                        gig._id,
+                        { email: false }
                     );
                 });
             } catch (notifErr) {

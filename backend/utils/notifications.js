@@ -3,8 +3,9 @@ const EmailLog = require('../models/EmailLog');
 const User = require('../models/User');
 const nodemailer = require('nodemailer');
 const { getTransporter } = require('./mailer');
+const escapeHtml = require('./escapeHtml');
 
-const sendNotification = async (app, recipientId, senderId, type, title, message, referenceId) => {
+const sendNotification = async (app, recipientId, senderId, type, title, message, referenceId, opts = { email: true }) => {
   try {
     const recipient = await User.findById(recipientId);
     let destinationUrl = '';
@@ -45,12 +46,12 @@ const sendNotification = async (app, recipientId, senderId, type, title, message
       io.to(recipientId.toString()).emit('new_notification', populated);
     }
 
-    // 3. Send Nodemailer transactional email and record in EmailLog
-    let emailStatus = 'pending';
+    // 3. Send Nodemailer transactional email and record in EmailLog (if enabled)
+    let emailStatus = opts.email === false ? 'skipped' : 'pending';
     let emailError = '';
     let messageId = '';
 
-    if (recipient && recipient.email) {
+    if (opts.email !== false && recipient && recipient.email) {
       const transporter = await getTransporter();
 
       if (transporter) {
@@ -65,9 +66,9 @@ const sendNotification = async (app, recipientId, senderId, type, title, message
             text: `${message}\n\nCheck your GigOra workspace: ${actionLink}`,
             html: `<div style="font-family: sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e2e8f0; border-radius: 12px; color: #1e293b;">
                     <h2 style="color: #593CFF; margin-top: 0;">GigOra Updates</h2>
-                    <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">${title}</p>
-                    <p style="font-size: 13px; color: #475569; line-height: 1.6;">${message}</p>
-                    <a href="${actionLink}" target="_blank" style="display: inline-block; background: #593CFF; color: white; padding: 10px 20px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 12px; margin-top: 15px;">Open in GigOra</a>
+                    <p style="font-size: 14px; font-weight: bold; margin-bottom: 5px;">${escapeHtml(title)}</p>
+                    <p style="font-size: 13px; color: #475569; line-height: 1.6;">${escapeHtml(message)}</p>
+                    <a href="${escapeHtml(actionLink)}" target="_blank" style="display: inline-block; background: #593CFF; color: white; padding: 10px 20px; text-decoration: none; border-radius: 8px; font-weight: bold; font-size: 12px; margin-top: 15px;">Open in GigOra</a>
                    </div>`
           };
 

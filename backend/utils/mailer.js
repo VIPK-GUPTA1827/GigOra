@@ -15,6 +15,12 @@ let transporterPromise = (async () => {
         });
     }
 
+    // In production, never fallback to Ethereal test accounts
+    if (process.env.NODE_ENV === 'production') {
+        console.error('SMTP credentials missing in production. Mail delivery disabled.');
+        return null;
+    }
+
     // Fallback: Create a single Ethereal test account and cache it
     try {
         console.log('Generating Ethereal SMTP test account on boot...');
