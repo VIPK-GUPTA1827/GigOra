@@ -248,14 +248,15 @@ router.post('/register', authLimiter, async (req, res) => {
             .digest('hex');
         const verificationExpire = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
 
-        // Create user (auto-verified for seamless preview experience)
+        const autoVerify = process.env.AUTO_VERIFY_EMAIL === 'true';
+        // Create user
         const user = await User.create({
             name: displayName,
             username: displayUsername,
             email: email.toLowerCase().trim(),
             password,
             role: assignedRole,
-            isEmailVerified: true,
+            isEmailVerified: autoVerify,
             emailVerificationToken: hashedVerificationToken,
             emailVerificationExpire: verificationExpire
         });
@@ -273,21 +274,40 @@ router.post('/register', authLimiter, async (req, res) => {
                 if (process.env.SMTP_HOST && process.env.SMTP_USER) {
                     const transporter = await getTransporter();
                     if (transporter) {
-                        await transporter.sendMail({
-                            from: getSenderEmail(),
-                            to: user.email,
-                            subject: 'Welcome to GigOra',
-                            text: `Welcome to GigOra! Your account is active. Open ${clientUrl} to get started.`,
-                            html: `
-                                <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; border: 1px solid #E2E8F0; border-radius: 16px; background-color: #FAF8F5;">
-                                    <h2 style="color: #030B3D; margin-top: 0; font-size: 22px;">Welcome to GigOra</h2>
-                                    <p style="color: #475569; font-size: 14px; line-height: 1.6;">Hi ${displayName}, your account is active and ready to use!</p>
-                                    <div style="margin: 28px 0;">
-                                        <a href="${clientUrl}" style="background-color: #593CFF; color: #ffffff; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block;">Go to Workspace</a>
+                        if (!autoVerify) {
+                            await transporter.sendMail({
+                                from: getSenderEmail(),
+                                to: user.email,
+                                subject: 'Verify your GigOra email',
+                                text: `Please verify your email: ${verifyUrl}`,
+                                html: `
+                                    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; border: 1px solid #E2E8F0; border-radius: 16px; background-color: #FAF8F5;">
+                                        <h2 style="color: #030B3D; margin-top: 0; font-size: 22px;">Verify your GigOra Email</h2>
+                                        <p style="color: #475569; font-size: 14px; line-height: 1.6;">Hi ${displayName}, please verify your email address to unlock full platform features:</p>
+                                        <div style="margin: 28px 0;">
+                                            <a href="${verifyUrl}" style="background-color: #593CFF; color: #ffffff; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block;">Verify Email Address</a>
+                                        </div>
+                                        <p style="color: #94A3B8; font-size: 12px; margin-bottom: 0;">Link expires in 24 hours.</p>
                                     </div>
-                                </div>
-                            `
-                        });
+                                `
+                            });
+                        } else {
+                            await transporter.sendMail({
+                                from: getSenderEmail(),
+                                to: user.email,
+                                subject: 'Welcome to GigOra',
+                                text: `Welcome to GigOra! Your account is active. Open ${clientUrl} to get started.`,
+                                html: `
+                                    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; border: 1px solid #E2E8F0; border-radius: 16px; background-color: #FAF8F5;">
+                                        <h2 style="color: #030B3D; margin-top: 0; font-size: 22px;">Welcome to GigOra</h2>
+                                        <p style="color: #475569; font-size: 14px; line-height: 1.6;">Hi ${displayName}, your account is active and ready to use!</p>
+                                        <div style="margin: 28px 0;">
+                                            <a href="${clientUrl}" style="background-color: #593CFF; color: #ffffff; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block;">Go to Workspace</a>
+                                        </div>
+                                    </div>
+                                `
+                            });
+                        }
                     }
                 }
             } catch (mailErr) {
@@ -399,6 +419,12 @@ router.post('/google', async (req, res) => {
             return res.status(400).json({ success: false, message: 'Could not retrieve email from Google account' });
         }
 
+        if (!payload || !payload.email || !payload.email_verified) {
+            return res.status(401).json({
+                success: false,
+                message: 'Google email is not verified'
+            });
+        }
         const email = payload.email.toLowerCase().trim();
         const googleId = payload.sub;
         const name = payload.name || email.split('@')[0];
@@ -420,6 +446,9 @@ router.post('/google', async (req, res) => {
             }
 
             if (!user.googleId) {
+                if (!user.isEmailVerified && user.authProvider === 'local') {
+                    user.password = undefined; // prevent pre-registration takeover
+                }
                 user.googleId = googleId;
                 updated = true;
             }

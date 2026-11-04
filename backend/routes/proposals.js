@@ -6,6 +6,9 @@ const User = require('../models/User');
 const Escrow = require('../models/Escrow');
 const Transaction = require('../models/Transaction');
 const { protect, authorize, requireVerifiedEmail } = require('../middleware/auth');
+const AppError = require('../utils/AppError');
+const withTransaction = require('../utils/withTransaction');
+const { debit } = require('../utils/wallet');
 const { sendNotification } = require('../utils/notifications');
 
 const rateLimit = require('express-rate-limit');
@@ -237,171 +240,162 @@ router.get('/:id', protect, async (req, res) => {
 // @route   PUT /api/proposals/:id
 // @access  Private (Gig Owner/Client only with verified email)
 router.put('/:id', protect, authorize('client', 'admin'), requireVerifiedEmail, async (req, res) => {
-    try {
-        const { status } = req.body; // should be 'accepted' or 'rejected'
-
-        if (!['accepted', 'rejected'].includes(status)) {
-            return res.status(400).json({ success: false, message: 'Status must be accepted or rejected' });
-        }
-
-        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-            return res.status(400).json({ success: false, message: 'Invalid proposal ID format' });
-        }
-
-        const proposal = await Proposal.findById(req.params.id).populate('gig');
-        if (!proposal) {
-            return res.status(404).json({ success: false, message: 'Proposal not found' });
-        }
-
-        const gig = proposal.gig;
-
-        // Ensure the logged-in user is the client who posted the gig
-        if (gig.client.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
-            return res.status(403).json({ success: false, message: 'Not authorized to manage this proposal' });
-        }
-
-        // Proposal must be pending to accept or reject
-        if (proposal.status !== 'pending') {
-            return res.status(400).json({ 
-                success: false, 
-                message: `This proposal is already '${proposal.status}' and cannot be modified again` 
-            });
-        }
-
-        if (status === 'accepted') {
-            if (gig.status !== 'open') {
-                return res.status(400).json({ success: false, message: 'Gig is no longer open for active bidding' });
-            }
-
-            // Guard against duplicate contracts/escrows
-            const existingEscrow = await Escrow.findOne({ gig: gig._id, status: { $in: ['held', 'partially-released', 'released'] } });
-            if (existingEscrow) {
-                return res.status(400).json({ success: false, message: 'An active contract / escrow already exists for this gig' });
-            }
-
-            // Check client's wallet balance
-            const client = await User.findById(gig.client);
-            if (!client) {
-                return res.status(404).json({ success: false, message: 'Client account not found' });
-            }
-
-            const freelancerUser = await User.findById(proposal.freelancer);
-            if (!freelancerUser) {
-                return res.status(404).json({ success: false, message: 'Freelancer account no longer exists' });
-            }
-
-            if (client.walletBalance < proposal.bidAmount) {
-                return res.status(400).json({ success: false, message: `Insufficient balance (Current: ₹${client.walletBalance}). Please add funds.` });
-            }
-
-            // Debit client balance
-            client.walletBalance -= proposal.bidAmount;
-            await client.save();
-
-            // Create Escrow record holding the funds
-            await Escrow.create({
-                gig: gig._id,
-                proposal: proposal._id,
-                client: client._id,
-                freelancer: proposal.freelancer,
-                amount: proposal.bidAmount,
-                status: 'held'
-            });
-
-            // Create client Transaction log with type 'hold'
-            await Transaction.create({
-                user: client._id,
-                type: 'hold',
-                amount: proposal.bidAmount,
-                description: `Payment held in escrow for Gig: "${gig.title}"`,
-                referenceId: gig._id
-            });
-
-            // 1. Accept this proposal
-            proposal.status = 'accepted';
-            await proposal.save();
-
-            // 2. Reject all other proposals for this gig and notify their authors
-            const otherProposals = await Proposal.find({ gig: gig._id, _id: { $ne: proposal._id }, status: 'pending' });
-            await Proposal.updateMany(
-                { gig: gig._id, _id: { $ne: proposal._id } },
-                { $set: { status: 'rejected' } }
-            );
-
-            for (const otherProp of otherProposals) {
-                try {
-                    await sendNotification(
-                        req.app,
-                        otherProp.freelancer,
-                        req.user._id,
-                        'proposal_rejected',
-                        'Proposal Status Update',
-                        `Another proposal was selected for "${gig.title}". Thank you for your bid!`,
-                        gig._id
-                    );
-                } catch (e) {
-                    console.error('Failed to notify competing bidder:', e.message);
-                }
-            }
-
-            // 3. Assign gig to freelancer and set status to 'in-progress'
-            gig.status = 'in-progress';
-            gig.freelancer = proposal.freelancer;
-            gig.budget = proposal.bidAmount; // Store final contract amount as the agreed budget
-            if (proposal.estimatedTime) {
-                gig.duration = proposal.estimatedTime; // Agreed timeline
-            }
-            if (!gig.milestones || gig.milestones.length === 0) {
-                if (proposal.milestones && proposal.milestones.length > 0) {
-                    gig.milestones = proposal.milestones.map(m => ({
-                        title: m.title || 'Contract Milestone',
-                        budget: m.amount || m.budget || proposal.bidAmount,
-                        amount: m.amount || m.budget || proposal.bidAmount,
-                        description: m.description || proposal.coverLetter || 'Agreed project scope',
-                        status: 'pending',
-                        checklist: [
-                            { text: 'Deliver agreed project scope according to proposal', isCompleted: false }
-                        ]
-                    }));
-                } else {
-                    gig.milestones = [{
-                        title: gig.title || 'Project Scope & Deliverables',
-                        budget: proposal.bidAmount,
-                        amount: proposal.bidAmount,
-                        description: proposal.coverLetter || 'Deliver agreed project scope according to proposal',
-                        status: 'pending',
-                        checklist: [
-                            { text: 'Deliver agreed project scope according to proposal', isCompleted: false }
-                        ]
-                    }];
-                }
-            }
-            await gig.save();
-        } else {
-            // Reject proposal
-            proposal.status = 'rejected';
-            await proposal.save();
-        }
-
-        // Trigger notifications to the freelancer
-        try {
-            await sendNotification(
-                req.app,
-                proposal.freelancer,
-                req.user._id,
-                status === 'accepted' ? 'proposal_accepted' : 'proposal_rejected',
-                status === 'accepted' ? 'Proposal Accepted!' : 'Proposal Rejected',
-                `Your proposal for "${gig.title}" has been ${status} by the client.`,
-                gig._id
-            );
-        } catch (notifErr) {
-            console.error('Failed to dispatch proposal status notification:', notifErr.message);
-        }
-
-        res.status(200).json({ success: true, message: `Proposal ${status} successfully`, data: proposal });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+    const { status } = req.body;
+    if (!['accepted', 'rejected'].includes(status)) {
+        return res.status(400).json({
+            success: false,
+            message: 'Status must be accepted or rejected'
+        });
     }
+
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({
+            success: false,
+            message: 'Invalid proposal ID format'
+        });
+    }
+
+    const isAdmin = req.user.role === 'admin';
+    const proposal = await Proposal.findById(req.params.id).populate('gig');
+    if (!proposal || !proposal.gig) {
+        return res.status(404).json({
+            success: false,
+            message: 'Proposal not found'
+        });
+    }
+
+    const gigId = proposal.gig._id;
+    const ownerId = proposal.gig.client.toString();
+    if (ownerId !== req.user._id.toString() && !isAdmin) {
+        return res.status(403).json({
+            success: false,
+            message: 'Not authorized'
+        });
+    }
+
+    if (status === 'rejected') {
+        const updated = await Proposal.findOneAndUpdate(
+            { _id: proposal._id, status: 'pending' },
+            { $set: { status: 'rejected' } },
+            { returnDocument: 'after' }
+        );
+        if (!updated) {
+            throw new AppError('Proposal already processed', 409);
+        }
+        sendNotification(
+            req.app,
+            proposal.freelancer,
+            req.user._id,
+            'proposal_rejected',
+            'Proposal Rejected',
+            `Your proposal for "${proposal.gig.title}" was rejected.`,
+            gigId
+        );
+        return res.json({ success: true, data: updated });
+    }
+
+    const out = await withTransaction(async (session) => {
+        // 1. Proposal lock: sirf pending wala
+        const accepted = await Proposal.findOneAndUpdate(
+            { _id: proposal._id, status: 'pending' },
+            { $set: { status: 'accepted' } },
+            { returnDocument: 'after', session }
+        );
+        if (!accepted) {
+            throw new AppError('Proposal already processed', 409);
+        }
+
+        // 2. Gig claim: open -> in-progress (ek hi jeetega)
+        const gig = await Gig.findOneAndUpdate(
+            { _id: gigId, status: 'open' },
+            { $set: {
+                status: 'in-progress',
+                freelancer: accepted.freelancer,
+                budget: accepted.bidAmount,
+                duration: accepted.estimatedTime
+            } },
+            { returnDocument: 'after', session }
+        );
+        if (!gig) throw new AppError('Gig is no longer open', 409);
+
+        // 3. Client ka paisa (balance check isi query me)
+        await debit(gig.client, accepted.bidAmount, session);
+
+        // 4. Escrow + Transaction log
+        await Escrow.create([{
+            gig: gig._id,
+            proposal: accepted._id,
+            client: gig.client,
+            freelancer: accepted.freelancer,
+            amount: accepted.bidAmount,
+            status: 'held'
+        }], { session });
+
+        await Transaction.create([{
+            user: gig.client,
+            type: 'hold',
+            amount: accepted.bidAmount,
+            description: `Payment held in escrow for "${gig.title}"`,
+            referenceId: gig._id
+        }], { session });
+
+        // 5. Baaki pending proposals reject
+        const others = await Proposal.find({
+            gig: gig._id,
+            _id: { $ne: accepted._id },
+            status: 'pending'
+        }).session(session);
+
+        await Proposal.updateMany(
+            { gig: gig._id, _id: { $ne: accepted._id }, status: 'pending' },
+            { $set: { status: 'rejected' } },
+            { session }
+        );
+
+        // 6. Default milestone agar koi nahi hai
+        if (!gig.milestones || gig.milestones.length === 0) {
+            gig.milestones = [{
+                title: gig.title || 'Project Scope & Deliverables',
+                budget: accepted.bidAmount,
+                amount: accepted.bidAmount,
+                description: accepted.coverLetter,
+                status: 'pending',
+                checklist: [{ text: 'Deliver agreed scope', isCompleted: false }]
+            }];
+            await gig.save({ session });
+        }
+
+        return { gig, accepted, others };
+    });
+
+    // Notifications COMMIT ke baad
+    for (const p of out.others) {
+        sendNotification(
+            req.app,
+            p.freelancer,
+            req.user._id,
+            'proposal_rejected',
+            'Proposal Status Update',
+            `Another proposal was selected for "${out.gig.title}".`,
+            out.gig._id
+        );
+    }
+
+    sendNotification(
+        req.app,
+        out.accepted.freelancer,
+        req.user._id,
+        'proposal_accepted',
+        'Proposal Accepted!',
+        `Your proposal for "${out.gig.title}" was accepted.`,
+        out.gig._id
+    );
+
+    res.json({
+        success: true,
+        message: 'Proposal accepted',
+        data: out.accepted
+    });
 });
 
 // @desc    Withdraw/Delete a pending proposal

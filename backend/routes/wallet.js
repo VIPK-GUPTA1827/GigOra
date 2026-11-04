@@ -4,6 +4,8 @@ const User = require('../models/User');
 const Transaction = require('../models/Transaction');
 const Escrow = require('../models/Escrow');
 const { protect, requireVerifiedEmail } = require('../middleware/auth');
+const withTransaction = require('../utils/withTransaction');
+const { credit } = require('../utils/wallet');
 
 const router = express.Router();
 
@@ -11,44 +13,38 @@ const router = express.Router();
 // @route   POST /api/wallet/deposit
 // @access  Private (Verified users only)
 router.post('/deposit', protect, requireVerifiedEmail, async (req, res) => {
-    try {
-        const { amount } = req.body;
-
-        const depositVal = parseFloat(amount);
-        if (isNaN(depositVal) || depositVal <= 0) {
-            return res.status(400).json({ success: false, message: 'Please specify a valid positive amount to deposit' });
-        }
-
-        if (depositVal > 1000000) {
-            return res.status(400).json({ success: false, message: 'Maximum deposit limit per transaction is ₹10,00,000' });
-        }
-
-        const user = await User.findById(req.user._id);
-
-        if (!user) {
-            return res.status(404).json({ success: false, message: 'User not found' });
-        }
-
-        // Increase wallet balance
-        user.walletBalance = (user.walletBalance || 0) + depositVal;
-        await user.save();
-
-        // Create transaction log
-        await Transaction.create({
-            user: user._id,
-            type: 'deposit',
-            amount: depositVal,
-            description: 'Funds deposited successfully via Mock Card'
+    // Mock money: in production only if flag is explicitly enabled
+    if (process.env.NODE_ENV === 'production' && process.env.ENABLE_MOCK_DEPOSIT !== 'true') {
+        return res.status(403).json({
+            success: false,
+            message: 'Deposits not available yet'
         });
-
-        res.status(200).json({
-            success: true,
-            message: `₹${depositVal.toLocaleString('en-IN')} deposited successfully`,
-            walletBalance: user.walletBalance
-        });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
     }
+
+    const amount = Number(req.body.amount);
+    if (!Number.isInteger(amount) || amount <= 0 || amount > 1000000) {
+        return res.status(400).json({
+            success: false,
+            message: 'Invalid amount'
+        });
+    }
+
+    const user = await withTransaction(async (session) => {
+        const u = await credit(req.user._id, amount, session);
+        await Transaction.create([{
+            user: u._id,
+            type: 'deposit',
+            amount,
+            description: 'Mock deposit (test money)'
+        }], { session });
+        return u;
+    });
+
+    res.json({
+        success: true,
+        message: `₹${amount.toLocaleString('en-IN')} deposited`,
+        walletBalance: user.walletBalance
+    });
 });
 
 // @desc    Attempt withdrawal from wallet (Blocked for Test Balance)
@@ -66,66 +62,52 @@ router.post('/withdraw', protect, async (req, res) => {
 // @route   GET /api/wallet/transactions
 // @access  Private
 router.get('/transactions', protect, async (req, res) => {
-    try {
-        const transactions = await Transaction.find({ user: req.user._id }).sort({ createdAt: -1 });
-        res.status(200).json({ success: true, count: transactions.length, data: transactions });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
+    const transactions = await Transaction.find({ user: req.user._id }).sort({ createdAt: -1 });
+    res.json({ success: true, count: transactions.length, data: transactions });
 });
 
 // @desc    Get active escrows for current user
 // @route   GET /api/wallet/escrows
 // @access  Private
 router.get('/escrows', protect, async (req, res) => {
-    try {
-        // Find escrows where either client or freelancer is current user
-        const escrows = await Escrow.find({
-            $or: [
-                { client: req.user._id },
-                { freelancer: req.user._id }
-            ]
-        })
-        .populate('gig', 'title status budget')
-        .populate('client', 'username')
-        .populate('freelancer', 'username')
-        .sort({ createdAt: -1 });
+    const escrows = await Escrow.find({
+        $or: [
+            { client: req.user._id },
+            { freelancer: req.user._id }
+        ]
+    })
+    .populate('gig', 'title status budget')
+    .populate('client', 'username')
+    .populate('freelancer', 'username')
+    .sort({ createdAt: -1 });
 
-        res.status(200).json({ success: true, count: escrows.length, data: escrows });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
+    res.json({ success: true, count: escrows.length, data: escrows });
 });
 
 // @desc    Get single escrow by Gig ID
 // @route   GET /api/wallet/escrow/:gigId
 // @access  Private
 router.get('/escrow/:gigId', protect, async (req, res) => {
-    try {
-        if (!mongoose.Types.ObjectId.isValid(req.params.gigId)) {
-            return res.status(400).json({ success: false, message: 'Invalid gig ID format' });
-        }
-
-        const escrow = await Escrow.findOne({ gig: req.params.gigId })
-            .populate('gig', 'title status budget')
-            .populate('client', 'username')
-            .populate('freelancer', 'username');
-
-        if (!escrow) {
-            return res.status(404).json({ success: false, message: 'No escrow record found for this gig' });
-        }
-
-        // Authorization: only the client, assigned freelancer, or admin may view escrow financial details
-        const isClient = escrow.client && escrow.client._id.toString() === req.user._id.toString();
-        const isFreelancer = escrow.freelancer && escrow.freelancer._id.toString() === req.user._id.toString();
-        if (!isClient && !isFreelancer && req.user.role !== 'admin') {
-            return res.status(403).json({ success: false, message: 'Not authorized to view escrow details for this gig' });
-        }
-
-        res.status(200).json({ success: true, data: escrow });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+    if (!mongoose.Types.ObjectId.isValid(req.params.gigId)) {
+        return res.status(400).json({ success: false, message: 'Invalid gig ID format' });
     }
+
+    const escrow = await Escrow.findOne({ gig: req.params.gigId })
+        .populate('gig', 'title status budget')
+        .populate('client', 'username')
+        .populate('freelancer', 'username');
+
+    if (!escrow) {
+        return res.status(404).json({ success: false, message: 'No escrow record found for this gig' });
+    }
+
+    const isClient = escrow.client && escrow.client._id.toString() === req.user._id.toString();
+    const isFreelancer = escrow.freelancer && escrow.freelancer._id.toString() === req.user._id.toString();
+    if (!isClient && !isFreelancer && req.user.role !== 'admin') {
+        return res.status(403).json({ success: false, message: 'Not authorized to view escrow details for this gig' });
+    }
+
+    res.json({ success: true, data: escrow });
 });
 
 module.exports = router;

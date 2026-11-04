@@ -33,4 +33,7 @@ const ReviewSchema = new mongoose.Schema({
   }
 });
 
+// Ek user ek gig pe ek hi review
+ReviewSchema.index({ gig: 1, reviewer: 1 }, { unique: true });
+
 module.exports = mongoose.model('Review', ReviewSchema);

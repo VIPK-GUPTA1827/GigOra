@@ -59,4 +59,10 @@ const disputeSchema = new mongoose.Schema({
     }
 });
 
+// Ek gig pe ek hi OPEN dispute
+disputeSchema.index(
+  { gig: 1 },
+  { unique: true, partialFilterExpression: { status: 'open' } }
+);
+
 module.exports = mongoose.model('Dispute', disputeSchema);

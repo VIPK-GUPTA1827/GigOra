@@ -9,6 +9,9 @@ const { protect, authorize, requireVerifiedEmail, optionalAuth } = require('../m
 const { sendNotification } = require('../utils/notifications');
 const Review = require('../models/Review');
 const { calculateSimilarity } = require('../utils/aiMatcher');
+const AppError = require('../utils/AppError');
+const withTransaction = require('../utils/withTransaction');
+const { credit } = require('../utils/wallet');
 
 const router = express.Router();
 
@@ -576,88 +579,72 @@ router.delete('/:id', protect, async (req, res) => {
 // @route   PUT /api/gigs/:id/complete
 // @access  Private (Client only)
 router.put('/:id/complete', protect, async (req, res) => {
-    try {
-        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-            return res.status(400).json({ success: false, message: 'Invalid gig ID format' });
-        }
-
-        const gig = await Gig.findById(req.params.id);
-
-        if (!gig) {
-            return res.status(404).json({ success: false, message: 'Gig not found' });
-        }
-
-        // Ensure user is the client who posted the gig
-        if (gig.client.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
-            return res.status(403).json({ success: false, message: 'Not authorized to complete this gig' });
-        }
-
-        if (gig.status !== 'in-progress') {
-            return res.status(400).json({ success: false, message: 'Only in-progress gigs can be completed' });
-        }
-
-        // Find Escrow record for this gig
-        const escrow = await Escrow.findOne({ gig: gig._id, status: { $ne: 'refunded' } });
-        if (!escrow) {
-            return res.status(404).json({ success: false, message: 'No active escrow record found for this gig' });
-        }
-
-        // Mark gig as completed
-        gig.status = 'completed';
-        
-        // Also mark all pending/submitted milestones as completed
-        if (gig.milestones && gig.milestones.length > 0) {
-            gig.milestones.forEach(m => {
-                if (m.status !== 'completed') {
-                    m.status = 'completed';
-                }
-            });
-        }
-        await gig.save();
-
-        // Release remaining escrowed amount to freelancer
-        const remainingAmount = Math.max(0, (escrow.amount || 0) - (escrow.releasedAmount || 0));
-        if (remainingAmount > 0 && gig.freelancer) {
-            const freelancer = await User.findById(gig.freelancer);
-            if (freelancer) {
-                freelancer.walletBalance = (freelancer.walletBalance || 0) + remainingAmount;
-                await freelancer.save();
-
-                // Create payout receive Transaction log for freelancer
-                await Transaction.create({
-                    user: freelancer._id,
-                    type: 'release',
-                    amount: remainingAmount,
-                    description: `Escrow payout received for completed Gig: "${gig.title}"`,
-                    referenceId: gig._id
-                });
-            }
-
-            escrow.releasedAmount = escrow.amount;
-        }
-
-        escrow.status = 'released';
-        await escrow.save();
-
-        // Notify freelancer
-        try {
-            sendNotification(
-                req.app,
-                gig.freelancer,
-                req.user._id,
-                'proposal_accepted', // reusing notification types
-                'Gig Completed!',
-                `The client has marked "${gig.title}" as completed and released the final payment of ₹${remainingAmount.toLocaleString('en-IN')}.`,
-                gig._id
-            );
-        } catch (notifErr) {
-            console.error('Failed to notify gig completion:', notifErr.message);
-        }
-
-        res.status(200).json({ success: true, message: 'Gig completed and remaining escrow funds released', data: gig });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({
+            success: false,
+            message: 'Invalid gig ID format'
+        });
     }
+
+    const isAdmin = req.user.role === 'admin';
+    const out = await withTransaction(async (session) => {
+        // 1. Claim: sirf in-progress, sirf owner (ya admin)
+        const gig = await Gig.findOneAndUpdate(
+            {
+                _id: req.params.id,
+                status: 'in-progress',
+                ...(isAdmin ? {} : { client: req.user._id })
+            },
+            {
+                $set: {
+                    status: 'completed',
+                    'milestones.$[].status': 'completed'
+                }
+            },
+            { returnDocument: 'after', session }
+        );
+        if (!gig) {
+            throw new AppError('Gig not found or not in-progress', 409);
+        }
+
+        // 2. Escrow ka bacha paisa release
+        const escrow = await Escrow.findOne({
+            gig: gig._id,
+            status: { $in: ['held', 'partially-released'] }
+        }).session(session);
+
+        if (!escrow) throw new AppError('No active escrow', 404);
+
+        const remaining = Math.max(0, escrow.amount - escrow.releasedAmount);
+        escrow.releasedAmount = escrow.amount;
+        escrow.status = 'released';
+        await escrow.save({ session });
+
+        if (remaining > 0) {
+            await credit(gig.freelancer, remaining, session);
+            await Transaction.create([{
+                user: gig.freelancer,
+                type: 'release',
+                amount: remaining,
+                description: `Escrow payout for "${gig.title}"`,
+                referenceId: gig._id
+            }], { session });
+        }
+
+        return { gig, remaining };
+    });
+
+    sendNotification(
+        req.app,
+        out.gig.freelancer,
+        req.user._id,
+        'proposal_accepted',
+        'Gig Completed!',
+        `"${out.gig.title}" completed. ₹${out.remaining.toLocaleString('en-IN')} released.`,
+        out.gig._id
+    );
+
+    res.json({ success: true, data: out.gig });
 });
 
 // @desc    Add a milestone to an in-progress contract / gig
@@ -973,104 +960,87 @@ router.put('/:id/milestones/:milestoneId/checklist', protect, async (req, res) =
 // @route   PUT /api/gigs/:id/milestones/:milestoneId/approve
 // @access  Private (Client owner only)
 router.put('/:id/milestones/:milestoneId/approve', protect, async (req, res) => {
-    try {
-        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-            return res.status(400).json({ success: false, message: 'Invalid gig ID format' });
-        }
+    const { id, milestoneId } = req.params;
+    const ok = mongoose.Types.ObjectId.isValid;
+    if (!ok(id) || !ok(milestoneId)) {
+        return res.status(400).json({
+            success: false,
+            message: 'Invalid ID format'
+        });
+    }
 
-        const gig = await Gig.findById(req.params.id);
-
+    const isAdmin = req.user.role === 'admin';
+    const out = await withTransaction(async (session) => {
+        // 1. Claim: sirf woh milestone jo completed nahi
+        const gig = await Gig.findOneAndUpdate(
+            {
+                _id: id,
+                status: 'in-progress',
+                ...(isAdmin ? {} : { client: req.user._id }),
+                milestones: {
+                    $elemMatch: {
+                        _id: milestoneId,
+                        status: { $ne: 'completed' }
+                    }
+                }
+            },
+            { $set: { 'milestones.$.status': 'completed' } },
+            { returnDocument: 'after', session }
+        );
         if (!gig) {
-            return res.status(404).json({ success: false, message: 'Gig not found' });
+            throw new AppError('Milestone not found or done', 409);
         }
 
-        // Ensure user is the client who posted the gig
-        if (gig.client.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
-            return res.status(403).json({ success: false, message: 'Not authorized to manage this gig' });
-        }
+        const milestone = gig.milestones.id(milestoneId);
+        const allDone = gig.milestones.every((m) => m.status === 'completed');
 
-        if (gig.status !== 'in-progress') {
-            return res.status(400).json({ success: false, message: 'Gig must be in-progress' });
-        }
+        // 2. Escrow se paisa
+        let released = 0;
+        const escrow = await Escrow.findOne({
+            gig: gig._id,
+            status: { $in: ['held', 'partially-released'] }
+        }).session(session);
 
-        if (!mongoose.Types.ObjectId.isValid(req.params.milestoneId)) {
-            return res.status(400).json({ success: false, message: 'Invalid milestone ID format' });
-        }
-
-        const milestone = gig.milestones.id(req.params.milestoneId);
-        if (!milestone) {
-            return res.status(404).json({ success: false, message: 'Milestone not found' });
-        }
-
-        if (milestone.status === 'completed') {
-            return res.status(400).json({ success: false, message: 'Milestone is already completed and released' });
-        }
-
-        // Update status to completed
-        milestone.status = 'completed';
-
-        // Release funds from escrow to freelancer
-        const escrow = await Escrow.findOne({ gig: gig._id, status: { $ne: 'refunded' } });
-        let actualReleased = 0;
         if (escrow) {
-            const milestoneTargetAmount = milestone.budget || milestone.amount || gig.budget || 0;
-            const remainingEscrow = Math.max(0, escrow.amount - escrow.releasedAmount);
-            actualReleased = Math.min(milestoneTargetAmount, remainingEscrow);
+            const remaining = escrow.amount - escrow.releasedAmount;
+            const target = milestone.amount || milestone.budget || 0;
+            // Last milestone: jo bacha hai sab release
+            released = allDone ? remaining : Math.min(target, remaining);
 
-            if (actualReleased > 0) {
-                escrow.releasedAmount += actualReleased;
-                
-                if (escrow.releasedAmount >= escrow.amount) {
-                    escrow.status = 'released';
-                } else {
-                    escrow.status = 'partially-released';
-                }
-                await escrow.save();
-
-                // Pay freelancer
-                const freelancer = await User.findById(gig.freelancer);
-                if (freelancer) {
-                    freelancer.walletBalance = (freelancer.walletBalance || 0) + actualReleased;
-                    await freelancer.save();
-
-                    // Create Transaction log for freelancer
-                    await Transaction.create({
-                        user: freelancer._id,
-                        type: 'release',
-                        amount: actualReleased,
-                        description: `Milestone payment received: "${milestone.title}" (Gig: "${gig.title}")`,
-                        referenceId: gig._id
-                    });
-                }
+            if (released > 0) {
+                escrow.releasedAmount += released;
+                escrow.status = escrow.releasedAmount >= escrow.amount ? 'released' : 'partially-released';
+                await escrow.save({ session });
+                await credit(gig.freelancer, released, session);
+                await Transaction.create([{
+                    user: gig.freelancer,
+                    type: 'release',
+                    amount: released,
+                    description: `Milestone: "${milestone.title}"`,
+                    referenceId: gig._id
+                }], { session });
             }
         }
 
-        // Check if all milestones are completed; if so, transition gig to completed automatically
-        const allMilestonesDone = gig.milestones && gig.milestones.length > 0 && gig.milestones.every(m => m.status === 'completed');
-        if (allMilestonesDone) {
+        if (allDone) {
             gig.status = 'completed';
-        }
-        await gig.save();
-
-        // Notify Freelancer
-        try {
-            await sendNotification(
-                req.app,
-                gig.freelancer,
-                req.user._id,
-                'milestone_approved',
-                'Milestone Approved & Paid!',
-                `Client has approved milestone "${milestone.title}" and released ₹${(actualReleased || milestone.budget).toLocaleString('en-IN')}.${allMilestonesDone ? ' Entire project is now marked as Completed!' : ''}`,
-                gig._id
-            );
-        } catch (notifErr) {
-            console.error('Failed to notify milestone approval:', notifErr.message);
+            await gig.save({ session });
         }
 
-        res.status(200).json({ success: true, message: 'Milestone approved and payout released', data: gig });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
-    }
+        return { gig, milestone, released };
+    });
+
+    sendNotification(
+        req.app,
+        out.gig.freelancer,
+        req.user._id,
+        'milestone_approved',
+        'Milestone Approved & Paid!',
+        `"${out.milestone.title}" approved, ₹${out.released.toLocaleString('en-IN')} released.`,
+        out.gig._id
+    );
+
+    res.json({ success: true, data: out.gig });
 });
 
 // @desc    Get trending skills based on active/open gigs analysis

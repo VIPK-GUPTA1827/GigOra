@@ -5,7 +5,10 @@ const Gig = require('../models/Gig');
 const Escrow = require('../models/Escrow');
 const Transaction = require('../models/Transaction');
 const Dispute = require('../models/Dispute');
-const { protect } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
+const AppError = require('../utils/AppError');
+const withTransaction = require('../utils/withTransaction');
+const { credit } = require('../utils/wallet');
 const { sendNotification } = require('../utils/notifications');
 
 const router = express.Router();
@@ -112,141 +115,101 @@ router.get('/', protect, async (req, res) => {
 // @desc    Resolve dispute with refund or payout release
 // @route   PUT /api/disputes/:id/resolve
 // @access  Private (Admin only)
-router.put('/:id/resolve', protect, async (req, res) => {
-    try {
-        if (req.user.role !== 'admin') {
-            return res.status(403).json({ success: false, message: 'Only admins can resolve disputes' });
-        }
+router.put('/:id/resolve', protect, authorize('admin'), async (req, res) => {
+    const { resolution } = req.body;
+    const valid = ['refund_client', 'release_freelancer'];
+    if (!valid.includes(resolution)) {
+        return res.status(400).json({
+            success: false,
+            message: 'Invalid resolution'
+        });
+    }
 
-        const { resolution } = req.body; // 'refund_client' | 'release_freelancer'
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(400).json({
+            success: false,
+            message: 'Invalid dispute ID format'
+        });
+    }
 
-        if (!resolution || !['refund_client', 'release_freelancer'].includes(resolution)) {
-            return res.status(400).json({ success: false, message: 'Please provide a valid resolution decision (refund_client or release_freelancer)' });
-        }
-
-        if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-            return res.status(400).json({ success: false, message: 'Invalid dispute ID format' });
-        }
-
-        const dispute = await Dispute.findById(req.params.id);
+    const out = await withTransaction(async (session) => {
+        // 1. Claim: sirf 'open' dispute (double click safe)
+        const dispute = await Dispute.findOneAndUpdate(
+            { _id: req.params.id, status: 'open' },
+            {
+                $set: {
+                    status: 'resolved',
+                    resolution,
+                    resolvedBy: req.user._id,
+                    resolvedAt: new Date()
+                }
+            },
+            { returnDocument: 'after', session }
+        );
         if (!dispute) {
-            return res.status(404).json({ success: false, message: 'Dispute case not found' });
+            throw new AppError('Dispute not found or resolved', 409);
         }
 
-        if (dispute.status === 'resolved') {
-            return res.status(400).json({ success: false, message: 'This dispute is already resolved' });
+        const escrow = await Escrow.findOne({
+            _id: dispute.escrow,
+            status: { $in: ['held', 'partially-released'] }
+        }).session(session);
+
+        const gig = await Gig.findById(dispute.gig).session(session);
+        if (!escrow || !gig) {
+            throw new AppError('Escrow or gig missing', 404);
         }
 
-        const gig = await Gig.findById(dispute.gig);
-        const escrow = await Escrow.findById(dispute.escrow);
-        
-        if (!gig || !escrow) {
-            return res.status(404).json({ success: false, message: 'Associated gig or escrow records missing' });
-        }
-
-        const remainingAmount = escrow.amount - escrow.releasedAmount;
-        if (remainingAmount <= 0) {
-            return res.status(400).json({ success: false, message: 'No remaining funds in escrow to resolve' });
-        }
-
-        const clientUser = await User.findById(escrow.client);
-        const freelancerUser = await User.findById(escrow.freelancer);
-
-        if (!clientUser || !freelancerUser) {
-            return res.status(404).json({ success: false, message: 'Client or freelancer account associated with escrow was not found' });
+        const remaining = escrow.amount - escrow.releasedAmount;
+        if (remaining <= 0) {
+            throw new AppError('No remaining funds in escrow', 400);
         }
 
         if (resolution === 'refund_client') {
-            // Refund remaining locked funds to client's wallet
-            clientUser.walletBalance = (clientUser.walletBalance || 0) + remainingAmount;
-            await clientUser.save();
-
+            await credit(escrow.client, remaining, session);
             escrow.status = 'refunded';
-            await escrow.save();
-
-            // Log refund transaction
-            await Transaction.create({
-                user: clientUser._id,
-                type: 'refund',
-                amount: remainingAmount,
-                description: `Refund from resolved dispute on Gig: "${gig.title}"`,
-                referenceId: gig._id
-            });
-
-            // Cancel the gig contract state
             gig.status = 'cancelled';
-            await gig.save();
-
-        } else if (resolution === 'release_freelancer') {
-            // Release remaining funds to freelancer's wallet
-            freelancerUser.walletBalance = (freelancerUser.walletBalance || 0) + remainingAmount;
-            await freelancerUser.save();
-
+            await Transaction.create([{
+                user: escrow.client,
+                type: 'refund',
+                amount: remaining,
+                description: `Dispute refund: "${gig.title}"`,
+                referenceId: gig._id
+            }], { session });
+        } else {
+            await credit(escrow.freelancer, remaining, session);
             escrow.releasedAmount = escrow.amount;
             escrow.status = 'released';
-            await escrow.save();
-
-            // Log payout transaction for freelancer
-            await Transaction.create({
-                user: freelancerUser._id,
-                type: 'release',
-                amount: remainingAmount,
-                description: `Payment released from resolved dispute on Gig: "${gig.title}"`,
-                referenceId: gig._id
-            });
-
-            // Mark gig complete
             gig.status = 'completed';
-            
-            // Mark all milestones as completed
-            gig.milestones.forEach(m => {
-                m.status = 'completed';
-            });
-            await gig.save();
+            gig.milestones.forEach((m) => { m.status = 'completed'; });
+            await Transaction.create([{
+                user: escrow.freelancer,
+                type: 'release',
+                amount: remaining,
+                description: `Dispute payout: "${gig.title}"`,
+                referenceId: gig._id
+            }], { session });
         }
 
-        // Update dispute details
-        dispute.status = 'resolved';
-        dispute.resolution = resolution;
-        dispute.resolvedBy = req.user._id;
-        dispute.resolvedAt = Date.now();
-        await dispute.save();
+        await escrow.save({ session });
+        await gig.save({ session });
+        return { dispute, escrow, gig, remaining };
+    });
 
-        // Notify both parties
-        try {
-            const outcomeMsg = resolution === 'refund_client' 
-                ? `Dispute resolved. Outcome: Remaining ₹${remainingAmount.toLocaleString('en-IN')} refunded to Client.`
-                : `Dispute resolved. Outcome: Remaining ₹${remainingAmount.toLocaleString('en-IN')} paid to Freelancer.`;
-
-            // Notify Client
-            sendNotification(
-                req.app,
-                escrow.client,
-                req.user._id,
-                'dispute_resolved',
-                'Dispute Resolved by Admin',
-                outcomeMsg,
-                gig._id
-            );
-
-            // Notify Freelancer
-            sendNotification(
-                req.app,
-                escrow.freelancer,
-                req.user._id,
-                'dispute_resolved',
-                'Dispute Resolved by Admin',
-                outcomeMsg,
-                gig._id
-            );
-        } catch (notifErr) {
-            console.error('Failed to send dispute resolution notifications:', notifErr.message);
-        }
-
-        res.status(200).json({ success: true, message: `Dispute resolved with decision: ${resolution}`, data: dispute });
-    } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+    const msg = `Dispute resolved (${resolution}): ₹${out.remaining.toLocaleString('en-IN')}`;
+    for (const u of [out.escrow.client, out.escrow.freelancer]) {
+        sendNotification(
+            req.app,
+            u,
+            req.user._id,
+            'dispute_resolved',
+            'Dispute Resolved by Admin',
+            msg,
+            out.gig._id
+        );
     }
+
+    res.json({ success: true, data: out.dispute });
 });
 
 module.exports = router;
