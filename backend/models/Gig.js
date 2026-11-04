@@ -118,5 +118,8 @@ const gigSchema = new mongoose.Schema({
 
 // Index the location field for 2dsphere queries (location proximity routing)
 gigSchema.index({ location: '2dsphere' });
+gigSchema.index({ status: 1, createdAt: -1 });
+gigSchema.index({ client: 1, createdAt: -1 });
+gigSchema.index({ freelancer: 1, status: 1 });
 
 module.exports = mongoose.model('Gig', gigSchema);

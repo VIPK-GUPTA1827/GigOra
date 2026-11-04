@@ -40,4 +40,8 @@ const escrowSchema = new mongoose.Schema({
     }
 });
 
+escrowSchema.index({ gig: 1 });
+escrowSchema.index({ client: 1, createdAt: -1 });
+escrowSchema.index({ freelancer: 1, createdAt: -1 });
+
 module.exports = mongoose.model('Escrow', escrowSchema);

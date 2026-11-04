@@ -26,4 +26,7 @@ const MessageSchema = new mongoose.Schema({
   }
 });
 
+MessageSchema.index({ sender: 1, recipient: 1, timestamp: -1 });
+MessageSchema.index({ recipient: 1, read: 1, timestamp: -1 });
+
 module.exports = mongoose.model('Message', MessageSchema);

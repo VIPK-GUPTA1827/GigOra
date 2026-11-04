@@ -39,4 +39,7 @@ const bookingSchema = new mongoose.Schema({
     }
 });
 
+bookingSchema.index({ freelancer: 1, date: 1, status: 1 });
+bookingSchema.index({ client: 1, date: 1 });
+
 module.exports = mongoose.model('Booking', bookingSchema);

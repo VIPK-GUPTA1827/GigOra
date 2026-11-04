@@ -36,5 +36,7 @@ const proposalSchema = new mongoose.Schema({
 
 // Prevent duplicate proposals by the same freelancer for a single gig
 proposalSchema.index({ gig: 1, freelancer: 1 }, { unique: true });
+proposalSchema.index({ freelancer: 1, createdAt: -1 });
+proposalSchema.index({ gig: 1, status: 1 });
 
 module.exports = mongoose.model('Proposal', proposalSchema);
