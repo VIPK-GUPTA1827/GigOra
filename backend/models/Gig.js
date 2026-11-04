@@ -58,6 +58,10 @@ const gigSchema = new mongoose.Schema({
         enum: ['draft', 'open', 'paused', 'closed', 'in-progress', 'disputed', 'completed', 'cancelled'],
         default: 'open'
     },
+    isSample: {
+        type: Boolean,
+        default: false
+    },
     isDemo: {
         type: Boolean,
         default: false
