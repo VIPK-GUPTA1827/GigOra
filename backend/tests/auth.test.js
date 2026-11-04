@@ -1,0 +1,119 @@
+const request = require('supertest');
+const app = require('../app');
+const User = require('../models/User');
+
+describe('Auth Endpoints', () => {
+  it('POST /api/auth/register creates user and returns 201', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({
+        name: 'Vipin Test',
+        username: 'vipintest1',
+        email: 'vipin.test@gmail.com',
+        password: 'Password123!',
+        role: 'freelancer'
+      });
+
+    expect(res.status).toBe(201);
+    expect(res.body.success).toBe(true);
+    expect(res.body.user).toBeDefined();
+    expect(res.body.user.email).toBe('vipin.test@gmail.com');
+  });
+
+  it('POST /api/auth/register returns 400 when validation fails (short password)', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({
+        name: 'Short Pass',
+        username: 'shortpass',
+        email: 'shortpass@gmail.com',
+        password: '123',
+        role: 'freelancer'
+      });
+
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+  });
+
+  it('POST /api/auth/login returns 200 and access token, and sets auth cookies', async () => {
+    await request(app)
+      .post('/api/auth/register')
+      .send({
+        name: 'Login User',
+        username: 'loginuser',
+        email: 'login.user@gmail.com',
+        password: 'Password123!',
+        role: 'client'
+      });
+
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({
+        email: 'login.user@gmail.com',
+        password: 'Password123!'
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.body.success).toBe(true);
+    expect(res.body.token).toBeDefined();
+    expect(res.headers['set-cookie']).toBeDefined();
+  });
+
+  it('POST /api/auth/login with x-client-type: mobile returns refreshToken in body', async () => {
+    await request(app)
+      .post('/api/auth/register')
+      .send({
+        name: 'Mobile User',
+        username: 'mobileuser',
+        email: 'mobile.user@gmail.com',
+        password: 'Password123!',
+        role: 'client'
+      });
+
+    const res = await request(app)
+      .post('/api/auth/login')
+      .set('x-client-type', 'mobile')
+      .send({
+        email: 'mobile.user@gmail.com',
+        password: 'Password123!'
+      });
+
+    expect(res.status).toBe(200);
+    expect(res.body.token).toBeDefined();
+    expect(res.body.refreshToken).toBeDefined();
+  });
+
+  it('POST /api/auth/login returns 401 on wrong password', async () => {
+    await request(app)
+      .post('/api/auth/register')
+      .send({
+        name: 'Wrong Pass',
+        username: 'wrongpass',
+        email: 'wrong.pass@gmail.com',
+        password: 'Password123!',
+        role: 'client'
+      });
+
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({
+        email: 'wrong.pass@gmail.com',
+        password: 'WrongPassword999!'
+      });
+
+    expect(res.status).toBe(401);
+    expect(res.body.success).toBe(false);
+  });
+
+  it('POST /api/auth/login neutralizes NoSQL operator injection', async () => {
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({
+        email: { $gt: '' },
+        password: 'Password123!'
+      });
+
+    expect(res.status).toBe(400);
+    expect(res.body.success).toBe(false);
+  });
+});

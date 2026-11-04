@@ -15,6 +15,11 @@ let transporterPromise = (async () => {
         });
     }
 
+    // In test environment, use in-memory json transport (no network calls)
+    if (process.env.NODE_ENV === 'test') {
+        return nodemailer.createTransport({ jsonTransport: true });
+    }
+
     // In production, never fallback to Ethereal test accounts
     if (process.env.NODE_ENV === 'production') {
         console.error('SMTP credentials missing in production. Mail delivery disabled.');

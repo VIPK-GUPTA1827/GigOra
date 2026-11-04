@@ -10,6 +10,7 @@ const makeLimiter = ({ windowMs, max, message }) => {
     max,
     standardHeaders: true,
     legacyHeaders: false,
+    validate: { keyGeneratorIpFallback: false },
     keyGenerator: userKeyGenerator,
     handler: (req, res) => {
       res.status(429).json({
