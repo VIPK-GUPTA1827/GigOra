@@ -207,6 +207,10 @@ const userSchema = new mongoose.Schema({
             createdAt: { type: Date, default: Date.now }
         }
     ],
+    tokenVersion: {
+        type: Number,
+        default: 0
+    },
     isEmailVerified: {
         type: Boolean,
         default: false

@@ -4,6 +4,8 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const User = require('../models/User');
+const RefreshToken = require('../models/RefreshToken');
+const { sha256, sendAuthTokens, clearAuthCookies } = require('../utils/tokens');
 const EmailLog = require('../models/EmailLog');
 const { protect, authorize, requireVerifiedEmail, optionalAuth } = require('../middleware/auth');
 const validate = require('../middleware/validate');
@@ -264,8 +266,7 @@ router.post('/register', authLimiter, validate({ body: registerSchema }), async 
         });
 
         // Generate token and attach secure HTTP-only cookie
-        const token = generateToken(user._id);
-        res.cookie('token', token, getCookieOptions());
+        const tokens = await sendAuthTokens(req, res, user);
 
         // Background non-blocking email notification (never blocks or delays HTTP response)
         const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
@@ -320,7 +321,7 @@ router.post('/register', authLimiter, validate({ body: registerSchema }), async 
         return res.status(201).json({
             success: true,
             message: 'Registration successful! Welcome to GigOra.',
-            token,
+            ...tokens,
             user: formatUserResponse(user)
         });
     } catch (error) {
@@ -378,13 +379,12 @@ router.post('/login', authLimiter, validate({ body: loginSchema }), async (req, 
         }
 
         // Generate token and attach secure HTTP-only cookie
-        const token = generateToken(user._id);
-        res.cookie('token', token, getCookieOptions());
+        const tokens = await sendAuthTokens(req, res, user);
 
         return res.json({
             success: true,
             message: 'Login successful!',
-            token,
+            ...tokens,
             user: formatUserResponse(user)
         });
     } catch (error) {
@@ -484,13 +484,12 @@ router.post('/google', async (req, res) => {
         }
 
         // Generate token and attach secure HTTP-only cookie
-        const token = generateToken(user._id);
-        res.cookie('token', token, getCookieOptions());
+        const tokens = await sendAuthTokens(req, res, user);
 
         return res.json({
             success: true,
             message: 'Google login successful!',
-            token,
+            ...tokens,
             user: formatUserResponse(user)
         });
     } catch (error) {
@@ -499,16 +498,65 @@ router.post('/google', async (req, res) => {
     }
 });
 
-// @desc    Logout user & clear cookie
+// @desc    Refresh access token
+// @route   POST /api/auth/refresh
+// @access  Public
+router.post('/refresh', async (req, res) => {
+    const raw = req.cookies?.refreshToken || req.body?.refreshToken;
+    if (!raw || typeof raw !== 'string') {
+        return res.status(401).json({
+            success: false,
+            message: 'No refresh token'
+        });
+    }
+
+    // Rotation: purana token ek hi baar chalega
+    const stored = await RefreshToken.findOneAndDelete({
+        tokenHash: sha256(raw),
+        expiresAt: { $gt: new Date() }
+    });
+
+    if (!stored) {
+        clearAuthCookies(res);
+        return res.status(401).json({
+            success: false,
+            message: 'Session expired, please log in'
+        });
+    }
+
+    const user = await User.findById(stored.user);
+    if (!user || user.isSuspended) {
+        clearAuthCookies(res);
+        return res.status(401).json({
+            success: false,
+            message: 'Not allowed'
+        });
+    }
+
+    const tokens = await sendAuthTokens(req, res, user);
+    res.json({ success: true, ...tokens });
+});
+
+// @desc    Logout user & clear cookies
 // @route   POST /api/auth/logout
 // @access  Public
-router.post('/logout', (req, res) => {
-    res.clearCookie('token', {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
-    });
+router.post('/logout', async (req, res) => {
+    const raw = req.cookies?.refreshToken || req.body?.refreshToken;
+    if (raw && typeof raw === 'string') {
+        await RefreshToken.deleteOne({ tokenHash: sha256(raw) });
+    }
+    clearAuthCookies(res);
     res.json({ success: true, message: 'Logged out successfully' });
+});
+
+// @desc    Logout from all devices
+// @route   POST /api/auth/logout-all
+// @access  Private
+router.post('/logout-all', protect, async (req, res) => {
+    await RefreshToken.deleteMany({ user: req.user._id });
+    await User.updateOne({ _id: req.user._id }, { $inc: { tokenVersion: 1 } });
+    clearAuthCookies(res);
+    res.json({ success: true, message: 'Logged out everywhere' });
 });
 
 // @desc    Verify email address
@@ -813,7 +861,9 @@ router.put('/reset-password/:token', authLimiter, async (req, res) => {
         // Invalidate token immediately (one-time use)
         user.resetPasswordToken = undefined;
         user.resetPasswordExpire = undefined;
+        user.tokenVersion = (user.tokenVersion || 0) + 1;
         await user.save();
+        await RefreshToken.deleteMany({ user: user._id });
 
         res.status(200).json({
             success: true,

@@ -141,6 +141,11 @@ router.put('/users/:id/suspend', protect, adminOnly, async (req, res) => {
         }
 
         user.isSuspended = !user.isSuspended;
+        if (user.isSuspended) {
+            user.tokenVersion = (user.tokenVersion || 0) + 1;
+            const RefreshToken = require('../models/RefreshToken');
+            await RefreshToken.deleteMany({ user: user._id });
+        }
         await user.save();
 
         res.status(200).json({
