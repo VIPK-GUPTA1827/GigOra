@@ -427,6 +427,14 @@ router.put('/:id', protect, async (req, res) => {
         } = req.body;
 
         // Lifecycle (in_progress, completed, cancelled) only via dedicated endpoints
+        // Contract shuru hone ke baad edit band
+        if (!['draft', 'open'].includes(gig.status)) {
+            return res.status(400).json({
+                success: false,
+                message: `Cannot edit a project that is ${gig.status}`
+            });
+        }
+
         const ALLOWED_EDIT_STATUSES = ['draft', 'open'];
         if (status !== undefined && !ALLOWED_EDIT_STATUSES.includes(status)) {
             return res.status(400).json({
@@ -462,7 +470,15 @@ router.put('/:id', protect, async (req, res) => {
             budget: budget !== undefined ? Number(budget) : gig.budget,
             status: targetStatus,
             address: address !== undefined ? address.trim() : gig.address,
-            milestones: milestones || gig.milestones,
+            milestones: Array.isArray(milestones)
+                ? milestones.map((m) => ({
+                    title: String(m.title || '').slice(0, 100),
+                    amount: Number(m.amount) || 0,
+                    budget: Number(m.amount) || 0,
+                    description: String(m.description || '').slice(0, 1000),
+                    status: 'pending'
+                }))
+                : gig.milestones,
             locationType: locationType && ['remote', 'onsite', 'hybrid'].includes(locationType) ? locationType : gig.locationType,
             experienceLevel: experienceLevel && ['Entry', 'Intermediate', 'Expert'].includes(experienceLevel) ? experienceLevel : gig.experienceLevel,
             duration: duration !== undefined ? duration : gig.duration,
