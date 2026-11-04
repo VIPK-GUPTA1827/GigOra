@@ -32,6 +32,7 @@ export default function Signup() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [suggestion, setSuggestion] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const handleNameChange = (e) => {
@@ -66,8 +67,9 @@ export default function Signup() {
 
     setSubmitting(true);
 
+    setSuggestion('');
     try {
-      const user = await register({
+      const data = await register({
         name: formData.name.trim(),
         username: (formData.username || formData.name).toLowerCase().trim().replace(/[^a-z0-9_]/g, '_'),
         email: formData.email.trim(),
@@ -75,14 +77,20 @@ export default function Signup() {
         role: role
       });
 
-      // Seamless instant redirect to dashboard based on role
-      if (user?.role === 'client' || role === 'client') {
-        navigate('/client/dashboard');
+      if (data?.requiresVerification) {
+        localStorage.setItem('pendingEmail', formData.email.trim());
+        navigate(`/check-email?email=${encodeURIComponent(formData.email.trim())}`);
       } else {
-        navigate('/freelancer/dashboard');
+        if (data?.user?.role === 'client' || role === 'client') {
+          navigate('/client/dashboard');
+        } else {
+          navigate('/freelancer/dashboard');
+        }
       }
     } catch (err) {
-      setError(err.message || 'Registration failed. Please try again.');
+      const d = err.response?.data || err.data;
+      setError(d?.message || err.message || 'Registration failed. Please try again.');
+      setSuggestion(d?.suggestion || '');
     } finally {
       setSubmitting(false);
     }
@@ -242,9 +250,28 @@ export default function Signup() {
                 required
                 placeholder="name@example.com"
                 value={formData.email}
-                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                onChange={(e) => {
+                  setFormData(prev => ({ ...prev, email: e.target.value }));
+                  setSuggestion('');
+                }}
                 className="w-full px-4 py-3 rounded-xl bg-slate-50/70 border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#593CFF] focus:bg-white transition-all shadow-2xs"
               />
+              {suggestion && (
+                <div className="mt-2 p-2.5 rounded-xl bg-purple-50 border border-purple-200/90 text-xs text-purple-900 flex items-center justify-between gap-2 animate-in fade-in">
+                  <span>Did you mean <b>{suggestion}</b>?</span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setFormData(prev => ({ ...prev, email: suggestion }));
+                      setSuggestion('');
+                      setError('');
+                    }}
+                    className="px-2.5 py-1 rounded-lg bg-[#593CFF] text-white font-bold hover:bg-[#472fe0] transition-colors cursor-pointer text-xs"
+                  >
+                    Use {suggestion}
+                  </button>
+                </div>
+              )}
             </div>
 
             {/* Row 3: Password & Confirm Password */}

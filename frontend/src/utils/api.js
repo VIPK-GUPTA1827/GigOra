@@ -20,7 +20,9 @@ async function request(path, options = {}) {
     if (!window.location.pathname.includes('/login')) {
       window.location.href = '/login';
     }
-    throw new Error('Session expired');
+    const err = new Error('Session expired');
+    err.status = 401;
+    throw err;
   }
 
   let data;
@@ -30,8 +32,19 @@ async function request(path, options = {}) {
     data = { message: res.statusText || 'Request failed' };
   }
 
+  // Handle unverified email redirect (Senior's guide Step 6)
+  if (res.status === 403 && data?.requiresVerification) {
+    if (window.location.pathname !== '/check-email') {
+      window.location.assign('/check-email');
+    }
+  }
+
   if (!res.ok) {
-    throw new Error(data.message || 'Request failed');
+    const error = new Error(data.message || 'Request failed');
+    error.status = res.status;
+    error.data = data;
+    error.response = { status: res.status, data };
+    throw error;
   }
   return data;
 }

@@ -12,10 +12,11 @@ export default function VerifyEmail() {
 
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
+  const [alreadyVerified, setAlreadyVerified] = useState(false);
   const [error, setError] = useState('');
   const [verifiedUser, setVerifiedUser] = useState(null);
 
-  // Prevent duplicate execution caused by React 18 StrictMode in development
+  // Prevent duplicate execution caused by React 18/19 StrictMode in development
   const hasRequested = useRef(false);
 
   useEffect(() => {
@@ -41,11 +42,20 @@ export default function VerifyEmail() {
         if (res.ok && data.success) {
           setError('');
           setSuccess(true);
+          setAlreadyVerified(Boolean(data.alreadyVerified));
           setVerifiedUser(data.user);
-          // Instantly update AuthContext so dashboard banner disappears without requiring reload!
+          localStorage.removeItem('pendingEmail');
+
+          // Instantly update AuthContext
           if (updateUser && data.user) {
             updateUser(data.user);
           }
+
+          // Auto-redirect to dashboard after 2 seconds
+          setTimeout(() => {
+            const role = data.user?.role || 'client';
+            navigate(role === 'freelancer' ? '/freelancer/dashboard' : '/client/dashboard');
+          }, 2000);
         } else {
           setSuccess(false);
           setError(data.message || 'Verification link is invalid or expired.');
@@ -59,7 +69,7 @@ export default function VerifyEmail() {
     };
 
     verifyToken();
-  }, [token, updateUser]);
+  }, [token, updateUser, navigate]);
 
   const handleContinue = () => {
     const targetRole = verifiedUser?.role || user?.role;
@@ -100,15 +110,17 @@ export default function VerifyEmail() {
           )}
 
           {!loading && success && (
-            <div className="py-4 space-y-4">
+            <div className="py-4 space-y-4 animate-in fade-in duration-300">
               <div className="w-16 h-16 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto mb-2 shadow-xs">
                 <CheckCircle2 className="w-8 h-8" />
               </div>
               <h1 className="text-2xl font-extrabold text-[#030B3D] tracking-tight">
-                Email verified successfully!
+                {alreadyVerified ? 'Email already verified!' : 'Email verified successfully!'}
               </h1>
               <p className="text-sm text-stone-600 max-w-sm mx-auto">
-                Your email address has been confirmed and your GigOra account is now fully active.
+                {alreadyVerified 
+                  ? 'Your account is active. Redirecting to your workspace...' 
+                  : 'Your email address has been confirmed. Redirecting to your workspace...'}
               </p>
               <div className="pt-4">
                 <button
@@ -124,7 +136,7 @@ export default function VerifyEmail() {
           )}
 
           {!loading && error && (
-            <div className="py-4 space-y-4">
+            <div className="py-4 space-y-4 animate-in fade-in duration-300">
               <div className="w-16 h-16 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto mb-2 shadow-xs">
                 <AlertCircle className="w-8 h-8" />
               </div>

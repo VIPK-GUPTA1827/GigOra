@@ -63,10 +63,19 @@ export const AuthProvider = ({ children }) => {
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Registration failed');
+        const error = new Error(data.message || 'Registration failed');
+        error.data = data;
+        error.response = { status: res.status, data };
+        throw error;
       }
 
-      return data.user;
+      if (data.requiresVerification) {
+        localStorage.setItem('pendingEmail', email);
+      } else if (data.user) {
+        setUser(data.user);
+      }
+
+      return data;
     } catch (err) {
       throw err;
     }

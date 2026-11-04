@@ -1,21 +1,42 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Mail, CheckCircle2, AlertCircle, Loader2, ArrowLeft } from 'lucide-react';
+import { Mail, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
 
 const BASE = import.meta.env.VITE_API_URL || '';
 
 export default function CheckEmail() {
   const [searchParams] = useSearchParams();
-  const email = searchParams.get('email') || '';
+  const pending = localStorage.getItem('pendingEmail') || '';
+  const [email, setEmail] = useState(searchParams.get('email') || pending);
 
+  // Signup se aaya ho toh mail abhi gayi hai: 60s cooldown timer
+  const [seconds, setSeconds] = useState(pending ? 60 : 0);
   const [resending, setResending] = useState(false);
   const [statusMsg, setStatusMsg] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  const [etherealUrl, setEtherealUrl] = useState('');
+  const [previewUrl, setPreviewUrl] = useState('');
 
-  React.useEffect(() => {
+  useEffect(() => {
     document.title = 'Check Your Email — GigOra';
   }, []);
+
+  // Agar pending email nahi hai aur search param bhi nahi hai, toh /me se email uthao
+  useEffect(() => {
+    if (email) return;
+    fetch(`${BASE}/api/auth/me`, { credentials: 'include' })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.user?.email) setEmail(data.user.email);
+      })
+      .catch(() => {});
+  }, [email]);
+
+  // Har second countdown ghatao
+  useEffect(() => {
+    if (seconds <= 0) return;
+    const t = setTimeout(() => setSeconds((s) => s - 1), 1000);
+    return () => clearTimeout(t);
+  }, [seconds]);
 
   const handleResend = async () => {
     if (!email) {
@@ -26,21 +47,27 @@ export default function CheckEmail() {
     setResending(true);
     setStatusMsg('');
     setErrorMsg('');
+    setPreviewUrl('');
 
     try {
       const res = await fetch(`${BASE}/api/auth/resend-verification`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ email })
       });
 
       const data = await res.json();
       if (res.ok && data.success) {
         setStatusMsg('A fresh verification link has been sent to your inbox.');
-        if (data.etherealUrl) {
-          setEtherealUrl(data.etherealUrl);
+        setSeconds(60);
+        if (data.previewUrl || data.etherealUrl) {
+          setPreviewUrl(data.previewUrl || data.etherealUrl);
         }
       } else {
+        if (res.status === 429 && data.retryAfter) {
+          setSeconds(data.retryAfter);
+        }
         setErrorMsg(data.message || 'Could not resend email.');
       }
     } catch (err) {
@@ -108,17 +135,17 @@ export default function CheckEmail() {
             </div>
           )}
 
-          {/* Ethereal Inbox Link (Dev Helper) */}
-          {etherealUrl && (
+          {/* Preview link for dev mode */}
+          {previewUrl && (
             <div className="mt-4 p-3 rounded-xl bg-indigo-50 border border-indigo-200 text-xs text-indigo-700">
               Dev Mode Email Preview:{' '}
-              <a href={etherealUrl} target="_blank" rel="noreferrer" className="underline font-bold">
+              <a href={previewUrl} target="_blank" rel="noreferrer" className="underline font-bold">
                 Open Test Inbox
               </a>
             </div>
           )}
 
-          {/* Resend Action */}
+          {/* Resend Action with cooldown */}
           <div className="mt-8 pt-6 border-t border-stone-100 flex flex-col items-center gap-3">
             <p className="text-xs text-stone-500">
               Didn't receive the email? Check your spam folder or request a new link.
@@ -126,7 +153,7 @@ export default function CheckEmail() {
             <button
               type="button"
               onClick={handleResend}
-              disabled={resending}
+              disabled={resending || seconds > 0 || !email}
               className="py-2.5 px-6 rounded-xl bg-stone-100 hover:bg-stone-200 text-stone-800 font-bold text-xs sm:text-sm transition-all cursor-pointer disabled:opacity-50 inline-flex items-center gap-2"
             >
               {resending ? (
@@ -134,6 +161,8 @@ export default function CheckEmail() {
                   <Loader2 className="w-4 h-4 animate-spin" />
                   <span>Sending fresh link...</span>
                 </>
+              ) : seconds > 0 ? (
+                <span>Resend in {seconds}s</span>
               ) : (
                 <span>Resend verification email</span>
               )}
