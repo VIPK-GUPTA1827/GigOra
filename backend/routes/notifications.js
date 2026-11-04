@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Notification = require('../models/Notification');
-const { protect } = require('../middleware/auth');
+const { protect, authorize } = require('../middleware/auth');
 
 const router = express.Router();
 
@@ -93,7 +93,10 @@ router.get('/email-logs', protect, async (req, res) => {
 // @desc    Send a test transactional email and log result
 // @route   POST /api/notifications/test-email
 // @access  Private
-router.post('/test-email', protect, async (req, res) => {
+router.post('/test-email', protect, authorize('admin'), async (req, res) => {
+  if (process.env.NODE_ENV === 'production' && process.env.ALLOW_TEST_EMAIL !== 'true') {
+    return res.status(404).json({ success: false, message: 'Not found' });
+  }
   try {
     const EmailLog = require('../models/EmailLog');
     const nodemailer = require('nodemailer');
