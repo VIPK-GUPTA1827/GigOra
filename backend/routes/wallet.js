@@ -6,13 +6,15 @@ const Escrow = require('../models/Escrow');
 const { protect, requireVerifiedEmail } = require('../middleware/auth');
 const withTransaction = require('../utils/withTransaction');
 const { credit } = require('../utils/wallet');
+const { getPagination } = require('../utils/paginate');
+const { walletLimiter } = require('../utils/rateLimiters');
 
 const router = express.Router();
 
 // @desc    Deposit funds into user's wallet
 // @route   POST /api/wallet/deposit
 // @access  Private (Verified users only)
-router.post('/deposit', protect, requireVerifiedEmail, async (req, res) => {
+router.post('/deposit', protect, requireVerifiedEmail, walletLimiter, async (req, res) => {
     // Mock money: in production only if flag is explicitly enabled
     if (process.env.NODE_ENV === 'production' && process.env.ENABLE_MOCK_DEPOSIT !== 'true') {
         return res.status(403).json({
@@ -62,8 +64,19 @@ router.post('/withdraw', protect, async (req, res) => {
 // @route   GET /api/wallet/transactions
 // @access  Private
 router.get('/transactions', protect, async (req, res) => {
-    const transactions = await Transaction.find({ user: req.user._id }).sort({ createdAt: -1 });
-    res.json({ success: true, count: transactions.length, data: transactions });
+    const { page, limit, skip } = getPagination(req.query, { defaultLimit: 20, maxLimit: 100 });
+    const [total, transactions] = await Promise.all([
+        Transaction.countDocuments({ user: req.user._id }),
+        Transaction.find({ user: req.user._id }).sort({ createdAt: -1 }).skip(skip).limit(limit)
+    ]);
+    res.json({
+        success: true,
+        count: transactions.length,
+        total,
+        page,
+        pages: Math.ceil(total / limit) || 1,
+        data: transactions
+    });
 });
 
 // @desc    Get active escrows for current user

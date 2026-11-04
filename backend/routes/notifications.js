@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Notification = require('../models/Notification');
 const { protect, authorize } = require('../middleware/auth');
+const { getPagination } = require('../utils/paginate');
 
 const router = express.Router();
 
@@ -10,11 +11,24 @@ const router = express.Router();
 // @access  Private
 router.get('/', protect, async (req, res) => {
   try {
-    const notifications = await Notification.find({ recipient: req.user._id })
-      .populate('sender', 'username name role avatar')
-      .sort({ createdAt: -1 });
+    const { page, limit, skip } = getPagination(req.query, { defaultLimit: 30, maxLimit: 100 });
+    const [total, notifications] = await Promise.all([
+      Notification.countDocuments({ recipient: req.user._id }),
+      Notification.find({ recipient: req.user._id })
+        .populate('sender', 'username name role avatar')
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+    ]);
 
-    res.status(200).json({ success: true, count: notifications.length, data: notifications });
+    res.status(200).json({
+      success: true,
+      count: notifications.length,
+      total,
+      page,
+      pages: Math.ceil(total / limit) || 1,
+      data: notifications
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
@@ -80,11 +94,23 @@ router.get('/email-logs', protect, async (req, res) => {
       filter.status = req.query.status;
     }
 
-    const emailLogs = await EmailLog.find(filter)
-      .sort({ createdAt: -1 })
-      .limit(Number(req.query.limit) || 50);
+    const { page, limit, skip } = getPagination(req.query, { defaultLimit: 50, maxLimit: 100 });
+    const [total, emailLogs] = await Promise.all([
+      EmailLog.countDocuments(filter),
+      EmailLog.find(filter)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+    ]);
 
-    res.status(200).json({ success: true, count: emailLogs.length, data: emailLogs });
+    res.status(200).json({
+      success: true,
+      count: emailLogs.length,
+      total,
+      page,
+      pages: Math.ceil(total / limit) || 1,
+      data: emailLogs
+    });
   } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }

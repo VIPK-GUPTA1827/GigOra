@@ -10,13 +10,14 @@ const AppError = require('../utils/AppError');
 const withTransaction = require('../utils/withTransaction');
 const { credit } = require('../utils/wallet');
 const { sendNotification } = require('../utils/notifications');
+const { disputeLimiter } = require('../utils/rateLimiters');
 
 const router = express.Router();
 
 // @desc    File a new dispute on a contract gig
 // @route   POST /api/disputes
 // @access  Private
-router.post('/', protect, async (req, res) => {
+router.post('/', protect, disputeLimiter, async (req, res) => {
     try {
         const { gigId, reason, explanation, evidenceFile } = req.body;
 

@@ -5,6 +5,7 @@ const fs = require('fs');
 const crypto = require('crypto');
 const { protect } = require('../middleware/auth');
 const { cloudinary, isCloudinaryConfigured } = require('../config/cloudinary');
+const { uploadLimiter } = require('../utils/rateLimiters');
 
 const router = express.Router();
 
@@ -114,7 +115,7 @@ const streamUploadToCloudinary = (buffer, folder) => {
     });
 };
 
-router.post('/', protect, handleUpload, async (req, res, next) => {
+router.post('/', protect, uploadLimiter, handleUpload, async (req, res, next) => {
     if (!req.file) {
         return res.status(400).json({ success: false, message: 'Please select a file to upload.' });
     }
