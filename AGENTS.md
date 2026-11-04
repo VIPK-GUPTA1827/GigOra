@@ -62,3 +62,14 @@ This file governs all development, refactoring, and AI operations on the **GigOr
   - Error responses: `{ success: false, message: "User friendly error message" }`
 - **Graceful Async Handling:**
   - Use async/await with clean try-catch blocks or an async handler wrapper so unhandled promise rejections never crash the process.
+
+---
+
+## 5. Web Platform & Tooling Standards (Active Plugins)
+
+- **Modern Web Guidance (Google Chrome & Microsoft Edge):**
+  - Always prefer modern native Web APIs over bloated npm packages (e.g., native Popover/Dialog API over heavy modal libraries, native `scheduler.yield` for long tasks, modern CSS container queries, `:has()`, `:user-invalid`).
+- **Chrome DevTools & Automation:**
+  - Automated debugging and network validation through Chrome DevTools and Puppeteer protocols.
+- **Data Agent Kit (Cloud & DB Best Practices):**
+  - Adhere to query indexing best practices, lean projection (`select()`), and anti-N+1 query patterns.
