@@ -45,9 +45,11 @@ const testRateLimiter = rateLimit({
     }
 });
 
-router.get('/rate-limit-test', testRateLimiter, (req, res) => {
-    res.json({ success: true, message: 'Rate limit check passed' });
-});
+if (process.env.NODE_ENV !== 'production') {
+    router.get('/rate-limit-test', testRateLimiter, (req, res) => {
+        res.json({ success: true, message: 'Rate limit check passed' });
+    });
+}
 
 
 // Helper function to generate JWT token
@@ -883,7 +885,7 @@ router.get('/me', protect, async (req, res) => {
         // req.user is populated by protect middleware
         res.json({
             success: true,
-            user: req.user
+            user: formatUserResponse(req.user)
         });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -1097,8 +1099,8 @@ router.get('/user/:id', optionalAuth, async (req, res) => {
         }
         
         if (user.role === 'freelancer') {
+            await User.updateOne({ _id: user._id }, { $inc: { profileViews: 1 } });
             user.profileViews = (user.profileViews || 0) + 1;
-            await user.save();
         }
 
         const userObj = user.toObject();
@@ -1108,6 +1110,7 @@ router.get('/user/:id', optionalAuth, async (req, res) => {
 
         // Security check: Never expose sensitive private email, wallet, or internal verification/reset tokens to public viewers
         if (!isOwner) {
+            delete userObj.tokenVersion;
             delete userObj.email;
             delete userObj.walletBalance;
             delete userObj.emailVerificationToken;
