@@ -112,6 +112,85 @@ const formatUserResponse = (user) => {
     };
 };
 
+// Real email providers only: signup rejects made-up domains like gemail.com
+const ALLOWED_EMAIL_DOMAINS = [
+    'gmail.com',
+    'googlemail.com',
+    'outlook.com',
+    'hotmail.com',
+    'hotmail.co.in',
+    'live.com',
+    'live.in',
+    'msn.com',
+    'yahoo.com',
+    'yahoo.in',
+    'ymail.com',
+    'rocketmail.com',
+    'rediffmail.com',
+    'proton.me',
+    'protonmail.com',
+    'pm.me',
+    'icloud.com',
+    'me.com',
+    'mac.com',
+    'aol.com',
+    'zoho.com',
+    'zohomail.in',
+    'yandex.com',
+    'yandex.ru',
+    'gmx.com',
+    'gmx.net',
+    'mail.com',
+    'tutanota.com',
+    'tuta.io',
+    'fastmail.com',
+    'qq.com',
+    '163.com'
+];
+
+// Common typo domains mapped to the real provider
+const EMAIL_TYPO_DOMAINS = {
+    'gemail.com': 'gmail.com',
+    'gmaill.com': 'gmail.com',
+    'gmial.com': 'gmail.com',
+    'gamil.com': 'gmail.com',
+    'gnail.com': 'gmail.com',
+    'gmail.co': 'gmail.com',
+    'gmail.con': 'gmail.com',
+    'outlok.com': 'outlook.com',
+    'outlook.co': 'outlook.com',
+    'hotmial.com': 'hotmail.com',
+    'hotmai.com': 'hotmail.com',
+    'yahooo.com': 'yahoo.com',
+    'protonmail.co': 'protonmail.com',
+    'protomail.com': 'protonmail.com',
+    'proton.com': 'proton.me',
+    'icloud.co': 'icloud.com',
+    'rediff.com': 'rediffmail.com',
+    'redifmail.com': 'rediffmail.com'
+};
+
+// Validates that the email uses a real, known provider. Returns an error payload or null.
+const validateEmailProvider = (email) => {
+    const domain = String(email).toLowerCase().trim().split('@')[1];
+    if (!domain) {
+        return { message: 'Please provide a valid email address' };
+    }
+    const typoOf = EMAIL_TYPO_DOMAINS[domain];
+    if (typoOf) {
+        return {
+            message: `"${domain}" is not a real email provider. Did you mean "${String(email).split('@')[0]}@${typoOf}"?`,
+            suggestion: `${String(email).split('@')[0]}@${typoOf}`
+        };
+    }
+    if (!ALLOWED_EMAIL_DOMAINS.includes(domain)) {
+        return {
+            message: `Sign-up is currently limited to real email providers (Gmail, Outlook, Proton, Yahoo, Rediffmail, iCloud and others). "${domain}" is not accepted.`
+        };
+    }
+    return null;
+};
+
 // @desc    Register a new user (Unified Signup: Client or Freelancer)
 // @route   POST /api/auth/register (or /signup)
 // @access  Public
@@ -122,6 +201,15 @@ router.post('/register', authLimiter, async (req, res) => {
         // Validation
         if (!email || !password) {
             return res.status(400).json({ success: false, message: 'Email and password are required' });
+        }
+
+        const emailError = validateEmailProvider(email);
+        if (emailError) {
+            return res.status(400).json({
+                success: false,
+                message: emailError.message,
+                ...(emailError.suggestion ? { suggestion: emailError.suggestion } : {})
+            });
         }
 
         const pwdValidation = validatePassword(password);
