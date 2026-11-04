@@ -258,7 +258,7 @@ router.get('/search', async (req, res) => {
             if (maxBudget) query.budget.$lte = parseFloat(maxBudget);
         }
 
-        const gigs = await Gig.find(query).populate('client', 'username email');
+        const gigs = await Gig.find(query).populate('client', 'username name avatar');
 
         res.status(200).json({ success: true, count: gigs.length, data: gigs });
     } catch (error) {
@@ -334,8 +334,8 @@ router.get('/', async (req, res) => {
         const totalCount = await Gig.countDocuments(filter);
 
         let query = Gig.find(filter)
-            .populate('client', 'username name email avatar')
-            .populate('freelancer', 'username name email avatar')
+            .populate('client', 'username name avatar')
+            .populate('freelancer', 'username name avatar')
             .sort({ createdAt: -1 });
 
         if (limit > 0) {
@@ -368,8 +368,8 @@ router.get('/:id', optionalAuth, async (req, res) => {
         }
 
         const gig = await Gig.findById(req.params.id)
-            .populate('client', 'username email')
-            .populate('freelancer', 'username email');
+            .populate('client', 'username name avatar')
+            .populate('freelancer', 'username name avatar');
 
         if (!gig) {
             return res.status(404).json({ success: false, message: 'Gig not found' });
