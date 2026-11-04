@@ -5,7 +5,7 @@ const Gig = require('../models/Gig');
 const Escrow = require('../models/Escrow');
 const Transaction = require('../models/Transaction');
 const Dispute = require('../models/Dispute');
-const { protect, authorize } = require('../middleware/auth');
+const { protect, authorize, requireVerifiedEmail } = require('../middleware/auth');
 const AppError = require('../utils/AppError');
 const withTransaction = require('../utils/withTransaction');
 const { credit } = require('../utils/wallet');
@@ -17,7 +17,7 @@ const router = express.Router();
 // @desc    File a new dispute on a contract gig
 // @route   POST /api/disputes
 // @access  Private
-router.post('/', protect, disputeLimiter, async (req, res) => {
+router.post('/', protect, requireVerifiedEmail, disputeLimiter, async (req, res) => {
     try {
         const { gigId, reason, explanation, evidenceFile } = req.body;
 

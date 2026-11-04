@@ -12,6 +12,7 @@ const validate = require('../middleware/validate');
 const { registerSchema, loginSchema } = require('../validators/auth');
 const { getTransporter } = require('../utils/mailer');
 const { validatePassword } = require('../utils/passwordValidator');
+const { checkEmail } = require('../utils/emailCheck');
 const { OAuth2Client } = require('google-auth-library');
 const rateLimit = require('express-rate-limit');
 
@@ -197,6 +198,77 @@ const validateEmailProvider = (email) => {
     return null;
 };
 
+// ---------- Email verification helpers ----------
+const fail = (res, status, message, extra = {}) =>
+    res.status(status).json({ success: false, message, ...extra });
+
+const VERIFY_COOLDOWN_MS = 60 * 1000; // resend ke beech 60 second
+
+const hashToken = (raw) =>
+    crypto.createHash('sha256').update(raw).digest('hex');
+
+// raw token mail me jaata hai, hashed token DB me
+const createVerificationToken = () => {
+    const raw = crypto.randomBytes(32).toString('hex');
+    const day = 24 * 60 * 60 * 1000;
+    return {
+        raw,
+        hashed: hashToken(raw),
+        expires: Date.now() + day
+    };
+};
+
+const sendVerificationEmail = async (user, raw, subject) => {
+    subject = subject || 'Verify your email - GigOra';
+    const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
+    const link = `${clientUrl}/verify-email/${raw}`;
+    let status = 'sent', error = '', messageId = '';
+    let previewUrl = null;
+
+    try {
+        const transporter = await getTransporter();
+        if (!transporter) throw new Error('Mail service offline');
+
+        const info = await transporter.sendMail({
+            from: typeof getSenderEmail === 'function' ? getSenderEmail() : '"GigOra" <alerts@gigora.dev>',
+            to: user.email,
+            subject,
+            text: `Verify your email: ${link}`,
+            html: `<div style="font-family: sans-serif; max-width: 560px; margin: auto; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px;">
+                    <h2 style="color: #593CFF; margin-top: 0;">Verify your GigOra Account</h2>
+                    <p>Click below to verify your email address:</p>
+                    <p style="margin: 20px 0;"><a href="${link}" style="background: #593CFF; color: white; padding: 12px 24px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block;">Verify Email</a></p>
+                    <p style="color: #64748b; font-size: 13px;">This link expires in 24 hours.</p>
+                   </div>`
+        });
+
+        messageId = info.messageId || '';
+        if (process.env.NODE_ENV !== 'production') {
+            console.log('DEV verify link:', link);
+            previewUrl = nodemailer.getTestMessageUrl(info);
+        }
+    } catch (err) {
+        status = 'failed';
+        error = err.message;
+    }
+
+    try {
+        await EmailLog.create({
+            recipient: user.email,
+            userId: user._id,
+            subject,
+            type: 'verification',
+            status,
+            error,
+            messageId
+        });
+    } catch (e) {
+        console.warn('EmailLog creation error:', e.message);
+    }
+
+    return { sent: status === 'sent', previewUrl };
+};
+
 // @desc    Register a new user (Unified Signup: Client or Freelancer)
 // @route   POST /api/auth/register (or /signup)
 // @access  Public
@@ -206,123 +278,68 @@ router.post('/register', authLimiter, validate({ body: registerSchema }), async 
 
         // Validation
         if (!email || !password) {
-            return res.status(400).json({ success: false, message: 'Email and password are required' });
+            return fail(res, 400, 'Email and password are required');
         }
 
-        const emailError = validateEmailProvider(email);
-        if (emailError) {
-            return res.status(400).json({
-                success: false,
-                message: emailError.message,
-                ...(emailError.suggestion ? { suggestion: emailError.suggestion } : {})
-            });
+        // Email format, typo, and disposable check
+        const emailCheck = checkEmail(email);
+        if (!emailCheck.ok) {
+            return fail(res, 400, emailCheck.message, { suggestion: emailCheck.suggestion });
         }
 
         const pwdValidation = validatePassword(password);
         if (!pwdValidation.valid) {
-            return res.status(400).json({ success: false, message: pwdValidation.message });
+            return fail(res, 400, pwdValidation.message);
         }
 
         const assignedRole = role === 'client' ? 'client' : 'freelancer';
-        const displayName = name || username || email.split('@')[0];
+        const displayName = name || username || emailCheck.email.split('@')[0];
         let displayUsername = (username || displayName.toLowerCase().replace(/[^a-z0-9_]/g, '_')).trim();
 
         // Check if user email already exists
-        const userExists = await User.findOne({ email: email.toLowerCase().trim() });
+        const userExists = await User.findOne({ email: emailCheck.email });
         if (userExists) {
-            return res.status(400).json({ success: false, message: 'An account already exists with this email address' });
+            return fail(res, 400, 'An account already exists with this email address');
         }
 
         // Check if username already exists
         const usernameExists = await User.findOne({ username: displayUsername });
         if (usernameExists) {
             if (username) {
-                return res.status(400).json({ 
-                    success: false, 
-                    message: `Username "${username}" is already taken. Please choose another username.` 
-                });
+                return fail(res, 400, `Username "${username}" is already taken. Please choose another username.`);
             } else {
                 displayUsername = `${displayUsername}_${Math.floor(1000 + Math.random() * 9000)}`;
             }
         }
 
-        // Generate raw verification token, hash for DB, and 24h expiry
-        const rawVerificationToken = crypto.randomBytes(32).toString('hex');
-        const hashedVerificationToken = crypto
-            .createHash('sha256')
-            .update(rawVerificationToken)
-            .digest('hex');
-        const verificationExpire = Date.now() + 24 * 60 * 60 * 1000; // 24 hours
+        const verification = createVerificationToken();
+        const autoVerify = process.env.AUTO_VERIFY_EMAIL === 'true' && process.env.NODE_ENV !== 'production';
 
-        const autoVerify = process.env.AUTO_VERIFY_EMAIL === 'true';
-        // Create user
         const user = await User.create({
             name: displayName,
             username: displayUsername,
-            email: email.toLowerCase().trim(),
+            email: emailCheck.email,
             password,
             role: assignedRole,
             isEmailVerified: autoVerify,
-            emailVerificationToken: hashedVerificationToken,
-            emailVerificationExpire: verificationExpire
+            emailVerificationToken: verification.hashed,
+            emailVerificationExpire: verification.expires,
+            emailVerificationSentAt: new Date()
         });
 
-        // Generate token and attach secure HTTP-only cookie
         const tokens = await sendAuthTokens(req, res, user);
 
-        // Background non-blocking email notification (never blocks or delays HTTP response)
-        const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
-        const verifyUrl = `${clientUrl}/verify-email/${rawVerificationToken}`;
-
-        (async () => {
-            try {
-                if (process.env.SMTP_HOST && process.env.SMTP_USER) {
-                    const transporter = await getTransporter();
-                    if (transporter) {
-                        if (!autoVerify) {
-                            await transporter.sendMail({
-                                from: getSenderEmail(),
-                                to: user.email,
-                                subject: 'Verify your GigOra email',
-                                text: `Please verify your email: ${verifyUrl}`,
-                                html: `
-                                    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; border: 1px solid #E2E8F0; border-radius: 16px; background-color: #FAF8F5;">
-                                        <h2 style="color: #030B3D; margin-top: 0; font-size: 22px;">Verify your GigOra Email</h2>
-                                        <p style="color: #475569; font-size: 14px; line-height: 1.6;">Hi ${displayName}, please verify your email address to unlock full platform features:</p>
-                                        <div style="margin: 28px 0;">
-                                            <a href="${verifyUrl}" style="background-color: #593CFF; color: #ffffff; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block;">Verify Email Address</a>
-                                        </div>
-                                        <p style="color: #94A3B8; font-size: 12px; margin-bottom: 0;">Link expires in 24 hours.</p>
-                                    </div>
-                                `
-                            });
-                        } else {
-                            await transporter.sendMail({
-                                from: getSenderEmail(),
-                                to: user.email,
-                                subject: 'Welcome to GigOra',
-                                text: `Welcome to GigOra! Your account is active. Open ${clientUrl} to get started.`,
-                                html: `
-                                    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; border: 1px solid #E2E8F0; border-radius: 16px; background-color: #FAF8F5;">
-                                        <h2 style="color: #030B3D; margin-top: 0; font-size: 22px;">Welcome to GigOra</h2>
-                                        <p style="color: #475569; font-size: 14px; line-height: 1.6;">Hi ${displayName}, your account is active and ready to use!</p>
-                                        <div style="margin: 28px 0;">
-                                            <a href="${clientUrl}" style="background-color: #593CFF; color: #ffffff; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block;">Go to Workspace</a>
-                                        </div>
-                                    </div>
-                                `
-                            });
-                        }
-                    }
-                }
-            } catch (mailErr) {
-                console.warn('Background mail dispatch warning:', mailErr.message);
-            }
-        })();
+        // Verification mail background me (response nahi rukta)
+        if (!user.isEmailVerified) {
+            sendVerificationEmail(user, verification.raw).catch((e) => console.warn('Mail:', e.message));
+        }
 
         return res.status(201).json({
             success: true,
-            message: 'Registration successful! Welcome to GigOra.',
+            message: user.isEmailVerified
+                ? 'Registration successful!'
+                : 'Registered! Please check your email.',
+            requiresVerification: !user.isEmailVerified,
             ...tokens,
             user: formatUserResponse(user)
         });
@@ -566,155 +583,92 @@ router.post('/logout-all', protect, async (req, res) => {
 // @access  Public
 router.get('/verify-email/:token', async (req, res) => {
     try {
-        const rawToken = req.params.token;
-        const hashedToken = crypto
-            .createHash('sha256')
-            .update(rawToken)
-            .digest('hex');
-
-        // Find user by hashed token and verify expiry is still valid
-        const user = await User.findOne({ 
-            emailVerificationToken: hashedToken,
-            emailVerificationExpire: { $gt: Date.now() }
+        const user = await User.findOne({
+            emailVerificationToken: hashToken(req.params.token)
         });
 
         if (!user) {
-            return res.status(400).json({ 
-                success: false, 
-                message: 'Invalid or expired verification link. Please request a new one.' 
+            return fail(res, 400, 'Invalid link. Request a new one.');
+        }
+
+        // Double click / link dobara khola: error nahi dena
+        if (user.isEmailVerified) {
+            return res.json({
+                success: true,
+                alreadyVerified: true,
+                message: 'Your email is already verified.'
             });
         }
 
+        if (!user.emailVerificationExpire || user.emailVerificationExpire < Date.now()) {
+            return fail(res, 400, 'Link expired. Request a new one.', { expired: true });
+        }
+
         user.isEmailVerified = true;
-        user.emailVerificationToken = undefined;
-        user.emailVerificationExpire = undefined;
         await user.save();
 
-        // Issue fresh session cookie on successful verification
-        const token = generateToken(user._id);
-        res.cookie('token', token, getCookieOptions());
+        const tokens = await sendAuthTokens(req, res, user);
 
-        res.status(200).json({ 
-            success: true, 
-            message: 'Email verified successfully! Your account is now active.',
-            token,
+        res.json({
+            success: true,
+            message: 'Email verified successfully!',
+            ...tokens,
             user: formatUserResponse(user)
         });
     } catch (error) {
         console.error('Email verification error:', error.message);
-        res.status(500).json({ success: false, message: error.message });
+        fail(res, 500, 'Server error');
     }
 });
 
 // @desc    Resend email verification link
 // @route   POST /api/auth/resend-verification
-// @access  Public
+// @access  Public (IP limiter + per-user 60 sec cooldown)
 router.post('/resend-verification', authLimiter, async (req, res) => {
     try {
         const { email } = req.body;
-        if (!email) {
-            return res.status(400).json({ success: false, message: 'Please provide your email address' });
+        if (!email || typeof email !== 'string') {
+            return fail(res, 400, 'Please provide your email address');
         }
 
         const user = await User.findOne({ email: email.toLowerCase().trim() });
-        if (!user) {
-            return res.status(200).json({
-                success: true,
-                message: 'If an account exists for this email, a verification link has been sent.'
-            });
-        }
+        const generic = {
+            success: true,
+            message: 'If the account exists, we sent a link.'
+        };
+
+        if (!user) return res.json(generic);
 
         if (user.isEmailVerified) {
-            return res.status(400).json({ success: false, message: 'This email is already verified. You can sign in directly.' });
+            return fail(res, 400, 'Email already verified. Please log in.');
         }
 
-        // Generate new raw token, hash, and 24h expiry
-        const rawVerificationToken = crypto.randomBytes(32).toString('hex');
-        const hashedVerificationToken = crypto
-            .createHash('sha256')
-            .update(rawVerificationToken)
-            .digest('hex');
-        const verificationExpire = Date.now() + 24 * 60 * 60 * 1000;
+        // Cooldown: 60 second ke andar dobara mail nahi
+        const sentAt = user.emailVerificationSentAt ? user.emailVerificationSentAt.getTime() : 0;
+        const wait = VERIFY_COOLDOWN_MS - (Date.now() - sentAt);
+        if (wait > 0) {
+            const retryAfter = Math.ceil(wait / 1000);
+            res.set('Retry-After', String(retryAfter));
+            return fail(res, 429, `Please wait ${retryAfter} seconds.`, { retryAfter });
+        }
 
-        user.emailVerificationToken = hashedVerificationToken;
-        user.emailVerificationExpire = verificationExpire;
+        const v = createVerificationToken();
+        user.emailVerificationToken = v.hashed;
+        user.emailVerificationExpire = v.expires;
+        user.emailVerificationSentAt = new Date();
         await user.save();
 
-        const clientUrl = process.env.CLIENT_URL || 'http://localhost:3000';
-        const verifyUrl = `${clientUrl}/verify-email/${rawVerificationToken}`;
-        let etherealUrl = null;
-
-        const transporter = await getTransporter();
-        if (!transporter) {
-            await EmailLog.create({
-                recipient: user.email.toLowerCase(),
-                userId: user._id,
-                subject: 'New Verification Link - GigOra',
-                type: 'verification',
-                status: 'failed',
-                error: 'Email delivery service is currently offline'
-            });
-            return res.status(503).json({
-                success: false,
-                message: 'Email delivery service is currently offline. Please try again later.'
-            });
+        const result = await sendVerificationEmail(user, v.raw, 'New verification link - GigOra');
+        if (!result.sent) {
+            return fail(res, 503, 'Could not send email. Try again soon.');
         }
 
-        try {
-            const info = await transporter.sendMail({
-                from: getSenderEmail(),
-                to: user.email,
-                subject: 'New Verification Link - GigOra',
-                text: `Please verify your email address: ${verifyUrl}`,
-                html: `
-                    <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 560px; margin: 0 auto; padding: 32px 24px; border: 1px solid #E2E8F0; border-radius: 16px; background-color: #FAF8F5;">
-                        <h2 style="color: #030B3D; margin-top: 0;">New verification link requested</h2>
-                        <p style="color: #475569; font-size: 14px;">Click the button below to verify your email address:</p>
-                        <div style="margin: 24px 0;">
-                            <a href="${verifyUrl}" style="background-color: #593CFF; color: white; padding: 12px 28px; border-radius: 10px; text-decoration: none; font-weight: bold; font-size: 14px; display: inline-block;">Verify Email Address</a>
-                        </div>
-                        <p style="color: #64748B; font-size: 12px;">This link will expire in 24 hours.</p>
-                    </div>
-                `
-            });
-            etherealUrl = nodemailer.getTestMessageUrl(info);
-
-            await EmailLog.create({
-                recipient: user.email.toLowerCase(),
-                userId: user._id,
-                subject: 'New Verification Link - GigOra',
-                type: 'verification',
-                status: 'sent',
-                messageId: info.messageId || ''
-            });
-
-            console.log('----------------------------------------------------');
-            console.log('✉️ RESENT VERIFICATION EMAIL TO:', user.email);
-            if (etherealUrl) console.log('🔗 ETHEREAL INBOX PREVIEW:', etherealUrl);
-            console.log('----------------------------------------------------');
-
-            return res.json({
-                success: true,
-                message: 'If an account exists for this email, a verification link has been sent.',
-                etherealUrl
-            });
-        } catch (sendErr) {
-            await EmailLog.create({
-                recipient: user.email.toLowerCase(),
-                userId: user._id,
-                subject: 'New Verification Link - GigOra',
-                type: 'verification',
-                status: 'failed',
-                error: sendErr.message
-            });
-            return res.status(502).json({
-                success: false,
-                message: `Failed to deliver verification email: ${sendErr.message}`
-            });
-        }
+        const out = { ...generic };
+        if (result.previewUrl) out.previewUrl = result.previewUrl;
+        res.json(out);
     } catch (error) {
         console.error('Resend verification error:', error.message);
-        res.status(500).json({ success: false, message: error.message });
+        fail(res, 500, 'Server error');
     }
 });
 

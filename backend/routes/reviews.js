@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const Review = require('../models/Review');
 const Gig = require('../models/Gig');
 const User = require('../models/User');
-const { protect } = require('../middleware/auth');
+const { protect, requireVerifiedEmail } = require('../middleware/auth');
 const { sendNotification } = require('../utils/notifications');
 const { reviewLimiter } = require('../utils/rateLimiters');
 
@@ -12,7 +12,7 @@ const router = express.Router();
 // @desc    Submit a review for a completed gig
 // @route   POST /api/reviews
 // @access  Private
-router.post('/', protect, reviewLimiter, async (req, res) => {
+router.post('/', protect, requireVerifiedEmail, reviewLimiter, async (req, res) => {
   try {
     const { gig: gigId, reviewee, rating, comment } = req.body;
 
