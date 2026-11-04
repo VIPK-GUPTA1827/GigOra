@@ -9,6 +9,8 @@ const { protect, authorize, requireVerifiedEmail } = require('../middleware/auth
 const AppError = require('../utils/AppError');
 const withTransaction = require('../utils/withTransaction');
 const { debit } = require('../utils/wallet');
+const validate = require('../middleware/validate');
+const { createProposalSchema, proposalStatusSchema, idParams } = require('../validators/proposal');
 const { sendNotification } = require('../utils/notifications');
 
 const rateLimit = require('express-rate-limit');
@@ -31,7 +33,7 @@ const createProposalLimiter = rateLimit({
 // @desc    Submit a new proposal/bid for a gig
 // @route   POST /api/proposals
 // @access  Private (Freelancers only with verified email)
-router.post('/', createProposalLimiter, protect, authorize('freelancer', 'admin'), requireVerifiedEmail, async (req, res) => {
+router.post('/', createProposalLimiter, protect, authorize('freelancer', 'admin'), requireVerifiedEmail, validate({ body: createProposalSchema }), async (req, res) => {
     try {
         // Only freelancers can submit proposals
         if (req.user.role !== 'freelancer' && req.user.role !== 'admin') {
@@ -239,7 +241,7 @@ router.get('/:id', protect, async (req, res) => {
 // @desc    Accept or Reject a proposal
 // @route   PUT /api/proposals/:id
 // @access  Private (Gig Owner/Client only with verified email)
-router.put('/:id', protect, authorize('client', 'admin'), requireVerifiedEmail, async (req, res) => {
+router.put('/:id', protect, authorize('client', 'admin'), requireVerifiedEmail, validate({ params: idParams, body: proposalStatusSchema }), async (req, res) => {
     const { status } = req.body;
     if (!['accepted', 'rejected'].includes(status)) {
         return res.status(400).json({

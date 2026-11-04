@@ -6,6 +6,8 @@ const nodemailer = require('nodemailer');
 const User = require('../models/User');
 const EmailLog = require('../models/EmailLog');
 const { protect, authorize, requireVerifiedEmail, optionalAuth } = require('../middleware/auth');
+const validate = require('../middleware/validate');
+const { registerSchema, loginSchema } = require('../validators/auth');
 const { getTransporter } = require('../utils/mailer');
 const { validatePassword } = require('../utils/passwordValidator');
 const { OAuth2Client } = require('google-auth-library');
@@ -194,7 +196,7 @@ const validateEmailProvider = (email) => {
 // @desc    Register a new user (Unified Signup: Client or Freelancer)
 // @route   POST /api/auth/register (or /signup)
 // @access  Public
-router.post('/register', authLimiter, async (req, res) => {
+router.post('/register', authLimiter, validate({ body: registerSchema }), async (req, res) => {
     try {
         const { name, username, email, password, role } = req.body;
 
@@ -343,7 +345,7 @@ router.post('/signup', async (req, res, next) => {
 // @desc    Authenticate user & get token (Unified Login)
 // @route   POST /api/auth/login
 // @access  Public
-router.post('/login', authLimiter, async (req, res) => {
+router.post('/login', authLimiter, validate({ body: loginSchema }), async (req, res) => {
     try {
         const { email, password } = req.body;
 

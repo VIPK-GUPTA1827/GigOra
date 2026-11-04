@@ -12,6 +12,8 @@ const { calculateSimilarity } = require('../utils/aiMatcher');
 const AppError = require('../utils/AppError');
 const withTransaction = require('../utils/withTransaction');
 const { credit } = require('../utils/wallet');
+const validate = require('../middleware/validate');
+const { createGigSchema } = require('../validators/gig');
 
 const router = express.Router();
 
@@ -39,7 +41,7 @@ const createGigLimiter = rateLimit({
 // @desc    Create a new gig
 // @route   POST /api/gigs
 // @access  Private (Clients only with verified email)
-router.post('/', createGigLimiter, protect, authorize('client', 'admin'), requireVerifiedEmail, async (req, res) => {
+router.post('/', createGigLimiter, protect, authorize('client', 'admin'), requireVerifiedEmail, validate({ body: createGigSchema }), async (req, res) => {
     try {
         // Ensure user is a client (or allow admin to post)
         if (req.user.role !== 'client' && req.user.role !== 'admin') {
