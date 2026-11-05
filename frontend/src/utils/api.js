@@ -1,5 +1,20 @@
 const BASE = import.meta.env.VITE_API_URL || '';
 
+let refreshPromise = null;
+
+async function refreshSession() {
+  if (!refreshPromise) {
+    refreshPromise = fetch(`${BASE}/api/auth/refresh`, {
+      method: 'POST',
+      credentials: 'include'
+    }).finally(() => {
+      refreshPromise = null;
+    });
+  }
+  const res = await refreshPromise;
+  return res.ok;
+}
+
 async function request(path, options = {}) {
   const isFormData = typeof FormData !== 'undefined' && options.body instanceof FormData;
   const headers = {
@@ -13,12 +28,18 @@ async function request(path, options = {}) {
     credentials: 'include'
   });
 
-  // Exclude auth check (/api/auth/me) and login attempts from auto-redirecting visitors
-  const isAuthCheck = path.includes('/api/auth/me') || path.startsWith('/api/auth/login');
-  if (res.status === 401 && !isAuthCheck) {
-    localStorage.removeItem('user');
-    if (!window.location.pathname.includes('/login')) {
-      window.location.href = '/login';
+  // Handle 401: try silent token refresh before redirecting to login
+  const isAuthPath = path === '/api/auth/refresh' || path.startsWith('/api/auth/login');
+  if (res.status === 401 && !options._retry && !isAuthPath) {
+    const refreshed = await refreshSession();
+    if (refreshed) {
+      return request(path, { ...options, _retry: true });
+    }
+    if (!path.includes('/api/auth/me')) {
+      localStorage.removeItem('user');
+      if (!window.location.pathname.includes('/login')) {
+        window.location.href = '/login';
+      }
     }
     const err = new Error('Session expired');
     err.status = 401;
@@ -32,7 +53,7 @@ async function request(path, options = {}) {
     data = { message: res.statusText || 'Request failed' };
   }
 
-  // Handle unverified email redirect (Senior's guide Step 6)
+  // Redirect unverified users to verification prompt
   if (res.status === 403 && data?.requiresVerification) {
     if (window.location.pathname !== '/check-email') {
       window.location.assign('/check-email');
