@@ -1,8 +1,10 @@
 import React, { useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './components/ProtectedRoute';
+import ErrorBoundary from './components/ErrorBoundary';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
+import { ToastProvider } from './context/ToastContext';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 
@@ -42,41 +44,45 @@ function App() {
   }, []);
 
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <Router>
-          <div className="min-h-screen text-slate-900 flex flex-col selection:bg-indigo-100 overflow-x-hidden">
-            <main className="flex-grow">
-              <Suspense fallback={<PageLoader />}>
-                <Routes>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/terms" element={<Terms />} />
-                  <Route path="/privacy" element={<Privacy />} />
-                  <Route path="/signup" element={<Signup />} />
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/forgot-password" element={<ForgotPassword />} />
-                  <Route path="/reset-password/:token" element={<ResetPassword />} />
-                  <Route path="/check-email" element={<CheckEmail />} />
-                  <Route path="/verify-email/:token" element={<VerifyEmail />} />
-                  <Route path="/client/dashboard" element={<ProtectedRoute role="client"><ClientDashboard /></ProtectedRoute>} />
-                  <Route path="/freelancer/dashboard" element={<ProtectedRoute role="freelancer"><FreelancerDashboard /></ProtectedRoute>} />
-                  <Route path="/freelancer/setup" element={<ProtectedRoute role="freelancer"><FreelancerSetupWizard /></ProtectedRoute>} />
-                  <Route path="/profile/:id" element={<PublicProfile />} />
-                  <Route path="/profile" element={<PublicProfile />} />
-                  <Route path="/profile/me" element={<PublicProfile />} />
-                  <Route path="/marketplace" element={<Marketplace />} />
-                  <Route path="/gigs" element={<Marketplace />} />
-                  <Route path="/gigs/:id" element={<GigDetail />} />
-                  <Route path="/jobs" element={<Marketplace />} />
-                  <Route path="*" element={<Navigate to="/" replace />} />
-                </Routes>
-              </Suspense>
-            </main>
-          </div>
-        </Router>
-      </AuthProvider>
-    </ThemeProvider>
+    <ErrorBoundary>
+      <ThemeProvider>
+        <AuthProvider>
+          <ToastProvider>
+            <Router>
+              <div className="min-h-screen text-slate-900 flex flex-col selection:bg-indigo-100 overflow-x-hidden">
+                <main className="flex-grow">
+                  <Suspense fallback={<PageLoader />}>
+                    <Routes>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/about" element={<About />} />
+                      <Route path="/terms" element={<Terms />} />
+                      <Route path="/privacy" element={<Privacy />} />
+                      <Route path="/signup" element={<Signup />} />
+                      <Route path="/login" element={<Login />} />
+                      <Route path="/forgot-password" element={<ForgotPassword />} />
+                      <Route path="/reset-password/:token" element={<ResetPassword />} />
+                      <Route path="/check-email" element={<CheckEmail />} />
+                      <Route path="/verify-email/:token" element={<VerifyEmail />} />
+                      <Route path="/client/dashboard" element={<ProtectedRoute role="client"><ClientDashboard /></ProtectedRoute>} />
+                      <Route path="/freelancer/dashboard" element={<ProtectedRoute role="freelancer"><FreelancerDashboard /></ProtectedRoute>} />
+                      <Route path="/freelancer/setup" element={<ProtectedRoute role="freelancer"><FreelancerSetupWizard /></ProtectedRoute>} />
+                      <Route path="/profile/:id" element={<PublicProfile />} />
+                      <Route path="/profile" element={<PublicProfile />} />
+                      <Route path="/profile/me" element={<PublicProfile />} />
+                      <Route path="/marketplace" element={<Marketplace />} />
+                      <Route path="/gigs" element={<Marketplace />} />
+                      <Route path="/gigs/:id" element={<GigDetail />} />
+                      <Route path="/jobs" element={<Marketplace />} />
+                      <Route path="*" element={<Navigate to="/" replace />} />
+                    </Routes>
+                  </Suspense>
+                </main>
+              </div>
+            </Router>
+          </ToastProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </ErrorBoundary>
   );
 }
 
