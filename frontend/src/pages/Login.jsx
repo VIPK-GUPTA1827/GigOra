@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Eye, EyeOff, AlertCircle, Loader2, ArrowLeft, ShieldCheck, Zap, Lock, Sparkles } from 'lucide-react';
+import { Eye, EyeOff, AlertCircle, Loader2, ArrowLeft, ShieldCheck, Zap, Lock } from 'lucide-react';
 import GoogleAuthButton from '../components/GoogleAuthButton';
 
 export default function Login() {
@@ -26,14 +26,25 @@ export default function Login() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({ ...prev, [field]: value }));
+    setFieldErrors(prev => ({ ...prev, [field]: '' }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setFieldErrors({});
 
-    if (!formData.email.trim() || !formData.password) {
-      setError('Please enter both email and password');
+    if (!formData.email.trim()) {
+      setFieldErrors({ email: 'Please enter your email address' });
+      return;
+    }
+    if (!formData.password) {
+      setFieldErrors({ password: 'Please enter your password' });
       return;
     }
 
@@ -48,11 +59,18 @@ export default function Login() {
       if (user.role === 'client') {
         navigate('/client/dashboard');
       } else {
-        // Direct to freelancer dashboard upon login; profile completion is prompted inside the dashboard
         navigate('/freelancer/dashboard');
       }
     } catch (err) {
-      setError(err.message || 'Invalid email or password. Please try again.');
+      const d = err.response?.data || err.data;
+      setError(d?.message || err.message || 'Invalid email or password. Please try again.');
+      if (Array.isArray(d?.errors)) {
+        const fMap = {};
+        d.errors.forEach((item) => {
+          if (item.field) fMap[item.field] = item.message;
+        });
+        setFieldErrors(fMap);
+      }
     } finally {
       setSubmitting(false);
     }
@@ -67,7 +85,7 @@ export default function Login() {
       <div className="absolute -bottom-32 left-1/3 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
 
       {/* Top Navigation Bar */}
-      <header className="w-full max-w-md mx-auto flex items-center justify-between relative z-10">
+      <header className="w-full max-w-[440px] mx-auto flex items-center justify-between relative z-10">
         <Link to="/" className="inline-flex items-center gap-2.5 group">
           <div className="w-9 h-9 rounded-xl bg-[#030B3D] text-white flex items-center justify-center font-black text-base shadow-md group-hover:scale-105 transition-transform">
             G
@@ -80,31 +98,20 @@ export default function Login() {
           className="text-xs sm:text-sm font-semibold text-slate-500 hover:text-[#593CFF] transition-colors inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-white/80"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
-          <span>Back to home</span>
+          <span>Back to Home</span>
         </Link>
       </header>
 
-      {/* Center Main Card */}
-      <main className="w-full max-w-[460px] mx-auto my-auto relative z-10 pt-4 pb-6">
-        
-        {/* Subtle Marketplace Trust Pill */}
-        <div className="flex justify-center mb-5">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-slate-200/80 shadow-xs text-xs font-semibold text-slate-600 backdrop-blur-xs">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-            <span>India's Hyperlocal Freelance Marketplace</span>
-          </div>
-        </div>
-
-        {/* Elevated White Glass Card */}
-        <div className="bg-white rounded-3xl border border-slate-200/90 shadow-[0_20px_50px_-15px_rgba(15,23,42,0.08)] p-7 sm:p-9">
+      {/* Main Login Card */}
+      <main className="w-full max-w-[440px] mx-auto my-auto relative z-10 pt-4 pb-6">
+        <div className="bg-white/90 backdrop-blur-xl border border-slate-200/80 rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-200/50">
           
-          {/* Card Header */}
-          <div className="text-center mb-7">
-            <h1 className="text-2xl sm:text-[28px] font-extrabold text-[#030B3D] tracking-tight">
-              Sign in to your account
+          <div className="text-center mb-6">
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-[#030B3D]">
+              Welcome Back
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 mt-2 font-medium">
-              Welcome back! Access your gigs, proposals, and milestones.
+            <p className="text-xs sm:text-sm text-slate-500 mt-1.5">
+              Access your dashboard, escrow wallet, and active gigs.
             </p>
           </div>
 
@@ -116,10 +123,11 @@ export default function Login() {
             </div>
           )}
 
-          {/* 1-Click Google OAuth (Primary Quick Action) */}
+          {/* 1-Click Google OAuth */}
           <div className="mb-6">
             <GoogleAuthButton 
-              text="Continue with Google" 
+              isSignup={false} 
+              text="Sign in with Google" 
               onError={(msg) => setError(msg)} 
             />
           </div>
@@ -149,9 +157,14 @@ export default function Login() {
                 required
                 placeholder="you@domain.com"
                 value={formData.email}
-                onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                className="w-full px-4 py-3 rounded-xl bg-slate-50/70 border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#593CFF] focus:bg-white transition-all shadow-2xs"
+                onChange={(e) => handleInputChange('email', e.target.value)}
+                className={`w-full px-4 py-3 rounded-xl bg-slate-50/70 border text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#593CFF] focus:bg-white transition-all shadow-2xs ${
+                  fieldErrors.email ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200'
+                }`}
               />
+              {fieldErrors.email && (
+                <p className="text-[11px] font-semibold text-rose-600 mt-1">{fieldErrors.email}</p>
+              )}
             </div>
 
             {/* Password Field */}
@@ -174,8 +187,10 @@ export default function Login() {
                   required
                   placeholder="••••••••••••"
                   value={formData.password}
-                  onChange={(e) => setFormData(prev => ({ ...prev, password: e.target.value }))}
-                  className="w-full pl-4 pr-11 py-3 rounded-xl bg-slate-50/70 border border-slate-200 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#593CFF] focus:bg-white transition-all shadow-2xs"
+                  onChange={(e) => handleInputChange('password', e.target.value)}
+                  className={`w-full pl-4 pr-11 py-3 rounded-xl bg-slate-50/70 border text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#593CFF] focus:bg-white transition-all shadow-2xs ${
+                    fieldErrors.password ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200'
+                  }`}
                 />
                 <button
                   type="button"
@@ -185,6 +200,9 @@ export default function Login() {
                   {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                 </button>
               </div>
+              {fieldErrors.password && (
+                <p className="text-[11px] font-semibold text-rose-600 mt-1">{fieldErrors.password}</p>
+              )}
             </div>
 
             {/* Submit Button */}
@@ -200,53 +218,38 @@ export default function Login() {
                     <span>Signing in...</span>
                   </>
                 ) : (
-                  <span>Sign In to GigOra</span>
+                  <span>Sign In</span>
                 )}
               </button>
-              <p className="text-[11px] text-amber-700 bg-amber-50/70 border border-amber-200/60 rounded-lg p-2 text-center mt-2.5 font-medium">
-                Preview release • Sandbox simulation (no real money)
-              </p>
             </div>
           </form>
 
-          {/* Create Account Link */}
-          <div className="mt-7 pt-5 border-t border-slate-100 text-center text-xs text-slate-600">
-            Don't have an account yet?{' '}
-            <Link to="/signup" className="font-bold text-[#593CFF] hover:underline">
-              Create an account
+          {/* Footer Link */}
+          <div className="mt-6 text-center text-xs text-slate-500">
+            Don't have an account?{' '}
+            <Link to="/signup" className="font-bold text-[#593CFF] hover:underline cursor-pointer">
+              Create one now
             </Link>
           </div>
 
         </div>
-
-        {/* Trust Badges Strip (Contra/Upwork style micro-trust) */}
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11px] font-medium text-slate-400">
-          <div className="flex items-center gap-1.5">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" />
-            <span>Milestone Escrow (Sandbox Mode)</span>
-          </div>
-          <span className="text-slate-300">•</span>
-          <div className="flex items-center gap-1.5">
-            <Zap className="w-3.5 h-3.5 text-[#593CFF]" />
-            <span>Curated Developer Showcase</span>
-          </div>
-          <span className="text-slate-300">•</span>
-          <div className="flex items-center gap-1.5">
-            <Lock className="w-3.5 h-3.5 text-slate-400" />
-            <span>256-bit Encrypted</span>
-          </div>
-        </div>
-
       </main>
 
-      {/* Footer */}
-      <footer className="text-center text-xs text-slate-400 py-3 relative z-10">
-        <div className="flex items-center justify-center gap-4 mb-1">
-          <Link to="/terms" className="hover:text-slate-600 transition-colors">Terms of Service</Link>
+      {/* Trust Badges Footer */}
+      <footer className="w-full max-w-[440px] mx-auto text-center relative z-10 pt-2">
+        <div className="flex items-center justify-center gap-4 text-[11px] text-slate-400 font-medium">
+          <span className="flex items-center gap-1">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Verified Accounts
+          </span>
           <span>•</span>
-          <Link to="/privacy" className="hover:text-slate-600 transition-colors">Privacy Policy</Link>
+          <span className="flex items-center gap-1">
+            <Zap className="w-3.5 h-3.5 text-amber-500" /> Fast Auth
+          </span>
+          <span>•</span>
+          <span className="flex items-center gap-1">
+            <Lock className="w-3.5 h-3.5 text-blue-500" /> Secure Sessions
+          </span>
         </div>
-        <p className="text-[11px]">© {new Date().getFullYear()} GigOra. All rights reserved.</p>
       </footer>
 
     </div>
