@@ -1,39 +1,31 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import api from '../utils/api';
 
 const AuthContext = createContext();
-const BASE = import.meta.env.VITE_API_URL || '';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Check current session on mount via HTTP-only cookie
+  // Check current session on mount via HTTP-only cookie with automatic 401 refresh
   useEffect(() => {
     let isMounted = true;
 
     const checkAuth = async (retries = 1) => {
       try {
-        const res = await fetch(`${BASE}/api/auth/me`, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include'
-        });
+        const data = await api.get('/api/auth/me');
 
         if (!isMounted) return;
 
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success && data.user) {
-            setUser(data.user);
-          } else {
-            setUser(null);
-          }
+        if (data.success && data.user) {
+          setUser(data.user);
         } else {
           setUser(null);
         }
       } catch (err) {
-        if (retries > 0) {
-          // Retry once after 350ms in case dev proxy was warming up
+        // Retry once on pure network failure (no HTTP status code)
+        const isNetworkError = err.status === undefined;
+        if (isNetworkError && retries > 0) {
           await new Promise((r) => setTimeout(r, 350));
           if (isMounted) return checkAuth(retries - 1);
         }
@@ -52,110 +44,40 @@ export const AuthProvider = ({ children }) => {
 
   // Register function
   const register = async ({ name, username, email, password, role }) => {
-    try {
-      const res = await fetch(`${BASE}/api/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ name, username, email, password, role })
-      });
-
-      const data = await res.json();
-
-      if (!res.ok || !data.success) {
-        const error = new Error(data.message || 'Registration failed');
-        error.data = data;
-        error.response = { status: res.status, data };
-        throw error;
-      }
-
-      if (data.requiresVerification) {
-        localStorage.setItem('pendingEmail', email);
-      } else if (data.user) {
-        setUser(data.user);
-      }
-
-      return data;
-    } catch (err) {
-      throw err;
+    const data = await api.post('/api/auth/register', { name, username, email, password, role });
+    if (data.requiresVerification) {
+      localStorage.setItem('pendingEmail', email);
+    } else if (data.user) {
+      setUser(data.user);
     }
+    return data;
   };
 
   // Login function
   const login = async ({ email, password }) => {
-    try {
-      const res = await fetch(`${BASE}/api/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ email, password })
-      });
-
-      const data = await res.json();
-
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Invalid email or password');
-      }
-
-      setUser(data.user);
-      return data.user;
-    } catch (err) {
-      throw err;
-    }
+    const data = await api.post('/api/auth/login', { email, password });
+    setUser(data.user);
+    return data.user;
   };
 
   // Google Login function
   const loginWithGoogle = async (credential, role = 'client', isSignup = false) => {
-    try {
-      const res = await fetch(`${BASE}/api/auth/google`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ credential, role, isSignup })
-      });
-
-      const data = await res.json();
-
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Google authentication failed');
-      }
-
-      setUser(data.user);
-      return data.user;
-    } catch (err) {
-      throw err;
-    }
+    const data = await api.post('/api/auth/google', { credential, role, isSignup });
+    setUser(data.user);
+    return data.user;
   };
 
   // Switch role between Client and Freelancer
   const switchRole = async () => {
-    try {
-      const res = await fetch(`${BASE}/api/auth/switch-role`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
-      });
-
-      const data = await res.json();
-
-      if (!res.ok || !data.success) {
-        throw new Error(data.message || 'Failed to switch workspace');
-      }
-
-      setUser(data.user);
-      return data.user;
-    } catch (err) {
-      throw err;
-    }
+    const data = await api.post('/api/auth/switch-role');
+    if (data.user) setUser(data.user);
+    return data.user;
   };
 
   // Logout function
   const logout = async () => {
     try {
-      await fetch(`${BASE}/api/auth/logout`, {
-        method: 'POST',
-        credentials: 'include'
-      });
+      await api.post('/api/auth/logout');
     } catch (err) {
       console.error('Logout error:', err);
     } finally {
@@ -165,7 +87,7 @@ export const AuthProvider = ({ children }) => {
 
   // Update in-memory user directly (safely merges with existing user state)
   const updateUser = (updated) => {
-    setUser(prev => {
+    setUser((prev) => {
       if (!prev) return updated;
       if (typeof updated === 'function') return updated(prev);
       return { ...prev, ...updated };
@@ -186,3 +108,5 @@ export const useAuth = () => {
   }
   return context;
 };
+
+export default AuthContext;

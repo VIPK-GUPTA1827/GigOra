@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import NotificationBell from '../components/NotificationBell';
 import { 
   Briefcase, 
@@ -360,6 +361,7 @@ export default function ClientDashboard() {
         : (isPublished ? `Project "${data.data.title}" posted successfully! Matching freelancers will now see this listing.` : `Project "${data.data.title}" saved as draft! Only you can see it until published.`);
 
       setSuccessMsg(msg);
+      toast.success(msg);
       setIsPostModalOpen(false);
       setEditingGigId(null);
       setFormData(initialFormState);
@@ -367,6 +369,7 @@ export default function ClientDashboard() {
       await fetchClientData();
     } catch (err) {
       setErrorMsg(err.message || 'Error saving project. Please try again.');
+      toast.error(err.message || 'Error saving project. Please try again.');
     } finally {
       setIsSubmittingGig(false);
     }

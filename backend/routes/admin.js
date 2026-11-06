@@ -8,6 +8,13 @@ const { protect } = require('../middleware/auth');
 
 const router = express.Router();
 
+// Safe user attributes allowlist (protects reset/verify tokens, internal versions)
+const SAFE_USER_SELECT = [
+    '_id', 'name', 'username', 'email', 'role', 'avatar',
+    'headline', 'companyName', 'isSuspended', 'verificationBadge',
+    'isEmailVerified', 'isProfileComplete', 'walletBalance', 'createdAt'
+].join(' ');
+
 // Middleware to restrict access only to admins
 const adminOnly = (req, res, next) => {
     if (req.user && req.user.role === 'admin') {
@@ -42,9 +49,10 @@ router.get('/stats', protect, adminOnly, async (req, res) => {
             .filter(e => ['held', 'partially-released'].includes(e.status))
             .reduce((sum, e) => sum + (e.amount - e.releasedAmount), 0);
 
-        // Platform Revenue (5% of all released escrow funds)
+        // Platform Revenue (Honest representation: 5% calculated benchmark, not deducted from payouts)
         const totalReleased = escrows.reduce((sum, e) => sum + (e.releasedAmount || 0), 0);
-        const platformRevenue = parseFloat((totalReleased * 0.05).toFixed(2));
+        const PLATFORM_FEE_RATE = 0.05;
+        const platformFeeCalculated = parseFloat((totalReleased * PLATFORM_FEE_RATE).toFixed(2));
 
         // Job Success Rate = Completed Gigs / (Completed + Cancelled)
         const totalFinalized = completedGigs + cancelledGigs;
@@ -69,7 +77,10 @@ router.get('/stats', protect, adminOnly, async (req, res) => {
                 },
                 payments: {
                     escrowHeld,
-                    platformRevenue,
+                    platformRevenue: platformFeeCalculated,
+                    platformFeeCalculated,
+                    platformFeeDeducted: 0,
+                    platformFeeNote: 'Calculated as 5% of released funds. Not deducted from freelancer payouts.',
                     totalReleased
                 },
                 jobSuccessRate
@@ -85,7 +96,7 @@ router.get('/stats', protect, adminOnly, async (req, res) => {
 // @access  Private (Admin Only)
 router.get('/users', protect, adminOnly, async (req, res) => {
     try {
-        const users = await User.find({}).select('-password').sort({ createdAt: -1 });
+        const users = await User.find({}).select(SAFE_USER_SELECT).sort({ createdAt: -1 });
         res.status(200).json({ success: true, count: users.length, data: users });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });

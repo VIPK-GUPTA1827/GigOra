@@ -14,6 +14,7 @@ const withTransaction = require('../utils/withTransaction');
 const { credit } = require('../utils/wallet');
 const validate = require('../middleware/validate');
 const { createGigSchema } = require('../validators/gig');
+const { getPagination } = require('../utils/paginate');
 
 const router = express.Router();
 
@@ -334,28 +335,31 @@ router.get('/', async (req, res) => {
 
         const filter = andConditions.length > 0 ? { $and: andConditions } : {};
 
-        const page = parseInt(req.query.page, 10) || 1;
-        const limit = parseInt(req.query.limit, 10) || 0;
+        const SORT_MAP = {
+            newest: { createdAt: -1 },
+            budget_asc: { budget: 1 },
+            budget_desc: { budget: -1 }
+        };
+        const sortKey = (req.query.sort || 'newest').toLowerCase();
+        const sortSpec = SORT_MAP[sortKey] || SORT_MAP.newest;
+
+        const { page, limit, skip } = getPagination(req.query, { defaultLimit: 20, maxLimit: 50 });
 
         const totalCount = await Gig.countDocuments(filter);
 
-        let query = Gig.find(filter)
+        const gigs = await Gig.find(filter)
             .populate('client', 'username name avatar')
             .populate('freelancer', 'username name avatar')
-            .sort({ createdAt: -1 });
-
-        if (limit > 0) {
-            query = query.skip((page - 1) * limit).limit(limit);
-        }
-
-        const gigs = await query;
+            .sort(sortSpec)
+            .skip(skip)
+            .limit(limit);
 
         res.status(200).json({ 
             success: true, 
             count: gigs.length, 
             totalCount,
-            page: limit > 0 ? page : 1,
-            totalPages: limit > 0 ? Math.ceil(totalCount / limit) : 1,
+            page,
+            totalPages: Math.max(1, Math.ceil(totalCount / limit)),
             data: gigs 
         });
     } catch (error) {

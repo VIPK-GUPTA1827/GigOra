@@ -1,16 +1,42 @@
-# React + Vite
+# 🎨 GigOra Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Modern, responsive web application for the GigOra marketplace built with React 19, Vite, and Tailwind CSS.
 
-Currently, two official plugins are available:
+## 🚀 Quick Start
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### 1. Install Dependencies
+```bash
+npm install
+```
 
-## React Compiler
+### 2. Configure Environment Variables
+Copy `.env.example` to `.env`:
+```bash
+cp .env.example .env
+```
+In development, `VITE_API_URL` can be left blank because Vite's dev server automatically proxies `/api` and `/socket.io` to `http://localhost:5000`.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+In production (e.g. Vercel), set:
+```env
+VITE_API_URL=https://gigora-backend.onrender.com
+```
 
-## Expanding the Oxlint configuration
+### 3. Run Development Server
+```bash
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+### 4. Build for Production
+```bash
+npm run build
+```
+
+---
+
+## ⚡ Performance & UX Highlights
+
+- **Route-Level Code Splitting**: All major pages split with `React.lazy` and `Suspense`, keeping main entry bundle under 285 KB.
+- **Resilient API Layer**: Automatic 401 token refresh queue with race condition prevention and single-flight retry.
+- **Skeleton Pulse States**: Shimmer skeletons prevent layout shift (CLS) during API fetching.
+- **Accessible Error Boundaries**: Graceful crash recovery with contextual diagnostics and recovery buttons.
+- **Toast Notifications**: Lightweight, zero-dependency contextual toast feedback (`useToast()`).

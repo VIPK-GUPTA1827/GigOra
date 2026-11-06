@@ -33,6 +33,7 @@ export default function Marketplace() {
   const minBudget = searchParams.get('minBudget') || '';
   const maxBudget = searchParams.get('maxBudget') || '';
   const page = parseInt(searchParams.get('page'), 10) || 1;
+  const sort = searchParams.get('sort') || 'newest';
 
   const [searchInput, setSearchInput] = useState(search);
   const [minInput, setMinInput] = useState(minBudget);
@@ -55,7 +56,7 @@ export default function Marketplace() {
     setSearchParams(new URLSearchParams());
   };
 
-  const hasActiveFilters = Boolean(search || category !== 'All' || minBudget || maxBudget || page > 1);
+  const hasActiveFilters = Boolean(search || category !== 'All' || minBudget || maxBudget || page > 1 || sort !== 'newest');
 
   useEffect(() => {
     setSearchInput(search);
@@ -76,6 +77,7 @@ export default function Marketplace() {
         if (category !== 'All') params.set('category', category);
         if (minBudget) params.set('minBudget', minBudget);
         if (maxBudget) params.set('maxBudget', maxBudget);
+        if (sort && sort !== 'newest') params.set('sort', sort);
 
         const res = await api.get(`/api/gigs?${params.toString()}`);
         if (!cancelled) {
@@ -92,7 +94,7 @@ export default function Marketplace() {
 
     load();
     return () => { cancelled = true; };
-  }, [search, category, minBudget, maxBudget, page, reloadKey]);
+  }, [search, category, minBudget, maxBudget, page, sort, reloadKey]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -170,6 +172,16 @@ export default function Marketplace() {
               >
                 Filter
               </button>
+              <select
+                value={sort}
+                onChange={(e) => updateParams({ sort: e.target.value === 'newest' ? '' : e.target.value })}
+                aria-label="Sort projects"
+                className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-indigo-500 bg-white text-slate-700 cursor-pointer"
+              >
+                <option value="newest">Newest First</option>
+                <option value="budget_desc">Highest Budget</option>
+                <option value="budget_asc">Lowest Budget</option>
+              </select>
             </div>
           </form>
 

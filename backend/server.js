@@ -1,4 +1,9 @@
 require('dotenv').config();
+const { assertEnv } = require('./config/env');
+
+// Validate environment variables before initializing services
+assertEnv();
+
 const http = require('http');
 const mongoose = require('mongoose');
 const app = require('./app');

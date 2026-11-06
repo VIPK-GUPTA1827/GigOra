@@ -1,5 +1,13 @@
 const BASE = import.meta.env.VITE_API_URL || '';
 
+const NO_REFRESH_PATHS = [
+  '/api/auth/refresh',
+  '/api/auth/login',
+  '/api/auth/register',
+  '/api/auth/google',
+  '/api/auth/logout'
+];
+
 let refreshPromise = null;
 
 async function refreshSession() {
@@ -29,7 +37,7 @@ async function request(path, options = {}) {
   });
 
   // Handle 401: try silent token refresh before redirecting to login
-  const isAuthPath = path === '/api/auth/refresh' || path.startsWith('/api/auth/login');
+  const isAuthPath = NO_REFRESH_PATHS.some((p) => path.startsWith(p));
   if (res.status === 401 && !options._retry && !isAuthPath) {
     const refreshed = await refreshSession();
     if (refreshed) {

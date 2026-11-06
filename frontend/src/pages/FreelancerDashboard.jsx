@@ -129,7 +129,7 @@ export default function FreelancerDashboard() {
       }
 
       if (loadedGigs.length === 0) {
-        const gigsRes = await fetch(`${BASE}/api/gigs?status=open`);
+        const gigsRes = await fetch(`${BASE}/api/gigs?status=open&limit=50`);
         const gigsData = await gigsRes.json();
         if (gigsData.success) {
           loadedGigs = gigsData.data || [];
@@ -138,7 +138,7 @@ export default function FreelancerDashboard() {
 
       // Also merge closed gigs so freelancers can inspect past/archive projects under Closed Projects tab
       try {
-        const allRes = await fetch(`${BASE}/api/gigs?status=all`);
+        const allRes = await fetch(`${BASE}/api/gigs?status=all&limit=50`);
         const allData = await allRes.json();
         if (allData.success && Array.isArray(allData.data)) {
           const openIds = new Set(loadedGigs.map(g => String(g._id)));

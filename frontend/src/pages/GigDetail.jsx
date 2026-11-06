@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, IndianRupee, MapPin, Clock, Briefcase, CheckCircle2, Loader2, Send } from 'lucide-react';
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 
 const formatINR = (n) =>
   new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n || 0);
@@ -10,6 +11,7 @@ const formatINR = (n) =>
 export default function GigDetail() {
   const { id } = useParams();
   const { user } = useAuth();
+  const { toast } = useToast();
 
   const [gig, setGig] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -56,8 +58,10 @@ export default function GigDetail() {
         estimatedTime
       });
       setSubmitted(true);
+      toast.success('Proposal submitted successfully!');
     } catch (err) {
       setSubmitError(err.message || 'Failed to send proposal');
+      toast.error(err.message || 'Failed to send proposal');
     } finally {
       setSubmitting(false);
     }
