@@ -1,26 +1,35 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import Home from './pages/Home';
-import About from './pages/About';
-import Terms from './pages/Terms';
-import Privacy from './pages/Privacy';
-import Signup from './pages/Signup';
-import Login from './pages/Login';
-import CheckEmail from './pages/CheckEmail';
-import VerifyEmail from './pages/VerifyEmail';
-import ForgotPassword from './pages/ForgotPassword';
-import ResetPassword from './pages/ResetPassword';
-import ClientDashboard from './pages/ClientDashboard';
-import FreelancerDashboard from './pages/FreelancerDashboard';
-import FreelancerSetupWizard from './pages/FreelancerSetupWizard';
-import PublicProfile from './pages/PublicProfile';
-import Marketplace from './pages/Marketplace';
-import GigDetail from './pages/GigDetail';
 import ProtectedRoute from './components/ProtectedRoute';
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+
+// Lazy loaded routes for fast initial page load (Code Splitting)
+const Home = lazy(() => import('./pages/Home'));
+const About = lazy(() => import('./pages/About'));
+const Terms = lazy(() => import('./pages/Terms'));
+const Privacy = lazy(() => import('./pages/Privacy'));
+const Signup = lazy(() => import('./pages/Signup'));
+const Login = lazy(() => import('./pages/Login'));
+const CheckEmail = lazy(() => import('./pages/CheckEmail'));
+const VerifyEmail = lazy(() => import('./pages/VerifyEmail'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
+const ClientDashboard = lazy(() => import('./pages/ClientDashboard'));
+const FreelancerDashboard = lazy(() => import('./pages/FreelancerDashboard'));
+const FreelancerSetupWizard = lazy(() => import('./pages/FreelancerSetupWizard'));
+const PublicProfile = lazy(() => import('./pages/PublicProfile'));
+const Marketplace = lazy(() => import('./pages/Marketplace'));
+const GigDetail = lazy(() => import('./pages/GigDetail'));
+
+const PageLoader = () => (
+  <div className="min-h-[60vh] flex flex-col items-center justify-center p-8">
+    <div className="w-9 h-9 border-3 border-indigo-600/20 border-t-indigo-600 rounded-full animate-spin" />
+    <span className="mt-3 text-xs font-medium text-slate-400">Loading...</span>
+  </div>
+);
 
 function App() {
   useEffect(() => {
@@ -38,29 +47,31 @@ function App() {
         <Router>
           <div className="min-h-screen text-slate-900 flex flex-col selection:bg-indigo-100 overflow-x-hidden">
             <main className="flex-grow">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/about" element={<About />} />
-                <Route path="/terms" element={<Terms />} />
-                <Route path="/privacy" element={<Privacy />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/reset-password/:token" element={<ResetPassword />} />
-                <Route path="/check-email" element={<CheckEmail />} />
-                <Route path="/verify-email/:token" element={<VerifyEmail />} />
-                <Route path="/client/dashboard" element={<ProtectedRoute role="client"><ClientDashboard /></ProtectedRoute>} />
-                <Route path="/freelancer/dashboard" element={<ProtectedRoute role="freelancer"><FreelancerDashboard /></ProtectedRoute>} />
-                <Route path="/freelancer/setup" element={<ProtectedRoute role="freelancer"><FreelancerSetupWizard /></ProtectedRoute>} />
-                <Route path="/profile/:id" element={<PublicProfile />} />
-                <Route path="/profile" element={<PublicProfile />} />
-                <Route path="/profile/me" element={<PublicProfile />} />
-                <Route path="/marketplace" element={<Marketplace />} />
-                <Route path="/gigs" element={<Marketplace />} />
-                <Route path="/gigs/:id" element={<GigDetail />} />
-                <Route path="/jobs" element={<Marketplace />} />
-                <Route path="*" element={<Navigate to="/" replace />} />
-              </Routes>
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/terms" element={<Terms />} />
+                  <Route path="/privacy" element={<Privacy />} />
+                  <Route path="/signup" element={<Signup />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/reset-password/:token" element={<ResetPassword />} />
+                  <Route path="/check-email" element={<CheckEmail />} />
+                  <Route path="/verify-email/:token" element={<VerifyEmail />} />
+                  <Route path="/client/dashboard" element={<ProtectedRoute role="client"><ClientDashboard /></ProtectedRoute>} />
+                  <Route path="/freelancer/dashboard" element={<ProtectedRoute role="freelancer"><FreelancerDashboard /></ProtectedRoute>} />
+                  <Route path="/freelancer/setup" element={<ProtectedRoute role="freelancer"><FreelancerSetupWizard /></ProtectedRoute>} />
+                  <Route path="/profile/:id" element={<PublicProfile />} />
+                  <Route path="/profile" element={<PublicProfile />} />
+                  <Route path="/profile/me" element={<PublicProfile />} />
+                  <Route path="/marketplace" element={<Marketplace />} />
+                  <Route path="/gigs" element={<Marketplace />} />
+                  <Route path="/gigs/:id" element={<GigDetail />} />
+                  <Route path="/jobs" element={<Marketplace />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </Suspense>
             </main>
           </div>
         </Router>
@@ -70,4 +81,3 @@ function App() {
 }
 
 export default App;
-
