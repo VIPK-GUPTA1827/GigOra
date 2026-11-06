@@ -116,4 +116,44 @@ describe('Auth Endpoints', () => {
     expect(res.status).toBe(400);
     expect(res.body.success).toBe(false);
   });
+
+  it('POST /api/auth/refresh rotates token and blocks reuse of consumed token', async () => {
+    await request(app)
+      .post('/api/auth/register')
+      .send({
+        name: 'Refresh Tester',
+        username: 'refreshtest',
+        email: 'refresh.test@gmail.com',
+        password: 'Password123!',
+        role: 'freelancer'
+      });
+
+    const loginRes = await request(app)
+      .post('/api/auth/login')
+      .send({
+        email: 'refresh.test@gmail.com',
+        password: 'Password123!'
+      });
+
+    const cookies = loginRes.headers['set-cookie'];
+    const refreshCookie = cookies.find((c) => c.startsWith('refreshToken='));
+    expect(refreshCookie).toBeDefined();
+
+    // 1. Silent refresh with valid refreshToken cookie
+    const refreshRes = await request(app)
+      .post('/api/auth/refresh')
+      .set('Cookie', [refreshCookie]);
+
+    expect(refreshRes.status).toBe(200);
+    expect(refreshRes.body.success).toBe(true);
+    expect(refreshRes.body.token).toBeDefined();
+
+    // 2. Reuse of consumed token must fail (Token Rotation security)
+    const reuseRes = await request(app)
+      .post('/api/auth/refresh')
+      .set('Cookie', [refreshCookie]);
+
+    expect(reuseRes.status).toBe(401);
+    expect(reuseRes.body.message).toContain('Session expired');
+  });
 });
