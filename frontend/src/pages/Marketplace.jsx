@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { Search, ArrowLeft, MapPin, Clock, Briefcase, Loader2 } from 'lucide-react';
+import { Search, ArrowLeft, MapPin, Clock, Briefcase, RefreshCw, X } from 'lucide-react';
 import api from '../utils/api';
+import { SkeletonGrid } from '../components/Skeleton';
 
 const CATEGORIES = [
   'All',
@@ -22,8 +23,10 @@ export default function Marketplace() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [gigs, setGigs] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [reloadKey, setReloadKey] = useState(0);
 
   const search = searchParams.get('search') || '';
   const category = searchParams.get('category') || 'All';
@@ -35,7 +38,7 @@ export default function Marketplace() {
   const [minInput, setMinInput] = useState(minBudget);
   const [maxInput, setMaxInput] = useState(maxBudget);
 
-  const updateParams = (updates) => {
+  const updateParams = useCallback((updates) => {
     const next = new URLSearchParams(searchParams);
     Object.entries(updates).forEach(([key, value]) => {
       if (value) next.set(key, value);
@@ -43,7 +46,16 @@ export default function Marketplace() {
     });
     if (!('page' in updates)) next.delete('page');
     setSearchParams(next);
+  }, [searchParams, setSearchParams]);
+
+  const clearAllFilters = () => {
+    setSearchInput('');
+    setMinInput('');
+    setMaxInput('');
+    setSearchParams(new URLSearchParams());
   };
+
+  const hasActiveFilters = Boolean(search || category !== 'All' || minBudget || maxBudget || page > 1);
 
   useEffect(() => {
     setSearchInput(search);
@@ -69,6 +81,7 @@ export default function Marketplace() {
         if (!cancelled) {
           setGigs(res.data || []);
           setTotalPages(res.totalPages || 1);
+          setTotalCount(res.totalCount || (res.data ? res.data.length : 0));
         }
       } catch (err) {
         if (!cancelled) setError(err.message || 'Failed to load projects');
@@ -79,7 +92,7 @@ export default function Marketplace() {
 
     load();
     return () => { cancelled = true; };
-  }, [search, category, minBudget, maxBudget, page]);
+  }, [search, category, minBudget, maxBudget, page, reloadKey]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -101,8 +114,24 @@ export default function Marketplace() {
 
       <div className="border-b border-slate-200 bg-white">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
-          <h1 className="text-2xl font-bold text-slate-900">Find your next project</h1>
-          <p className="text-sm text-slate-500 mt-1">Browse open projects posted by clients on GigOra.</p>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900">Find your next project</h1>
+              <p className="text-sm text-slate-500 mt-1">
+                Browse open gigs posted by verified clients. {!loading && totalCount > 0 && <span className="font-semibold text-indigo-600">({totalCount} available)</span>}
+              </p>
+            </div>
+            {hasActiveFilters && (
+              <button
+                type="button"
+                onClick={clearAllFilters}
+                className="self-start sm:self-auto inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-medium text-slate-600 hover:bg-slate-100 transition"
+              >
+                <X className="w-3.5 h-3.5" />
+                Clear all filters
+              </button>
+            )}
+          </div>
 
           <form onSubmit={handleSubmit} className="mt-5 flex flex-col sm:flex-row gap-2">
             <div className="relative flex-1">
@@ -111,7 +140,7 @@ export default function Marketplace() {
                 type="text"
                 value={searchInput}
                 onChange={(e) => setSearchInput(e.target.value)}
-                placeholder="Search projects, skills..."
+                placeholder="Search projects by title, skill, or keyword..."
                 aria-label="Search projects"
                 className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 outline-none"
               />
@@ -137,69 +166,104 @@ export default function Marketplace() {
               />
               <button
                 type="submit"
-                className="px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold"
+                className="px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-medium text-sm hover:bg-indigo-700 transition"
               >
-                Search
+                Filter
               </button>
             </div>
           </form>
 
-          <div className="mt-3 flex gap-2 overflow-x-auto pb-1" aria-label="Categories">
-            {CATEGORIES.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                aria-pressed={category === cat}
-                onClick={() => updateParams({ category: cat === 'All' ? '' : cat })}
-                className={`whitespace-nowrap px-3 py-1.5 rounded-full text-xs font-medium border transition ${
-                  category === cat
-                    ? 'bg-indigo-600 text-white border-indigo-600'
-                    : 'bg-white text-slate-600 border-slate-200 hover:border-slate-300'
-                }`}
-              >
-                {cat}
-              </button>
-            ))}
+          {/* Category Tabs */}
+          <div className="mt-4 flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+            {CATEGORIES.map((c) => {
+              const active = (c === 'All' && !searchParams.get('category')) || searchParams.get('category') === c;
+              return (
+                <button
+                  key={c}
+                  type="button"
+                  onClick={() => updateParams({ category: c === 'All' ? '' : c })}
+                  className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium transition ${
+                    active
+                      ? 'bg-indigo-600 text-white shadow-sm'
+                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  }`}
+                >
+                  {c}
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
 
       <main className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
+        {/* Error State with Retry Button */}
         {error && (
-          <div role="alert" className="mb-4 rounded-xl border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-            {error}
+          <div role="alert" className="mb-6 rounded-2xl border border-rose-200 bg-rose-50 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-rose-800">
+            <div>
+              <p className="font-semibold text-sm">Failed to load projects</p>
+              <p className="text-xs text-rose-600 mt-0.5">{error}</p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setReloadKey((k) => k + 1)}
+              className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-rose-600 text-white text-xs font-semibold hover:bg-rose-700 transition"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              Try again
+            </button>
           </div>
         )}
 
+        {/* Loading Skeletons */}
         {loading ? (
-          <div className="flex items-center justify-center py-20 text-slate-500 text-sm gap-2">
-            <Loader2 className="w-4 h-4 animate-spin" /> Loading projects...
-          </div>
+          <SkeletonGrid count={6} />
         ) : gigs.length === 0 ? (
-          <div className="text-center py-20">
-            <Briefcase className="w-10 h-10 text-slate-300 mx-auto mb-3" />
-            <p className="text-slate-700 font-semibold">No projects found</p>
-            <p className="text-sm text-slate-500 mt-1">Try a different search or clear the filters.</p>
+          /* Empty State */
+          <div className="text-center py-20 px-4 rounded-3xl border border-dashed border-slate-200 bg-white">
+            <div className="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-4">
+              <Briefcase className="w-8 h-8 text-indigo-500" />
+            </div>
+            <h3 className="text-slate-800 font-bold text-lg">No open projects found</h3>
+            <p className="text-sm text-slate-500 mt-1.5 max-w-md mx-auto">
+              {hasActiveFilters
+                ? 'We could not find any projects matching your current filters. Try relaxing your search criteria or clearing filters.'
+                : 'There are currently no open projects available. Check back soon or post a new gig.'}
+            </p>
+            {hasActiveFilters && (
+              <button
+                type="button"
+                onClick={clearAllFilters}
+                className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700 transition"
+              >
+                Clear all filters
+              </button>
+            )}
           </div>
         ) : (
+          /* Gigs Grid */
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {gigs.map((gig) => (
               <Link
                 key={gig._id}
                 to={`/gigs/${gig._id}`}
-                className="block rounded-2xl border border-slate-200 bg-white p-5 hover:border-indigo-300 hover:shadow-sm transition"
+                className="group block rounded-2xl border border-slate-200 bg-white p-5 hover:border-indigo-400 hover:shadow-md transition duration-200"
               >
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-[11px] font-semibold uppercase tracking-wide text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
+                  <span className="text-[11px] font-semibold uppercase tracking-wide text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full">
                     {gig.category}
                   </span>
                   <span className="text-xs text-slate-400 flex items-center gap-1">
                     <Clock className="w-3 h-3" />
-                    {new Date(gig.createdAt).toLocaleDateString('en-IN')}
+                    {new Date(gig.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
                   </span>
                 </div>
-                <h2 className="mt-3 text-base font-semibold text-slate-900 line-clamp-2">{gig.title}</h2>
-                <p className="mt-1.5 text-sm text-slate-500 line-clamp-2">{gig.description}</p>
+                <h2 className="mt-3 text-base font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-2">
+                  {gig.title}
+                </h2>
+                <p className="mt-1.5 text-sm text-slate-500 line-clamp-2 leading-relaxed">
+                  {gig.description}
+                </p>
 
                 <div className="mt-4 flex flex-wrap gap-1.5">
                   {(gig.skillsRequired || []).slice(0, 3).map((skill) => (
@@ -207,12 +271,17 @@ export default function Marketplace() {
                       {skill}
                     </span>
                   ))}
+                  {(gig.skillsRequired || []).length > 3 && (
+                    <span className="text-[11px] px-1.5 py-0.5 rounded-full bg-slate-50 text-slate-400">
+                      +{gig.skillsRequired.length - 3}
+                    </span>
+                  )}
                 </div>
 
                 <div className="mt-4 flex items-center justify-between text-xs text-slate-500 border-t border-slate-100 pt-3">
-                  <span className="font-semibold text-slate-900">{formatINR(gig.budget)}</span>
-                  <span className="flex items-center gap-1">
-                    <MapPin className="w-3.5 h-3.5" />
+                  <span className="font-bold text-slate-900 text-sm">{formatINR(gig.budget)}</span>
+                  <span className="flex items-center gap-1 capitalize">
+                    <MapPin className="w-3.5 h-3.5 text-slate-400" />
                     {gig.locationType || 'remote'}
                   </span>
                   <span>{gig.duration}</span>
@@ -222,22 +291,48 @@ export default function Marketplace() {
           </div>
         )}
 
+        {/* Enhanced Pagination Controls */}
         {!loading && totalPages > 1 && (
-          <div className="mt-8 flex items-center justify-center gap-3">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-2">
             <button
               type="button"
               disabled={page <= 1}
               onClick={() => updateParams({ page: String(page - 1) })}
-              className="px-4 py-2 rounded-xl border border-slate-200 bg-white text-sm disabled:opacity-40"
+              className="px-4 py-2 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:hover:bg-white transition"
             >
               Previous
             </button>
-            <span className="text-sm text-slate-500">Page {page} of {totalPages}</span>
+
+            {Array.from({ length: totalPages }).map((_, i) => {
+              const p = i + 1;
+              // Show current page, first, last, and immediate neighbours
+              if (p === 1 || p === totalPages || (p >= page - 1 && p <= page + 1)) {
+                return (
+                  <button
+                    key={p}
+                    type="button"
+                    onClick={() => updateParams({ page: String(p) })}
+                    className={`min-w-[36px] h-9 rounded-xl text-xs font-semibold transition ${
+                      page === p
+                        ? 'bg-indigo-600 text-white shadow-sm'
+                        : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+                    }`}
+                  >
+                    {p}
+                  </button>
+                );
+              }
+              if (p === page - 2 || p === page + 2) {
+                return <span key={p} className="text-slate-400 text-xs px-1">...</span>;
+              }
+              return null;
+            })}
+
             <button
               type="button"
               disabled={page >= totalPages}
               onClick={() => updateParams({ page: String(page + 1) })}
-              className="px-4 py-2 rounded-xl border border-slate-200 bg-white text-sm disabled:opacity-40"
+              className="px-4 py-2 rounded-xl border border-slate-200 bg-white text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-40 disabled:hover:bg-white transition"
             >
               Next
             </button>
