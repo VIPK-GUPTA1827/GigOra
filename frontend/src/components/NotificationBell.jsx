@@ -139,7 +139,7 @@ export default function NotificationBell({ userRole = 'freelancer', onNavigateTo
       case 'proposal_rejected':
         return <XCircle className="w-4 h-4 text-rose-500" />;
       case 'deliverable_submitted':
-        return <UploadCloud className="w-4 h-4 text-indigo-600" />;
+        return <UploadCloud className="w-4 h-4 text-accent-text" />;
       case 'revision_requested':
         return <AlertCircle className="w-4 h-4 text-amber-600" />;
       default:
@@ -220,7 +220,7 @@ export default function NotificationBell({ userRole = 'freelancer', onNavigateTo
                   key={notif._id}
                   onClick={() => handleNotificationClick(notif)}
                   className={`p-3.5 sm:p-4 hover:bg-slate-50 transition cursor-pointer flex items-start gap-3 relative ${
-                    !notif.read ? 'bg-indigo-50/30' : 'bg-transparent'
+                    !notif.read ? 'bg-accent-tint/30' : 'bg-transparent'
                   }`}
                 >
                   <div className="p-2 rounded-xl bg-white border border-slate-200/80 shadow-2xs shrink-0 mt-0.5">

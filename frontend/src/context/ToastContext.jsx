@@ -57,7 +57,7 @@ export function ToastProvider({ children }) {
               <div className="shrink-0 mt-0.5">
                 {isSuccess && <CheckCircle2 className="w-4 h-4 text-emerald-600" />}
                 {isError && <AlertCircle className="w-4 h-4 text-rose-600" />}
-                {!isSuccess && !isError && <Info className="w-4 h-4 text-indigo-600" />}
+                {!isSuccess && !isError && <Info className="w-4 h-4 text-accent-text" />}
               </div>
               <div className="flex-1 text-xs font-medium leading-relaxed">
                 {t.message}

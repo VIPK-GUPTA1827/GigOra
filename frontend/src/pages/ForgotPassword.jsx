@@ -81,7 +81,7 @@ export default function ForgotPassword() {
             <>
               {/* Header */}
               <div className="text-center mb-7">
-                <div className="w-14 h-14 rounded-2xl bg-purple-50 text-[#593CFF] flex items-center justify-center mx-auto mb-4">
+                <div className="w-14 h-14 rounded-2xl bg-accent-tint text-[#593CFF] flex items-center justify-center mx-auto mb-4">
                   <KeyRound className="w-7 h-7" />
                 </div>
                 <span className="text-[11px] font-bold uppercase tracking-widest text-stone-400 block mb-1">
@@ -178,7 +178,7 @@ export default function ForgotPassword() {
 
               {/* Dev mode Ethereal direct link */}
               {etherealUrl && (
-                <div className="mb-6 p-4 rounded-2xl bg-purple-50/80 border border-purple-200/80 text-left">
+                <div className="mb-6 p-4 rounded-2xl bg-accent-tint/80 border border-accent-soft/80 text-left">
                   <div className="text-[11px] font-bold uppercase tracking-wider text-[#593CFF] mb-1">
                     Development Email Preview
                   </div>
@@ -189,7 +189,7 @@ export default function ForgotPassword() {
                     href={etherealUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#593CFF] bg-white border border-purple-200 px-3 py-1.5 rounded-lg shadow-xs hover:bg-purple-100/50 transition-all"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#593CFF] bg-white border border-accent-soft px-3 py-1.5 rounded-lg shadow-xs hover:bg-purple-100/50 transition-all"
                   >
                     <span>Open in Ethereal Mailbox</span>
                     <ExternalLink className="w-3.5 h-3.5" />

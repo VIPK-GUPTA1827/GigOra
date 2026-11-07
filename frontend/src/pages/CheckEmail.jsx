@@ -104,7 +104,7 @@ export default function CheckEmail() {
         <div className="bg-white rounded-3xl border border-stone-200/80 shadow-[0_10px_35px_-10px_rgba(0,0,0,0.05)] p-6 sm:p-10 text-center">
           
           {/* Icon */}
-          <div className="w-16 h-16 rounded-2xl bg-purple-50 text-[#593CFF] flex items-center justify-center mx-auto mb-5 shadow-xs">
+          <div className="w-16 h-16 rounded-2xl bg-accent-tint text-[#593CFF] flex items-center justify-center mx-auto mb-5 shadow-xs">
             <Mail className="w-8 h-8" />
           </div>
 
@@ -137,7 +137,7 @@ export default function CheckEmail() {
 
           {/* Preview link for dev mode */}
           {previewUrl && (
-            <div className="mt-4 p-3 rounded-xl bg-indigo-50 border border-indigo-200 text-xs text-indigo-700">
+            <div className="mt-4 p-3 rounded-xl bg-accent-tint border border-accent-soft text-xs text-indigo-700">
               Dev Mode Email Preview:{' '}
               <a href={previewUrl} target="_blank" rel="noreferrer" className="underline font-bold">
                 Open Test Inbox

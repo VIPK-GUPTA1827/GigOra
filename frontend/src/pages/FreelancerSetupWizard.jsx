@@ -396,7 +396,7 @@ const FreelancerSetupWizard = () => {
                         key={skill}
                         type="button"
                         onClick={() => handleAddSkill(skill)}
-                        className="text-[11px] font-medium px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-indigo-50 hover:text-[#593CFF] border border-slate-200 transition cursor-pointer"
+                        className="text-[11px] font-medium px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-accent-tint hover:text-[#593CFF] border border-slate-200 transition cursor-pointer"
                       >
                         + {skill}
                       </button>
@@ -519,7 +519,7 @@ const FreelancerSetupWizard = () => {
                     <Sparkles className="w-3.5 h-3.5 text-[#593CFF]" />
                     Social Links & Code Repositories
                   </label>
-                  <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-bold text-accent-text bg-accent-tint px-2 py-0.5 rounded-full">
                     Optional (Boosts Trust +70%)
                   </span>
                 </div>
@@ -673,7 +673,7 @@ const FreelancerSetupWizard = () => {
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center justify-between">
                   <span>Weekly Availability</span>
-                  <span className="text-[10px] font-normal text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">Optional</span>
+                  <span className="text-[10px] font-normal text-accent-text bg-accent-tint px-2 py-0.5 rounded-full">Optional</span>
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {['10-20 hrs/week', '20-30 hrs/week', '30+ hrs/week'].map(cap => (

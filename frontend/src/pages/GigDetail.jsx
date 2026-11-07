@@ -80,7 +80,7 @@ export default function GigDetail() {
       <div className="min-h-screen flex flex-col items-center justify-center px-4 text-center">
         <Briefcase className="w-10 h-10 text-slate-300 mb-3" />
         <p className="text-slate-900 font-semibold">{error || 'Project not found'}</p>
-        <Link to="/marketplace" className="mt-4 text-sm text-indigo-600 font-semibold hover:underline">
+        <Link to="/marketplace" className="mt-4 text-sm text-accent-text font-semibold hover:underline">
           Back to marketplace
         </Link>
       </div>
@@ -102,7 +102,7 @@ export default function GigDetail() {
           <div className="lg:col-span-2 space-y-6">
             <div className="rounded-2xl border border-slate-200 bg-white p-6">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-[11px] font-semibold uppercase tracking-wide text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
+                <span className="text-[11px] font-semibold uppercase tracking-wide text-accent-text bg-accent-tint px-2 py-0.5 rounded-full">
                   {gig.category}
                 </span>
                 <span className="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">{gig.status}</span>
@@ -175,7 +175,7 @@ export default function GigDetail() {
                 {gig.client?.name || gig.client?.username || 'Client'}
               </p>
               {gig.client?._id && (
-                <Link to={`/profile/${gig.client._id}`} className="mt-1 inline-block text-xs text-indigo-600 hover:underline">
+                <Link to={`/profile/${gig.client._id}`} className="mt-1 inline-block text-xs text-accent-text hover:underline">
                   View profile
                 </Link>
               )}
@@ -192,7 +192,7 @@ export default function GigDetail() {
               {!user && (
                 <Link
                   to="/login"
-                  className="mt-4 block text-center rounded-xl bg-indigo-600 text-white text-sm font-semibold py-2.5 hover:bg-indigo-700"
+                  className="mt-4 block text-center rounded-xl bg-accent-text text-white text-sm font-semibold py-2.5 hover:bg-accent-deep"
                 >
                   Log in to apply
                 </Link>
@@ -260,7 +260,7 @@ export default function GigDetail() {
                     <button
                       type="submit"
                       disabled={submitting}
-                      className="w-full flex items-center justify-center gap-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 text-white text-sm font-semibold py-2.5"
+                      className="w-full flex items-center justify-center gap-2 rounded-xl bg-accent-text hover:bg-accent-deep disabled:opacity-60 text-white text-sm font-semibold py-2.5"
                     >
                       {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
                       {submitting ? 'Sending...' : 'Send proposal'}

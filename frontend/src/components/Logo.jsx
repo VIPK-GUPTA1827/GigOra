@@ -55,10 +55,10 @@ const Logo = ({ size = 'md', showTagline = true, to = '/' }) => {
       {/* Brand Typography */}
       <div className="flex flex-col">
         <div className="flex items-center gap-1.5">
-          <span className={`${currentSize.text} font-black tracking-tight text-slate-900 group-hover:text-indigo-600 transition-colors`}>
-            Gig<span className="text-indigo-600">Ora</span>
+          <span className={`${currentSize.text} font-black tracking-tight text-slate-900 group-hover:text-accent-text transition-colors`}>
+            Gig<span className="text-accent-text">Ora</span>
           </span>
-          <span className={`${currentSize.badge} font-bold bg-indigo-50 text-indigo-700 border border-indigo-200/80 rounded uppercase tracking-wider`}>
+          <span className={`${currentSize.badge} font-bold bg-accent-tint text-indigo-700 border border-accent-soft/80 rounded uppercase tracking-wider`}>
             IN
           </span>
         </div>

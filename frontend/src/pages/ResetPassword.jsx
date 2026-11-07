@@ -98,7 +98,7 @@ export default function ResetPassword() {
             <>
               {/* Header */}
               <div className="text-center mb-7">
-                <div className="w-14 h-14 rounded-2xl bg-purple-50 text-[#593CFF] flex items-center justify-center mx-auto mb-4">
+                <div className="w-14 h-14 rounded-2xl bg-accent-tint text-[#593CFF] flex items-center justify-center mx-auto mb-4">
                   <Lock className="w-7 h-7" />
                 </div>
                 <span className="text-[11px] font-bold uppercase tracking-widest text-stone-400 block mb-1">

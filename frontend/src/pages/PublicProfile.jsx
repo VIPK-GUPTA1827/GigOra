@@ -243,7 +243,7 @@ export default function PublicProfile() {
                     <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                       {isFreelancer ? displayName : (profileData.companyName || displayName)}
                     </h1>
-                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-[#593CFF] border border-indigo-200/60 uppercase tracking-wider">
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-accent-tint text-[#593CFF] border border-accent-soft/60 uppercase tracking-wider">
                       {profileData.role}
                     </span>
                   </div>
@@ -292,7 +292,7 @@ export default function PublicProfile() {
                 ) : (
                   <div>
                     <div className="text-xs font-bold uppercase tracking-wider text-slate-500">Client Status</div>
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 text-[#593CFF] text-xs font-bold border border-indigo-200">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-tint text-[#593CFF] text-xs font-bold border border-accent-soft">
                       <ShieldCheck className="w-3.5 h-3.5 text-[#593CFF]" />
                       Verified Hirer (Demo Sandbox)
                     </div>
@@ -337,7 +337,7 @@ export default function PublicProfile() {
                       : `https://${profileData.socialLinks?.website || profileData.companyWebsite}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#593CFF] hover:text-[#472fe0] bg-indigo-50/60 hover:bg-indigo-100/60 border border-indigo-200 px-3 py-1.5 rounded-xl transition"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#593CFF] hover:text-[#472fe0] bg-accent-tint/60 hover:bg-indigo-100/60 border border-accent-soft px-3 py-1.5 rounded-xl transition"
                   >
                     <Globe className="w-4 h-4" />
                     <span>{isFreelancer ? 'Portfolio Website' : 'Company Website'}</span>

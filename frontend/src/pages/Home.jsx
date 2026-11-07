@@ -57,7 +57,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-indigo-600 selection:text-white relative">
+    <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-accent-text selection:text-white relative">
       
       {/* 1. TOP FLOATING PILL NAVBAR */}
       <div className={`fixed top-0 left-0 right-0 z-50 transition-colors py-3 sm:py-3.5 px-3 sm:px-4 flex justify-center ${
@@ -396,7 +396,7 @@ export default function Home() {
               <div className="p-4 space-y-3 bg-slate-50/50">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-slate-800">Featured Open Gigs</span>
-                  <Link to="/marketplace" className="text-[11px] font-semibold text-indigo-600 hover:underline">
+                  <Link to="/marketplace" className="text-[11px] font-semibold text-accent-text hover:underline">
                     View all →
                   </Link>
                 </div>
@@ -414,7 +414,7 @@ export default function Home() {
                       className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-indigo-300 hover:shadow-xs transition"
                     >
                       <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-semibold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-accent-text bg-accent-tint px-2 py-0.5 rounded-full">
                           {gig.category}
                         </span>
                         <span className="text-[11px] font-bold text-slate-900">
@@ -440,7 +440,7 @@ export default function Home() {
                 <span className="text-slate-500 text-[11px]">Demo data · No real payments</span>
                 <Link
                   to="/marketplace"
-                  className="inline-flex items-center gap-1 font-bold text-[11px] text-indigo-600 hover:text-indigo-700"
+                  className="inline-flex items-center gap-1 font-bold text-[11px] text-accent-text hover:text-indigo-700"
                 >
                   Explore marketplace →
                 </Link>
@@ -515,7 +515,7 @@ export default function Home() {
               data-aos-delay="0"
               className="text-left group p-3.5 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-purple-400 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
             >
-              <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-2.5 sm:mb-3 group-hover:bg-purple-600 group-hover:text-white group-hover:scale-110 transition-all shadow-sm">
+              <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-accent-tint text-purple-600 flex items-center justify-center mb-2.5 sm:mb-3 group-hover:bg-purple-600 group-hover:text-white group-hover:scale-110 transition-all shadow-sm">
                 <Cpu className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
               </div>
               <p className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-purple-600 transition-colors truncate sm:overflow-visible">AI &amp; ML Services</p>
@@ -624,7 +624,7 @@ export default function Home() {
               <div>
                 <div className="flex items-center justify-between mb-5">
                   <span className="text-3xl font-display font-black text-[#593CFF]/30 group-hover:text-[#593CFF] transition-colors">01</span>
-                  <div className="w-11 h-11 rounded-2xl bg-purple-50 text-[#593CFF] flex items-center justify-center font-bold shadow-xs">
+                  <div className="w-11 h-11 rounded-2xl bg-accent-tint text-[#593CFF] flex items-center justify-center font-bold shadow-xs">
                     <Terminal className="w-5 h-5" />
                   </div>
                 </div>
@@ -649,7 +649,7 @@ export default function Home() {
               <div>
                 <div className="flex items-center justify-between mb-5">
                   <span className="text-3xl font-display font-black text-[#593CFF]/30 group-hover:text-[#593CFF] transition-colors">02</span>
-                  <div className="w-11 h-11 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold shadow-xs">
+                  <div className="w-11 h-11 rounded-2xl bg-accent-tint text-accent-text flex items-center justify-center font-bold shadow-xs">
                     <Layers className="w-5 h-5" />
                   </div>
                 </div>
@@ -660,7 +660,7 @@ export default function Home() {
                   Agree on the deliverables, timeline, and budget before work begins. Clear milestones help everyone stay on the same page.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-stone-100 flex items-center text-xs font-semibold text-indigo-600">
+              <div className="mt-6 pt-4 border-t border-stone-100 flex items-center text-xs font-semibold text-accent-text">
                 Phased Sprints · Clear Milestones
               </div>
             </div>
@@ -693,7 +693,7 @@ export default function Home() {
           </div>
 
           {/* Live Workflow Note */}
-          <div className="mt-10 p-4 sm:p-5 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 max-w-3xl mx-auto text-center" data-aos="fade-up">
+          <div className="mt-10 p-4 sm:p-5 rounded-2xl bg-accent-tint0/10 border border-indigo-500/20 max-w-3xl mx-auto text-center" data-aos="fade-up">
             <p className="text-xs sm:text-sm font-medium text-indigo-950">
               <strong>Notice:</strong> Proposals, milestones, reviews and delivery tracking are live. Payments are demo-only for now.
             </p>
@@ -935,7 +935,7 @@ export default function Home() {
             {/* Brand Col */}
             <div className="md:col-span-4 space-y-3">
               <div className="flex items-center gap-2">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-indigo-600 text-white font-bold text-sm">G</div>
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent-text text-white font-bold text-sm">G</div>
                 <span className="text-lg font-bold text-white tracking-tight flex items-center gap-1.5">
                   GigOra
                   <span className="text-[9px] bg-indigo-950 text-indigo-300 font-bold px-1.5 py-0.5 rounded border border-indigo-700/60">IN</span>

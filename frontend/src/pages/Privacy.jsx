@@ -8,7 +8,7 @@ export default function Privacy() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-slate-900 font-sans selection:bg-indigo-600 selection:text-white">
+    <div className="min-h-screen bg-[#FAF8F5] text-slate-900 font-sans selection:bg-accent-text selection:text-white">
       {/* Header */}
       <header className="border-b border-stone-200/80 bg-white/90 backdrop-blur-md sticky top-0 z-50 py-4 px-6 sm:px-12 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 text-sm font-bold text-[#030B3D] hover:text-[#593CFF] transition-colors">
@@ -33,7 +33,7 @@ export default function Privacy() {
         </div>
 
         {/* Current Architecture Notice */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-indigo-50 border border-indigo-200 text-indigo-950 text-xs sm:text-sm leading-relaxed mb-8 text-left flex items-start gap-3">
+        <div className="p-4 sm:p-5 rounded-2xl bg-accent-tint border border-accent-soft text-indigo-950 text-xs sm:text-sm leading-relaxed mb-8 text-left flex items-start gap-3">
           <Shield className="w-5 h-5 text-[#593CFF] shrink-0 mt-0.5" />
           <div>
             <span className="font-bold block text-indigo-950 mb-1">Live Preview Architecture Disclosure</span>

@@ -275,7 +275,7 @@ export default function Signup() {
               )}
 
               {suggestion && (
-                <div className="mt-2 p-2.5 rounded-xl bg-purple-50 border border-purple-200/90 text-xs text-purple-900 flex items-center justify-between gap-2 animate-in fade-in">
+                <div className="mt-2 p-2.5 rounded-xl bg-accent-tint border border-accent-soft/90 text-xs text-purple-900 flex items-center justify-between gap-2 animate-in fade-in">
                   <span>Did you mean <b>{suggestion}</b>?</span>
                   <button
                     type="button"

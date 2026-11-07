@@ -4,14 +4,14 @@ export const THEMES = {
     name: 'Soft Lavender',
     colorHex: '#6366F1',
     tag: 'Creative & Iris',
-    btnPrimary: 'bg-indigo-600 hover:bg-indigo-700 text-white',
-    textAccent: 'text-indigo-600',
+    btnPrimary: 'bg-accent-text hover:bg-accent-deep text-white',
+    textAccent: 'text-accent-text',
     textDark: 'text-indigo-800',
-    badge: 'bg-indigo-50 text-indigo-800 border-indigo-200/80',
+    badge: 'bg-accent-tint text-indigo-800 border-accent-soft/80',
     borderActive: 'border-indigo-500',
     shadowGlow: 'shadow-indigo-600/20',
     gradient: 'from-indigo-600 to-violet-600',
-    bgLight: 'bg-indigo-50/50',
+    bgLight: 'bg-accent-tint/50',
     bodyBg: '#FAF9FE'
   },
   blue: {

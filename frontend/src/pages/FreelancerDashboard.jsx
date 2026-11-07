@@ -835,7 +835,7 @@ export default function FreelancerDashboard() {
 
         {/* Incomplete Profile Prompt Banner */}
         {(!user.skills || user.skills.length === 0) && (
-          <div className="p-5 rounded-3xl bg-indigo-50/80 border border-indigo-200/70 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
+          <div className="p-5 rounded-3xl bg-accent-tint/80 border border-accent-soft/70 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
             <div className="flex items-start gap-3.5">
               <div className="w-10 h-10 rounded-2xl bg-[#0F766E] text-white flex items-center justify-center shrink-0 shadow-xs">
                 <Sparkles className="w-5 h-5" />
@@ -1128,7 +1128,7 @@ export default function FreelancerDashboard() {
                     <div className="space-y-3">
                       <div className="flex items-center justify-between gap-2">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-100">
+                          <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-md bg-accent-tint text-indigo-700 border border-indigo-100">
                             {gig.category || 'General'}
                           </span>
                           {gig.isDemo || gig.isSample ? (
@@ -1206,7 +1206,7 @@ export default function FreelancerDashboard() {
                           {gig.matchReasons
                             .filter(r => !r.toLowerCase().includes('skills match')) // avoid duplicate skill match banner
                             .map((reason, rIdx) => (
-                              <span key={rIdx} className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-700 border border-indigo-200/70">
+                              <span key={rIdx} className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-accent-tint text-indigo-700 border border-accent-soft/70">
                                 ✓ {reason}
                               </span>
                             ))}
@@ -1319,7 +1319,7 @@ export default function FreelancerDashboard() {
           </>
           ) : (
             <div className="bg-white rounded-3xl border border-slate-200/80 p-12 text-center">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-[#0F766E] flex items-center justify-center mx-auto mb-3">
+              <div className="w-12 h-12 rounded-2xl bg-accent-tint text-[#0F766E] flex items-center justify-center mx-auto mb-3">
                 <Briefcase className="w-6 h-6" />
               </div>
               <h3 className="text-base font-extrabold text-[#030B3D]">No gigs currently in this category</h3>
@@ -1449,7 +1449,7 @@ export default function FreelancerDashboard() {
                                 {contract.status === 'in-progress' ? 'Active Contract' : contract.status}
                               </span>
 
-                              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-[#0F766E] border border-indigo-100 flex items-center gap-1">
+                              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-accent-tint text-[#0F766E] border border-indigo-100 flex items-center gap-1">
                                 <ShieldCheck className="w-3 h-3 text-[#0F766E]" />
                                 Demo Escrow Funded
                               </span>
@@ -1663,7 +1663,7 @@ export default function FreelancerDashboard() {
                 </div>
               ) : (
                 <div className="bg-white rounded-3xl border border-slate-200/80 p-8 text-center space-y-2">
-                  <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-[#0F766E] flex items-center justify-center mx-auto mb-2">
+                  <div className="w-12 h-12 rounded-2xl bg-accent-tint text-[#0F766E] flex items-center justify-center mx-auto mb-2">
                     <Briefcase className="w-6 h-6" />
                   </div>
                   <h4 className="font-bold text-sm text-[#030B3D]">No Active Contracts</h4>
@@ -2145,7 +2145,7 @@ export default function FreelancerDashboard() {
           <div className="bg-white rounded-3xl border border-slate-200/90 shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
             <div className="p-6 border-b border-slate-100 flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#0F766E] bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-100">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#0F766E] bg-accent-tint px-2.5 py-0.5 rounded-full border border-indigo-100">
                   Step 6 • Work Tracking
                 </span>
                 <h3 className="font-extrabold text-base text-[#030B3D] mt-1">
@@ -2216,7 +2216,7 @@ export default function FreelancerDashboard() {
                   />
                 </div>
 
-                <div className="p-3 rounded-xl bg-indigo-50/60 border border-indigo-100 text-[11px] text-slate-600 space-y-1">
+                <div className="p-3 rounded-xl bg-accent-tint/60 border border-indigo-100 text-[11px] text-slate-600 space-y-1">
                   <div className="font-bold text-[#030B3D] flex items-center gap-1.5">
                     <ShieldCheck className="w-3.5 h-3.5 text-[#0F766E]" />
                     <span>Demo Escrow Protection</span>

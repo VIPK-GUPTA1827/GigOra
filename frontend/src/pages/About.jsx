@@ -8,7 +8,7 @@ export default function About() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-slate-900 font-sans selection:bg-indigo-600 selection:text-white">
+    <div className="min-h-screen bg-[#FAF8F5] text-slate-900 font-sans selection:bg-accent-text selection:text-white">
       {/* Header */}
       <header className="border-b border-stone-200/80 bg-white/90 backdrop-blur-md sticky top-0 z-50 py-4 px-6 sm:px-12 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 text-sm font-bold text-[#030B3D] hover:text-[#593CFF] transition-colors">
@@ -35,7 +35,7 @@ export default function About() {
         </div>
 
         {/* Live Preview Callout */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-indigo-50/80 border border-indigo-200/80 text-indigo-950 text-xs sm:text-sm flex items-start gap-3 mb-8 text-left">
+        <div className="p-4 sm:p-5 rounded-2xl bg-accent-tint/80 border border-accent-soft/80 text-indigo-950 text-xs sm:text-sm flex items-start gap-3 mb-8 text-left">
           <AlertCircle className="w-5 h-5 text-[#593CFF] shrink-0 mt-0.5" />
           <div>
             <span className="font-bold block text-indigo-950 mb-0.5">Live Preview</span>
@@ -76,7 +76,7 @@ export default function About() {
             </div>
 
             <div className="p-5 rounded-2xl bg-[#FAF8F5] border border-stone-200/80 space-y-2">
-              <div className="h-10 w-10 rounded-xl bg-white border border-stone-200 text-indigo-600 flex items-center justify-center font-bold">
+              <div className="h-10 w-10 rounded-xl bg-white border border-stone-200 text-accent-text flex items-center justify-center font-bold">
                 <ShieldCheck className="h-5 w-5" />
               </div>
               <h3 className="font-bold text-[#030B3D] text-base">Milestone Clarity</h3>

@@ -39,7 +39,7 @@ export function evaluatePassword(password = '') {
     { label: '', color: 'bg-stone-200', text: 'text-stone-400' },
     { label: isCommon ? 'Too Common' : 'Weak', color: 'bg-rose-500', text: 'text-rose-600' },
     { label: 'Fair', color: 'bg-amber-500', text: 'text-amber-600' },
-    { label: 'Good', color: 'bg-indigo-500', text: 'text-indigo-600' },
+    { label: 'Good', color: 'bg-accent-tint0', text: 'text-accent-text' },
     { label: 'Strong', color: 'bg-emerald-500', text: 'text-emerald-600' }
   ];
 
