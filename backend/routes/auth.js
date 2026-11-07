@@ -402,6 +402,7 @@ router.post('/login', authLimiter, validate({ body: loginSchema }), async (req, 
             return res.status(403).json({
                 success: false,
                 requiresVerification: true,
+                email: user.email,
                 message: 'Please verify your email before logging in. Check your inbox.'
             });
         }
