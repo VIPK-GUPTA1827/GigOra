@@ -766,13 +766,7 @@ export default function ClientDashboard() {
                 ))}
               </div>
 
-              <button
-                onClick={handleOpenCreateModal}
-                className="inline-flex items-center gap-1.5 bg-[#0F766E] hover:bg-[#115E59] text-white font-bold text-xs px-3.5 py-1.5 rounded-xl shadow-xs transition cursor-pointer"
-              >
-                <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
-                <span>New Project</span>
-              </button>
+
             </div>
 
             {loadingData ? (

@@ -240,7 +240,7 @@ export default function PublicProfile() {
                   )}
                 </div>
 
-                <div className="space-y-1 pb-1">
+                <div className="space-y-1 pb-1 pt-2 sm:pt-4">
                   <div className="flex items-center gap-2 flex-wrap">
                     <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                       {isFreelancer ? displayName : (profileData.companyName || displayName)}
