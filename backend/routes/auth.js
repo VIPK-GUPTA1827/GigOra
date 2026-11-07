@@ -115,7 +115,8 @@ const formatUserResponse = (user) => {
         verificationBadge: Boolean(user.verificationBadge),
         walletBalance: user.walletBalance || 0,
         rating: user.rating || 0,
-        reviewCount: user.reviewCount || 0
+        reviewCount: user.reviewCount || 0,
+        createdAt: user.createdAt
     };
 };
 
