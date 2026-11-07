@@ -3,6 +3,8 @@ import { useNavigate, Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import NotificationBell from '../components/NotificationBell';
+import DashboardLayout from '../components/layout/DashboardLayout';
+import { Button, Card, StatCard, PageHeader, BarChart } from '../components/ui';
 import { 
   Briefcase, 
   Plus, 
@@ -565,84 +567,53 @@ export default function ClientDashboard() {
     ? realProposals
     : realProposals.filter(p => (p.gig?._id || p.gig) === selectedGigFilter);
 
+  // 7-day proposals trend calculation for BarChart
+  const last7Days = Array.from({ length: 7 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - (6 - i));
+    return d.toISOString().split('T')[0];
+  });
+  const dayLabels = last7Days.map(dStr => {
+    const date = new Date(dStr);
+    return date.toLocaleDateString('en-US', { weekday: 'short' });
+  });
+  const proposalsPerDay = last7Days.map(dayStr => {
+    return (realProposals || []).filter(p => p.createdAt && p.createdAt.startsWith(dayStr)).length;
+  });
+
+  const clientNav = [
+    { key: 'projects', label: 'My gigs', icon: Layers, active: activeTab === 'projects', onClick: () => setActiveTab('projects') },
+    { key: 'proposals', label: 'Proposals', icon: Users, active: activeTab === 'proposals', onClick: () => setActiveTab('proposals') },
+    { key: 'profile', label: 'Company', icon: Building2, active: activeTab === 'profile', onClick: () => setActiveTab('profile') },
+  ];
+
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex flex-col font-sans text-slate-900">
-      {/* Top Navbar */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <span className="font-black text-xl text-slate-900 tracking-tight flex items-center gap-1.5">
-              <span className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#593CFF] to-[#3B82F6] flex items-center justify-center text-white text-sm font-black shadow-sm">
-                G
-              </span>
-              GigOra
-            </span>
-            <span className="text-xs font-bold bg-indigo-50 text-[#593CFF] px-2.5 py-0.5 rounded-full border border-indigo-200/60 hidden sm:inline-flex items-center gap-1">
-              <Briefcase className="w-3 h-3" />
-              Client Workspace
-            </span>
-          </div>
-
-          <div className="flex items-center gap-2 sm:gap-3">
-            <button
-              onClick={handleSwitchRole}
-              disabled={switching}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#593CFF] hover:text-[#472fe0] bg-[#593CFF]/10 hover:bg-[#593CFF]/15 border border-[#593CFF]/30 px-3 py-1.5 rounded-lg transition cursor-pointer disabled:opacity-50"
-              title="Switch to Freelancer perspective"
-            >
-              <ArrowRightLeft className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">{switching ? 'Switching...' : 'Switch to Freelancer View'}</span>
-              <span className="sm:hidden">Freelancer</span>
-            </button>
-
-            <div className="h-4 w-px bg-slate-200 hidden sm:block" />
-
-            <Link
-              to="/profile/me"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 border border-slate-200 px-3 py-1.5 rounded-lg transition"
-              title="View Public Profile"
-            >
-              <Eye className="w-3.5 h-3.5 text-slate-500" />
-              <span className="hidden sm:inline">View Public Profile</span>
-            </Link>
-
-            {/* In-App Notifications Bell */}
-            <NotificationBell 
-              userRole="client" 
-              onNavigateToGig={(gigId, notifType, destinationUrl) => {
-                if (destinationUrl) {
-                  const urlParams = new URLSearchParams(destinationUrl.split('?')[1]);
-                  const tab = urlParams.get('tab');
-                  if (tab) {
-                    setActiveTab(tab);
-                    return;
-                  }
-                }
-                if (notifType === 'proposal_submitted') {
-                  setActiveTab('proposals');
-                } else {
-                  setActiveTab('projects');
-                }
-              }} 
-            />
-
-            <div className="text-xs text-slate-600 hidden md:block">
-              <strong className="text-slate-900 font-semibold">{user.companyName || user.name || user.username}</strong>
-            </div>
-
-            <button
-              onClick={handleLogout}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-rose-600 hover:text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-3 py-1.5 rounded-lg transition cursor-pointer"
-            >
-              <LogOut className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Sign out</span>
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Container */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full space-y-6">
+    <DashboardLayout
+      title="Client dashboard"
+      role="client"
+      user={user}
+      nav={clientNav}
+      onSwitchRole={handleSwitchRole}
+      switching={switching}
+      onLogout={handleLogout}
+      sidebarFooter={<span>Demo balance ₹{(user?.walletBalance || 0).toLocaleString('en-IN')}</span>}
+      headerRight={
+        <NotificationBell 
+          userRole="client" 
+          onNavigateToGig={(gigId, notifType, destinationUrl) => {
+            if (destinationUrl) {
+              const urlParams = new URLSearchParams(destinationUrl.split('?')[1]);
+              const tab = urlParams.get('tab');
+              if (tab) {
+                setActiveTab(tab);
+                return;
+              }
+            }
+            setActiveTab(notifType === 'proposal_submitted' ? 'proposals' : 'projects');
+          }} 
+        />
+      }
+    >
         {/* Email Verification Banner */}
         {!user.isEmailVerified && (
           <div className="p-4 rounded-2xl bg-amber-50/90 border border-amber-200 text-amber-900 text-xs sm:text-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs">
@@ -682,78 +653,32 @@ export default function ClientDashboard() {
           </div>
         )}
 
-        {/* Hero Header & Post Action */}
-        <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-6 relative overflow-hidden">
-          <div className="absolute -right-16 -top-16 w-64 h-64 bg-indigo-50/50 rounded-full blur-3xl pointer-events-none" />
-          <div className="space-y-1.5 z-10">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-semibold">
-              <Sparkles className="w-3.5 h-3.5 text-[#593CFF]" />
-              Direct Client Hiring Hub
-            </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-              Welcome back, {user.name || user.username}!
-            </h1>
-            <p className="text-sm text-slate-500 max-w-xl">
-              Post freelance projects with exact skills required, review transparent candidate bids, and collaborate directly with skilled MERN & Python developers.
-            </p>
-          </div>
+        {/* Page Header */}
+        <PageHeader
+          title={`Hi, ${user.name || user.username}`}
+          subtitle="Post a project, compare proposals, and keep track of work in progress."
+          action={
+            <Button icon={Plus} onClick={handleOpenCreateModal} className="w-full sm:w-auto">
+              Post a project
+            </Button>
+          }
+        />
 
-          <div className="z-10 shrink-0 flex items-center gap-3">
-            <button
-              onClick={handleOpenCreateModal}
-              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#593CFF] hover:bg-[#472fe0] text-white font-bold text-sm px-6 py-3.5 rounded-xl shadow-md hover:shadow-lg transition cursor-pointer"
-            >
-              <Plus className="w-4 h-4 stroke-[2.5]" />
-              <span>Post a Project</span>
-            </button>
-          </div>
+        {/* 3 Clean Stat Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <StatCard label="Open projects" value={activeGigsCount} hint="Accepting proposals" icon={Briefcase} />
+          <StatCard label="Proposals received" value={totalProposalsCount} hint="From freelancers" icon={Users} />
+          <StatCard label="In progress" value={inProgressCount} hint="Contracts underway" icon={Clock} />
         </div>
 
-        {/* Metrics Row */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
-            <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-xs font-semibold text-slate-500">Active Postings</span>
-              <Briefcase className="w-4 h-4 text-indigo-500" />
-            </div>
-            <div className="text-2xl font-black text-slate-900">{activeGigsCount}</div>
-            <div className="text-[11px] text-emerald-600 font-medium mt-1 flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 inline-block"></span> Open for proposals
-            </div>
+        {/* Proposals, last 7 days BarChart */}
+        <Card>
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-sm font-semibold text-ink">Proposals, last 7 days</p>
+            <p className="text-xs text-muted">{realProposals.length} in total</p>
           </div>
-
-          <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
-            <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-xs font-semibold text-slate-500">Total Bids Received</span>
-              <Users className="w-4 h-4 text-blue-500" />
-            </div>
-            <div className="text-2xl font-black text-slate-900">{totalProposalsCount}</div>
-            <div className="text-[11px] text-slate-500 font-medium mt-1">From real developers</div>
-          </div>
-
-          <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
-            <div className="flex items-center justify-between text-slate-400 mb-2">
-              <span className="text-xs font-semibold text-slate-500">In Progress</span>
-              <Clock className="w-4 h-4 text-amber-500" />
-            </div>
-            <div className="text-2xl font-black text-slate-900">{inProgressCount}</div>
-            <div className="text-[11px] text-slate-500 font-medium mt-1">Contracts underway</div>
-          </div>
-
-          <div className="bg-amber-50/40 p-5 rounded-2xl border border-amber-200/80 shadow-xs">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-bold uppercase tracking-wider text-amber-900">Test Balance</span>
-                <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-amber-100 text-amber-800 border border-amber-300">
-                  Sandbox
-                </span>
-              </div>
-              <Wallet className="w-4 h-4 text-amber-600" />
-            </div>
-            <div className="text-2xl font-black text-amber-950">₹{(user.walletBalance || 0).toLocaleString('en-IN')}</div>
-            <div className="text-[11px] text-amber-800/90 font-semibold mt-1">⚠️ Sandbox Demo • No Real Currency</div>
-          </div>
-        </div>
+          <BarChart values={proposalsPerDay} labels={dayLabels} label="Proposals received per day, last 7 days" />
+        </Card>
 
         {/* Tab Switcher */}
         <div className="flex items-center justify-between border-b border-slate-200 pt-2">
@@ -762,7 +687,7 @@ export default function ClientDashboard() {
               onClick={() => setActiveTab('projects')}
               className={`pb-3 text-sm font-bold flex items-center gap-2 border-b-2 transition cursor-pointer ${
                 activeTab === 'projects'
-                  ? 'border-[#593CFF] text-[#593CFF]'
+                  ? 'border-[#0F766E] text-[#0F766E]'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
               }`}
             >
@@ -774,7 +699,7 @@ export default function ClientDashboard() {
               onClick={() => setActiveTab('proposals')}
               className={`pb-3 text-sm font-bold flex items-center gap-2 border-b-2 transition cursor-pointer ${
                 activeTab === 'proposals'
-                  ? 'border-[#593CFF] text-[#593CFF]'
+                  ? 'border-[#0F766E] text-[#0F766E]'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
               }`}
             >
@@ -786,7 +711,7 @@ export default function ClientDashboard() {
               onClick={() => setActiveTab('profile')}
               className={`pb-3 text-sm font-bold flex items-center gap-2 border-b-2 transition cursor-pointer ${
                 activeTab === 'profile'
-                  ? 'border-[#593CFF] text-[#593CFF]'
+                  ? 'border-[#0F766E] text-[#0F766E]'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
               }`}
             >
@@ -801,7 +726,7 @@ export default function ClientDashboard() {
               <select
                 value={selectedGigFilter}
                 onChange={(e) => setSelectedGigFilter(e.target.value)}
-                className="text-xs bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 font-medium text-slate-700 outline-none focus:border-[#593CFF]"
+                className="text-xs bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 font-medium text-slate-700 outline-none focus:border-[#0F766E]"
               >
                 <option value="all">All Projects ({proposals.length})</option>
                 {myGigs.map(g => (
@@ -832,7 +757,7 @@ export default function ClientDashboard() {
                     onClick={() => setProjectStatusFilter(tab.id)}
                     className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
                       projectStatusFilter === tab.id
-                        ? 'bg-[#593CFF] text-white shadow-xs'
+                        ? 'bg-[#0F766E] text-white shadow-xs'
                         : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
                     }`}
                   >
@@ -843,7 +768,7 @@ export default function ClientDashboard() {
 
               <button
                 onClick={handleOpenCreateModal}
-                className="inline-flex items-center gap-1.5 bg-[#593CFF] hover:bg-[#472fe0] text-white font-bold text-xs px-3.5 py-1.5 rounded-xl shadow-xs transition cursor-pointer"
+                className="inline-flex items-center gap-1.5 bg-[#0F766E] hover:bg-[#115E59] text-white font-bold text-xs px-3.5 py-1.5 rounded-xl shadow-xs transition cursor-pointer"
               >
                 <Plus className="w-3.5 h-3.5 stroke-[2.5]" />
                 <span>New Project</span>
@@ -856,7 +781,7 @@ export default function ClientDashboard() {
               </div>
             ) : realMyGigs.length === 0 ? (
               <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center space-y-4">
-                <div className="w-16 h-16 rounded-2xl bg-indigo-50 text-[#593CFF] flex items-center justify-center mx-auto">
+                <div className="w-16 h-16 rounded-2xl bg-indigo-50 text-[#0F766E] flex items-center justify-center mx-auto">
                   <Briefcase className="w-8 h-8" />
                 </div>
                 <div className="space-y-1 max-w-md mx-auto">
@@ -867,7 +792,7 @@ export default function ClientDashboard() {
                 </div>
                 <button
                   onClick={handleOpenCreateModal}
-                  className="inline-flex items-center gap-2 bg-[#593CFF] hover:bg-[#472fe0] text-white font-bold text-xs px-5 py-2.5 rounded-xl transition cursor-pointer"
+                  className="inline-flex items-center gap-2 bg-[#0F766E] hover:bg-[#115E59] text-white font-bold text-xs px-5 py-2.5 rounded-xl transition cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Post First Project</span>
@@ -882,7 +807,7 @@ export default function ClientDashboard() {
                 <p className="text-xs text-slate-500">Switch filter to 'All' or create a new project listing.</p>
                 <button
                   onClick={() => setProjectStatusFilter('all')}
-                  className="text-xs font-bold text-[#593CFF] hover:underline pt-1 cursor-pointer"
+                  className="text-xs font-bold text-[#0F766E] hover:underline pt-1 cursor-pointer"
                 >
                   View all projects
                 </button>
@@ -933,7 +858,7 @@ export default function ClientDashboard() {
                               </span>
                             )}
                           </div>
-                          <h2 className="text-lg font-bold text-slate-900 hover:text-[#593CFF] transition">
+                          <h2 className="text-lg font-bold text-slate-900 hover:text-[#0F766E] transition">
                             {gig.title}
                           </h2>
                         </div>
@@ -970,7 +895,7 @@ export default function ClientDashboard() {
                         <div className="bg-slate-50/90 rounded-2xl p-4 sm:p-5 border border-slate-200/90 space-y-3.5">
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/60 pb-3">
                             <div className="flex items-center gap-2">
-                              <div className="w-8 h-8 rounded-xl bg-indigo-50 text-[#593CFF] flex items-center justify-center">
+                              <div className="w-8 h-8 rounded-xl bg-indigo-50 text-[#0F766E] flex items-center justify-center">
                                 <Layers className="w-4 h-4" />
                               </div>
                               <div>
@@ -987,7 +912,7 @@ export default function ClientDashboard() {
                             </div>
 
                             <div className="text-xs text-slate-500 font-medium">
-                              Progress: <strong className="text-[#593CFF] font-bold">
+                              Progress: <strong className="text-[#0F766E] font-bold">
                                 {(gig.milestones || []).filter(m => m.status === 'completed').length} / {(gig.milestones || []).length} Milestones Completed
                               </strong>
                             </div>
@@ -1081,9 +1006,9 @@ export default function ClientDashboard() {
                                             href={m.deliverableUrl.startsWith('http') ? m.deliverableUrl : `https://${m.deliverableUrl}`} 
                                             target="_blank" 
                                             rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#593CFF] hover:underline bg-indigo-50/70 border border-indigo-100 px-3 py-1.5 rounded-lg"
+                                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0F766E] hover:underline bg-indigo-50/70 border border-indigo-100 px-3 py-1.5 rounded-lg"
                                           >
-                                            <ExternalLink className="w-3.5 h-3.5 text-[#593CFF]" />
+                                            <ExternalLink className="w-3.5 h-3.5 text-[#0F766E]" />
                                             <span>Open Deliverable URL</span>
                                           </a>
                                         </div>
@@ -1156,7 +1081,7 @@ export default function ClientDashboard() {
                             {new Date(gig.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
                           </span>
                           {gig.status !== 'draft' && (
-                            <span className="flex items-center gap-1 font-semibold text-[#593CFF]">
+                            <span className="flex items-center gap-1 font-semibold text-[#0F766E]">
                               <Users className="w-3.5 h-3.5" />
                               {gig.proposalCount || 0} candidate {gig.proposalCount === 1 ? 'proposal' : 'proposals'}
                             </span>
@@ -1258,7 +1183,7 @@ export default function ClientDashboard() {
 
                               <button
                                 onClick={() => handleOpenEditModal(gig)}
-                                className="inline-flex items-center gap-1 text-xs font-bold text-slate-700 hover:text-[#593CFF] bg-slate-100 hover:bg-indigo-50 px-3 py-1.5 rounded-lg transition cursor-pointer"
+                                className="inline-flex items-center gap-1 text-xs font-bold text-slate-700 hover:text-[#0F766E] bg-slate-100 hover:bg-indigo-50 px-3 py-1.5 rounded-lg transition cursor-pointer"
                               >
                                 <Edit2 className="w-3.5 h-3.5" />
                                 <span>Edit</span>
@@ -1268,7 +1193,7 @@ export default function ClientDashboard() {
                                   setSelectedGigFilter(gig._id);
                                   setActiveTab('proposals');
                                 }}
-                                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#593CFF] hover:text-[#472fe0] bg-[#593CFF]/10 hover:bg-[#593CFF]/15 border border-[#593CFF]/20 px-3.5 py-1.5 rounded-lg transition cursor-pointer"
+                                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0F766E] hover:text-[#115E59] bg-[#0F766E]/10 hover:bg-[#0F766E]/15 border border-[#0F766E]/20 px-3.5 py-1.5 rounded-lg transition cursor-pointer"
                               >
                                 <span>Proposals ({gig.proposalCount || 0})</span>
                                 <ChevronRight className="w-3.5 h-3.5" />
@@ -1304,7 +1229,7 @@ export default function ClientDashboard() {
                 {selectedGigFilter !== 'all' && (
                   <button
                     onClick={() => setSelectedGigFilter('all')}
-                    className="text-xs font-bold text-[#593CFF] underline"
+                    className="text-xs font-bold text-[#0F766E] underline"
                   >
                     View proposals across all projects
                   </button>
@@ -1333,7 +1258,7 @@ export default function ClientDashboard() {
                       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                         <div className="flex items-start gap-3.5">
                           {/* Freelancer Avatar */}
-                          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#593CFF] to-blue-500 text-white font-black text-lg flex items-center justify-center shrink-0 shadow-sm">
+                          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#0F766E] to-blue-500 text-white font-black text-lg flex items-center justify-center shrink-0 shadow-sm">
                             {freelancer.name ? freelancer.name.charAt(0).toUpperCase() : (freelancer.username ? freelancer.username.charAt(0).toUpperCase() : 'F')}
                           </div>
 
@@ -1343,7 +1268,7 @@ export default function ClientDashboard() {
                                 {freelancer.name || freelancer.username || 'Applicant'}
                               </h3>
                               {freelancer.experienceLevel && (
-                                <span className="text-[10px] font-bold bg-indigo-50 text-[#593CFF] px-2 py-0.5 rounded-md border border-indigo-200/50">
+                                <span className="text-[10px] font-bold bg-indigo-50 text-[#0F766E] px-2 py-0.5 rounded-md border border-indigo-200/50">
                                   {freelancer.experienceLevel}
                                 </span>
                               )}
@@ -1455,7 +1380,7 @@ export default function ClientDashboard() {
               <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/90 shadow-xs">
                 <div className="flex items-center justify-between pb-6 border-b border-slate-100 mb-6">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-[#593CFF] flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-2xl bg-indigo-50 text-[#0F766E] flex items-center justify-center">
                       <Building2 className="w-5 h-5" />
                     </div>
                     <div>
@@ -1465,7 +1390,7 @@ export default function ClientDashboard() {
                   </div>
                   <Link
                     to="/profile/me"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#593CFF] hover:text-[#472fe0] bg-indigo-50 px-3 py-1.5 rounded-xl border border-indigo-200/60"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0F766E] hover:text-[#115E59] bg-indigo-50 px-3 py-1.5 rounded-xl border border-indigo-200/60"
                   >
                     <Eye className="w-3.5 h-3.5" />
                     <span>Live Preview</span>
@@ -1496,7 +1421,7 @@ export default function ClientDashboard() {
                           value={profileFormData.name}
                           onChange={(e) => setProfileFormData(p => ({ ...p, name: e.target.value }))}
                           placeholder="Enter your contact name"
-                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#593CFF] outline-none transition"
+                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
                         />
                       </div>
 
@@ -1510,7 +1435,7 @@ export default function ClientDashboard() {
                           value={profileFormData.companyName}
                           onChange={(e) => setProfileFormData(p => ({ ...p, companyName: e.target.value }))}
                           placeholder="e.g. Acme Tech Studio or Independent Hirer"
-                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#593CFF] outline-none transition"
+                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
                         />
                         <p className="text-[10px] text-slate-400">If hiring individually, you can use your name or 'Independent Hirer'</p>
                       </div>
@@ -1527,7 +1452,7 @@ export default function ClientDashboard() {
                           value={profileFormData.city}
                           onChange={(e) => setProfileFormData(p => ({ ...p, city: e.target.value }))}
                           placeholder="e.g. Mumbai"
-                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#593CFF] outline-none transition"
+                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
                         />
                       </div>
 
@@ -1541,7 +1466,7 @@ export default function ClientDashboard() {
                           value={profileFormData.state}
                           onChange={(e) => setProfileFormData(p => ({ ...p, state: e.target.value }))}
                           placeholder="e.g. Maharashtra"
-                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#593CFF] outline-none transition"
+                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
                         />
                       </div>
                     </div>
@@ -1551,7 +1476,7 @@ export default function ClientDashboard() {
                   <div className="space-y-4 pt-4 border-t border-slate-100">
                     <div className="flex items-center justify-between pb-1 border-b border-slate-100">
                       <span className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-[#593CFF]" />
+                        <Sparkles className="w-3.5 h-3.5 text-[#0F766E]" />
                         Company Details & Trust Boosters
                       </span>
                       <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
@@ -1570,7 +1495,7 @@ export default function ClientDashboard() {
                           value={profileFormData.companyWebsite}
                           onChange={(e) => setProfileFormData(p => ({ ...p, companyWebsite: e.target.value }))}
                           placeholder="https://yourcompany.com"
-                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#593CFF] outline-none transition"
+                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
                         />
                       </div>
 
@@ -1584,7 +1509,7 @@ export default function ClientDashboard() {
                           value={profileFormData.companyLogo}
                           onChange={(e) => setProfileFormData(p => ({ ...p, companyLogo: e.target.value }))}
                           placeholder="https://example.com/logo.png"
-                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#593CFF] outline-none transition"
+                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
                         />
                       </div>
                     </div>
@@ -1598,7 +1523,7 @@ export default function ClientDashboard() {
                         <select
                           value={profileFormData.industry}
                           onChange={(e) => setProfileFormData(p => ({ ...p, industry: e.target.value }))}
-                          className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#593CFF] outline-none"
+                          className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none"
                         >
                           <option value="Technology & Digital Services">Technology & Digital Services</option>
                           <option value="SaaS & Cloud Platforms">SaaS & Cloud Platforms</option>
@@ -1621,7 +1546,7 @@ export default function ClientDashboard() {
                         <select
                           value={profileFormData.companySize}
                           onChange={(e) => setProfileFormData(p => ({ ...p, companySize: e.target.value }))}
-                          className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#593CFF] outline-none"
+                          className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none"
                         >
                           <option value="1-10 employees">1-10 employees (Startup)</option>
                           <option value="11-50 employees">11-50 employees (Growing)</option>
@@ -1642,7 +1567,7 @@ export default function ClientDashboard() {
                         value={profileFormData.companyDescription}
                         onChange={(e) => setProfileFormData(p => ({ ...p, companyDescription: e.target.value }))}
                         placeholder="Tell developers about your company's mission, products, and culture..."
-                        className="w-full text-xs sm:text-sm p-3.5 rounded-xl border border-slate-200 focus:border-[#593CFF] outline-none transition"
+                        className="w-full text-xs sm:text-sm p-3.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
                       />
                     </div>
                   </div>
@@ -1652,7 +1577,7 @@ export default function ClientDashboard() {
                     <button
                       type="submit"
                       disabled={isSavingProfile}
-                      className="inline-flex items-center gap-2 bg-[#593CFF] hover:bg-[#472fe0] text-white font-bold text-xs sm:text-sm px-6 py-2.5 rounded-xl shadow-md transition cursor-pointer disabled:opacity-50"
+                      className="inline-flex items-center gap-2 bg-[#0F766E] hover:bg-[#115E59] text-white font-bold text-xs sm:text-sm px-6 py-2.5 rounded-xl shadow-md transition cursor-pointer disabled:opacity-50"
                     >
                       <CheckCircle2 className="w-4 h-4" />
                       <span>{isSavingProfile ? 'Saving Company Profile...' : 'Save Company Profile'}</span>
@@ -1667,7 +1592,7 @@ export default function ClientDashboard() {
               {/* Profile Card Summary */}
               <div className="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-xs space-y-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#593CFF] to-[#3B82F6] text-white flex items-center justify-center font-black text-lg">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0F766E] to-[#3B82F6] text-white flex items-center justify-center font-black text-lg">
                     {(profileFormData.companyName || profileFormData.name || 'C').charAt(0).toUpperCase()}
                   </div>
                   <div>
@@ -1698,7 +1623,7 @@ export default function ClientDashboard() {
                 <div className="pt-2">
                   <Link
                     to="/profile/me"
-                    className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-[#593CFF] text-xs font-bold transition border border-indigo-200/60"
+                    className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-[#0F766E] text-xs font-bold transition border border-indigo-200/60"
                   >
                     <Eye className="w-4 h-4" />
                     <span>View Public Profile</span>
@@ -1708,7 +1633,7 @@ export default function ClientDashboard() {
 
               {/* Trust Badge Card */}
               <div className="bg-gradient-to-br from-indigo-50/70 to-blue-50/50 p-6 rounded-3xl border border-indigo-200/50 space-y-3">
-                <div className="flex items-center gap-2 text-[#593CFF]">
+                <div className="flex items-center gap-2 text-[#0F766E]">
                   <ShieldCheck className="w-5 h-5 shrink-0" />
                   <h4 className="text-xs font-black uppercase tracking-wider text-slate-800">Client Workspace Advantage</h4>
                 </div>
@@ -1726,7 +1651,7 @@ export default function ClientDashboard() {
             <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 my-8 space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-indigo-50 text-[#593CFF] flex items-center justify-center">
+                  <div className="w-9 h-9 rounded-xl bg-indigo-50 text-[#0F766E] flex items-center justify-center">
                     {editingGigId ? <Edit2 className="w-5 h-5 stroke-[2.5]" /> : <Plus className="w-5 h-5 stroke-[2.5]" />}
                   </div>
                   <div>
@@ -1771,7 +1696,7 @@ export default function ClientDashboard() {
                     value={formData.title}
                     onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
                     placeholder="e.g. Full-Stack MERN Developer to build Hyperlocal Marketplace"
-                    className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#593CFF] focus:ring-2 focus:ring-[#593CFF]/10 outline-none transition"
+                    className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] focus:ring-2 focus:ring-[#0F766E]/10 outline-none transition"
                   />
                 </div>
 
@@ -1782,7 +1707,7 @@ export default function ClientDashboard() {
                     <select
                       value={formData.category}
                       onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                      className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#593CFF] outline-none"
+                      className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none"
                     >
                       {CATEGORIES.map(cat => (
                         <option key={cat} value={cat}>{cat}</option>
@@ -1795,7 +1720,7 @@ export default function ClientDashboard() {
                     <select
                       value={formData.experienceLevel}
                       onChange={(e) => setFormData(prev => ({ ...prev, experienceLevel: e.target.value }))}
-                      className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#593CFF] outline-none"
+                      className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none"
                     >
                       <option value="Entry">Entry Level (Junior friendly)</option>
                       <option value="Intermediate">Intermediate Developer</option>
@@ -1813,7 +1738,7 @@ export default function ClientDashboard() {
                     {formData.skillsRequired.map((skill, idx) => (
                       <span 
                         key={idx}
-                        className="inline-flex items-center gap-1 text-xs font-bold bg-[#593CFF] text-white px-2.5 py-1 rounded-lg shadow-xs"
+                        className="inline-flex items-center gap-1 text-xs font-bold bg-[#0F766E] text-white px-2.5 py-1 rounded-lg shadow-xs"
                       >
                         {skill}
                         <button
@@ -1850,7 +1775,7 @@ export default function ClientDashboard() {
                         key={skill}
                         type="button"
                         onClick={() => addSkill(skill)}
-                        className="text-[11px] font-semibold bg-white hover:bg-indigo-50 hover:text-[#593CFF] text-slate-600 border border-slate-200 px-2 py-0.5 rounded-md transition cursor-pointer"
+                        className="text-[11px] font-semibold bg-white hover:bg-indigo-50 hover:text-[#0F766E] text-slate-600 border border-slate-200 px-2 py-0.5 rounded-md transition cursor-pointer"
                       >
                         + {skill}
                       </button>
@@ -1874,7 +1799,7 @@ export default function ClientDashboard() {
                         value={formData.budget}
                         onChange={(e) => setFormData(prev => ({ ...prev, budget: e.target.value }))}
                         placeholder="15000"
-                        className="w-full text-xs sm:text-sm pl-8 pr-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#593CFF] outline-none"
+                        className="w-full text-xs sm:text-sm pl-8 pr-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none"
                       />
                     </div>
                   </div>
@@ -1884,7 +1809,7 @@ export default function ClientDashboard() {
                     <select
                       value={formData.duration}
                       onChange={(e) => setFormData(prev => ({ ...prev, duration: e.target.value }))}
-                      className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#593CFF] outline-none"
+                      className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none"
                     >
                       <option value="Less than 1 week">Less than 1 week</option>
                       <option value="1-4 weeks">1 to 4 weeks</option>
@@ -1902,7 +1827,7 @@ export default function ClientDashboard() {
                       type="date"
                       value={formData.deadline}
                       onChange={(e) => setFormData(prev => ({ ...prev, deadline: e.target.value }))}
-                      className="w-full text-xs sm:text-sm px-3 py-2 rounded-xl border border-slate-200 focus:border-[#593CFF] outline-none"
+                      className="w-full text-xs sm:text-sm px-3 py-2 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none"
                     />
                   </div>
                 </div>
@@ -1922,7 +1847,7 @@ export default function ClientDashboard() {
                         onClick={() => setFormData(prev => ({ ...prev, locationType: mode.id }))}
                         className={`py-2 px-3 rounded-xl border text-xs font-bold text-center transition cursor-pointer ${
                           formData.locationType === mode.id
-                            ? 'bg-[#593CFF] text-white border-[#593CFF]'
+                            ? 'bg-[#0F766E] text-white border-[#0F766E]'
                             : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                         }`}
                       >
@@ -1943,7 +1868,7 @@ export default function ClientDashboard() {
                     value={formData.description}
                     onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                     placeholder="Describe the scope, tech stack requirements, expected deliverables, and any architecture specifications..."
-                    className="w-full text-xs sm:text-sm p-3 rounded-xl border border-slate-200 focus:border-[#593CFF] outline-none transition"
+                    className="w-full text-xs sm:text-sm p-3 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
                   />
                 </div>
 
@@ -1975,7 +1900,7 @@ export default function ClientDashboard() {
                       type="button"
                       disabled={isSubmittingGig}
                       onClick={() => handleSubmitProject('open')}
-                      className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 bg-[#593CFF] hover:bg-[#472fe0] text-white font-bold text-xs sm:text-sm px-6 py-2.5 rounded-xl shadow-md transition cursor-pointer disabled:opacity-50"
+                      className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 bg-[#0F766E] hover:bg-[#115E59] text-white font-bold text-xs sm:text-sm px-6 py-2.5 rounded-xl shadow-md transition cursor-pointer disabled:opacity-50"
                     >
                       <Send className="w-3.5 h-3.5" />
                       <span>{isSubmittingGig ? 'Processing...' : (editingGigId && !isEditingDraft ? 'Save & Update' : 'Publish Project Listing')}</span>
@@ -2045,7 +1970,7 @@ export default function ClientDashboard() {
                       placeholder="Be specific about what changes are needed (e.g., 'Please fix the header alignment on mobile view and check the checkout button click event...')"
                       value={revisionFeedback}
                       onChange={(e) => setRevisionFeedback(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                     />
                     <span className="text-[10px] text-slate-400 mt-0.5 block">
                       Minimum 5 characters. The freelancer will receive this feedback to revise and resubmit.
@@ -2082,7 +2007,6 @@ export default function ClientDashboard() {
             </div>
           </div>
         )}
-      </main>
-    </div>
+    </DashboardLayout>
   );
 }

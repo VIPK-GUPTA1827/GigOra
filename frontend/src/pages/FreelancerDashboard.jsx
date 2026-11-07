@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Navigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import NotificationBell from '../components/NotificationBell';
+import DashboardLayout from '../components/layout/DashboardLayout';
 import { 
   Briefcase, 
   LogOut, 
@@ -199,7 +200,7 @@ export default function FreelancerDashboard() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center text-sm font-semibold text-slate-700">
-        <Loader2 className="w-6 h-6 animate-spin text-[#593CFF] mb-2" />
+        <Loader2 className="w-6 h-6 animate-spin text-[#0F766E] mb-2" />
         <span>Loading Freelancer Studio...</span>
       </div>
     );
@@ -571,127 +572,67 @@ export default function FreelancerDashboard() {
   const startIndex = (safeCurrentPage - 1) * ITEMS_PER_PAGE;
   const paginatedGigs = filteredGigs.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
+  const scrollToId = (id) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const freelancerNav = [
+    { key: 'find', label: 'Find work', icon: Search, active: true, onClick: () => scrollToId('find-work') },
+    { key: 'proposals', label: 'Proposals', icon: Send, active: activeTab === 'proposals', onClick: () => { setActiveTab('proposals'); scrollToId('lower-sections'); } },
+    { key: 'contracts', label: 'Contracts', icon: Briefcase, active: activeTab === 'contracts', onClick: () => { setActiveTab('contracts'); scrollToId('lower-sections'); } },
+    { key: 'market', label: 'Marketplace', icon: Layers, to: '/marketplace' },
+  ];
+
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col relative selection:bg-[#593CFF] selection:text-white">
-      
-      {/* Ambient Gradient Glows */}
-      <div className="absolute top-0 right-1/4 w-[32rem] h-[32rem] bg-[#593CFF]/6 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-96 -left-32 w-96 h-96 bg-[#8E51FF]/5 rounded-full blur-3xl pointer-events-none" />
-
-      {/* 1. Glass-Effect Top Bar */}
-      <header className="sticky top-0 z-30 backdrop-blur-md bg-white/80 border-b border-slate-200/80 transition-all shadow-2xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-          
-          {/* Logo & Workspace Badge */}
-          <div className="flex items-center gap-3">
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="w-8 h-8 rounded-xl bg-[#030B3D] text-white flex items-center justify-center font-black text-sm shadow-xs group-hover:scale-105 transition-transform">
-                G
-              </div>
-              <span className="font-extrabold text-lg text-[#030B3D] tracking-tight">GigOra</span>
-            </Link>
-
-            <span className="hidden sm:inline-flex items-center gap-1.5 text-xs font-bold bg-[#593CFF]/10 text-[#593CFF] px-3 py-1 rounded-full border border-[#593CFF]/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#593CFF] animate-pulse" />
-              Freelancer Studio
-            </span>
-          </div>
-
-          {/* Right Actions */}
-          <div className="flex items-center gap-2.5 sm:gap-3">
-            
-            {/* Wallet Quick Pill */}
-            <div className="hidden md:flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100/80 border border-slate-200 text-xs font-bold text-slate-700" title="Simulated Sandbox testing balance (Not real funds)">
-              <Wallet className="w-3.5 h-3.5 text-[#593CFF]" />
-              <span>₹{(user.walletBalance || 0).toLocaleString('en-IN')}</span>
-              <span className="text-[10px] font-semibold text-amber-700 bg-amber-100/80 px-1.5 py-0.2 rounded">Demo</span>
-            </div>
-
-            {/* View Public Profile */}
-            <Link
-              to="/profile/me"
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-slate-900 bg-slate-100/90 hover:bg-slate-200 border border-slate-200 px-3 py-1.5 rounded-xl transition-all cursor-pointer"
-              title="View your public profile as seen by clients"
-            >
-              <Eye className="w-3.5 h-3.5 text-slate-500" />
-              <span className="hidden sm:inline">View Public Profile</span>
-            </Link>
-
-            {/* Switch to Client View */}
-            <button
-              onClick={handleSwitchRole}
-              disabled={switching}
-              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#593CFF] hover:text-[#472fe0] bg-[#593CFF]/8 hover:bg-[#593CFF]/15 border border-[#593CFF]/25 px-3 py-1.5 rounded-xl transition-all cursor-pointer disabled:opacity-50"
-            >
-              <ArrowRightLeft className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">{switching ? 'Switching...' : 'Switch to Client View'}</span>
-              <span className="sm:hidden">Client View</span>
-            </button>
-
-            {/* In-App Notifications Bell */}
-            <NotificationBell 
-              userRole="freelancer" 
-              onNavigateToGig={(gigId, notifType, destinationUrl) => {
-                if (destinationUrl) {
-                  const urlParams = new URLSearchParams(destinationUrl.split('?')[1]);
-                  const tab = urlParams.get('tab');
-                  if (tab) {
-                    setActiveTab(tab);
-                    return;
-                  }
-                }
-                if (notifType === 'proposal_rejected') {
-                  setActiveTab('proposals');
-                } else {
-                  setActiveTab('contracts');
-                  const contractEl = document.getElementById('active-contracts-section');
-                  if (contractEl) contractEl.scrollIntoView({ behavior: 'smooth' });
-                }
-              }} 
-            />
-
-            {/* User Avatar & Logout */}
-            <div className="flex items-center gap-2 pl-2 border-l border-slate-200">
-              <div className="w-8 h-8 rounded-full bg-[#593CFF] text-white flex items-center justify-center font-bold text-xs uppercase shadow-xs">
-                {user.avatar ? (
-                  <img src={user.avatar} alt={user.name} loading="lazy" width="32" height="32" className="w-full h-full rounded-full object-cover" />
-                ) : (
-                  (user.name || user.username || 'U').charAt(0)
-                )}
-              </div>
-              <button
-                onClick={handleLogout}
-                title="Sign out"
-                className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition cursor-pointer"
-              >
-                <LogOut className="w-4 h-4" />
-              </button>
-            </div>
-
-          </div>
-        </div>
-      </header>
-
+    <DashboardLayout
+      title="Freelancer dashboard"
+      role="freelancer"
+      user={user}
+      nav={freelancerNav}
+      onSwitchRole={handleSwitchRole}
+      switching={switching}
+      onLogout={handleLogout}
+      sidebarFooter={<span>Demo balance ₹{(user?.walletBalance || 0).toLocaleString('en-IN')}</span>}
+      headerRight={
+        <NotificationBell 
+          userRole="freelancer" 
+          onNavigateToGig={(gigId, notifType, destinationUrl) => {
+            if (destinationUrl) {
+              const urlParams = new URLSearchParams(destinationUrl.split('?')[1]);
+              const tab = urlParams.get('tab');
+              if (tab) {
+                setActiveTab(tab);
+                return;
+              }
+            }
+            if (notifType === 'proposal_rejected') {
+              setActiveTab('proposals');
+            } else {
+              setActiveTab('contracts');
+              const contractEl = document.getElementById('active-contracts-section');
+              if (contractEl) contractEl.scrollIntoView({ behavior: 'smooth' });
+            }
+          }} 
+        />
+      }
+    >
+      <div id="find-work" />
       {/* Email Verification Strip (If Unverified) */}
       {!user.isEmailVerified && (
-        <div className="bg-amber-50 border-b border-amber-200/80 px-4 py-2.5 text-xs font-medium text-amber-900 flex items-center justify-between">
-          <div className="max-w-7xl mx-auto w-full flex items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
-              <span>Your email is not verified yet. Verify your email to activate full proposal submission and escrow payouts.</span>
-            </div>
-            <Link 
-              to={`/check-email?email=${encodeURIComponent(user.email || '')}`}
-              className="font-bold underline text-amber-800 hover:text-amber-950 shrink-0"
-            >
-              Verify Now →
-            </Link>
+        <div className="bg-amber-50 border border-amber-200/80 rounded-lg p-3 text-xs font-medium text-amber-900 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
+            <span>Your email is not verified yet. Verify your email to activate full proposal submission and escrow payouts.</span>
           </div>
+          <Link 
+            to={`/check-email?email=${encodeURIComponent(user.email || '')}`}
+            className="font-bold underline text-amber-800 hover:text-amber-950 shrink-0"
+          >
+            Verify Now →
+          </Link>
         </div>
       )}
-
-      {/* Main Content Area */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 flex-1 w-full space-y-8 relative z-10">
         
         {/* 2. Welcome Hero Card with Circular Profile Completion Ring */}
         <section className="bg-white rounded-3xl border border-slate-200/90 shadow-[0_10px_35px_-10px_rgba(15,23,42,0.06)] p-6 sm:p-8 relative overflow-hidden">
@@ -753,7 +694,7 @@ export default function FreelancerDashboard() {
                   />
                   {/* Progress Circle */}
                   <path
-                    className="text-[#593CFF] transition-all duration-700 ease-out"
+                    className="text-[#0F766E] transition-all duration-700 ease-out"
                     strokeDasharray={`${profilePercent}, 100`}
                     strokeWidth="3.5"
                     strokeLinecap="round"
@@ -773,7 +714,7 @@ export default function FreelancerDashboard() {
                   <span className="text-xs font-bold text-[#030B3D]">
                     {profilePercent === 100 ? 'All-Star Profile' : 'Profile Strength'}
                   </span>
-                  <span className="text-[10px] font-bold text-[#593CFF] bg-[#593CFF]/10 px-2 py-0.5 rounded-full">
+                  <span className="text-[10px] font-bold text-[#0F766E] bg-[#0F766E]/10 px-2 py-0.5 rounded-full">
                     {profilePercent}%
                   </span>
                 </div>
@@ -805,7 +746,7 @@ export default function FreelancerDashboard() {
                 <div className="flex items-center gap-3 pt-1">
                   <Link
                     to="/freelancer/setup"
-                    className="text-xs font-bold text-[#593CFF] hover:text-[#472fe0] inline-flex items-center gap-0.5 hover:underline cursor-pointer"
+                    className="text-xs font-bold text-[#0F766E] hover:text-[#115E59] inline-flex items-center gap-0.5 hover:underline cursor-pointer"
                   >
                     <span>{profilePercent === 100 ? 'Edit Profile' : 'Complete Profile'}</span>
                     <ChevronRight className="w-3 h-3" />
@@ -837,7 +778,7 @@ export default function FreelancerDashboard() {
           <div className="bg-white p-5 rounded-2xl border border-slate-200/90 shadow-2xs hover:shadow-md hover:-translate-y-0.5 transition-all">
             <div className="flex items-center justify-between text-slate-400 mb-2">
               <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Proposals Sent</span>
-              <Send className="w-4 h-4 text-[#593CFF]" />
+              <Send className="w-4 h-4 text-[#0F766E]" />
             </div>
             <div className="text-2xl sm:text-3xl font-black text-[#030B3D]">{realProposals.length}</div>
             <div className="text-[11px] text-slate-500 mt-1 font-medium">
@@ -896,7 +837,7 @@ export default function FreelancerDashboard() {
         {(!user.skills || user.skills.length === 0) && (
           <div className="p-5 rounded-3xl bg-indigo-50/80 border border-indigo-200/70 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xs">
             <div className="flex items-start gap-3.5">
-              <div className="w-10 h-10 rounded-2xl bg-[#593CFF] text-white flex items-center justify-center shrink-0 shadow-xs">
+              <div className="w-10 h-10 rounded-2xl bg-[#0F766E] text-white flex items-center justify-center shrink-0 shadow-xs">
                 <Sparkles className="w-5 h-5" />
               </div>
               <div>
@@ -910,7 +851,7 @@ export default function FreelancerDashboard() {
             </div>
             <Link
               to="/freelancer/setup"
-              className="px-4 py-2.5 rounded-xl bg-[#593CFF] hover:bg-[#472fe0] text-white font-bold text-xs shadow-xs transition-all cursor-pointer flex items-center gap-1.5 shrink-0"
+              className="px-4 py-2.5 rounded-xl bg-[#0F766E] hover:bg-[#115E59] text-white font-bold text-xs shadow-xs transition-all cursor-pointer flex items-center gap-1.5 shrink-0"
             >
               <span>Launch Setup Wizard</span>
               <ChevronRight className="w-4 h-4" />
@@ -958,7 +899,7 @@ export default function FreelancerDashboard() {
                   placeholder="Search title/description..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 rounded-xl bg-white border border-slate-200 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                  className="w-full pl-9 pr-4 py-2 rounded-xl bg-white border border-slate-200 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                 />
               </div>
 
@@ -970,7 +911,7 @@ export default function FreelancerDashboard() {
                   placeholder="Filter by skill..."
                   value={skillFilter}
                   onChange={(e) => setSkillFilter(e.target.value)}
-                  className="w-full pl-9 pr-4 py-2 rounded-xl bg-white border border-slate-200 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                  className="w-full pl-9 pr-4 py-2 rounded-xl bg-white border border-slate-200 text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                 />
               </div>
 
@@ -979,7 +920,7 @@ export default function FreelancerDashboard() {
                 <select
                   value={budgetFilter}
                   onChange={(e) => setBudgetFilter(e.target.value)}
-                  className="w-full sm:w-auto px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#593CFF] cursor-pointer"
+                  className="w-full sm:w-auto px-3 py-2 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-700 focus:outline-none focus:ring-2 focus:ring-[#0F766E] cursor-pointer"
                 >
                   <option value="all">All Budgets (₹)</option>
                   <option value="under-10k">Under ₹10,000</option>
@@ -1016,7 +957,7 @@ export default function FreelancerDashboard() {
                   onClick={() => setSkillFilter(isSelected ? '' : sk)}
                   className={`text-[11px] font-semibold px-2.5 py-1 rounded-lg transition-all cursor-pointer ${
                     isSelected
-                      ? 'bg-[#593CFF] text-white shadow-xs font-bold'
+                      ? 'bg-[#0F766E] text-white shadow-xs font-bold'
                       : 'bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:bg-slate-50'
                   }`}
                 >
@@ -1097,7 +1038,7 @@ export default function FreelancerDashboard() {
               ) : (
                 <>
                   Showing <span className="font-bold text-slate-900">{filteredGigs.length}</span> available projects
-                  <span className="text-[11px] text-[#593CFF] font-medium bg-[#593CFF]/8 px-2 py-0.5 rounded-full">
+                  <span className="text-[11px] text-[#0F766E] font-medium bg-[#0F766E]/8 px-2 py-0.5 rounded-full">
                     • Add profile skills for tailored matches
                   </span>
                 </>
@@ -1113,7 +1054,7 @@ export default function FreelancerDashboard() {
                 onClick={() => { setSelectedCategory(cat); setCurrentPage(1); }}
                 className={`text-xs font-bold px-3.5 py-1.5 rounded-full transition-all cursor-pointer ${
                   selectedCategory === cat
-                    ? 'bg-[#593CFF] text-white shadow-xs'
+                    ? 'bg-[#0F766E] text-white shadow-xs'
                     : 'bg-white text-slate-600 border border-slate-200/80 hover:bg-slate-50'
                 }`}
               >
@@ -1214,7 +1155,7 @@ export default function FreelancerDashboard() {
                         </span>
                       </div>
 
-                      <h3 className="font-extrabold text-base text-[#030B3D] group-hover:text-[#593CFF] transition-colors line-clamp-1">
+                      <h3 className="font-extrabold text-base text-[#030B3D] group-hover:text-[#0F766E] transition-colors line-clamp-1">
                         {gig.title}
                       </h3>
 
@@ -1308,7 +1249,7 @@ export default function FreelancerDashboard() {
                     ) : (
                       <button
                         onClick={() => handleOpenProposalModal(gig)}
-                        className="px-3.5 py-2 rounded-xl bg-[#593CFF] hover:bg-[#472fe0] text-white text-xs font-bold shadow-xs active:scale-95 transition-all cursor-pointer inline-flex items-center gap-1.5"
+                        className="px-3.5 py-2 rounded-xl bg-[#0F766E] hover:bg-[#115E59] text-white text-xs font-bold shadow-xs active:scale-95 transition-all cursor-pointer inline-flex items-center gap-1.5"
                       >
                         <Send className="w-3 h-3" />
                         <span>Send Proposal</span>
@@ -1352,7 +1293,7 @@ export default function FreelancerDashboard() {
                       }}
                       className={`w-8 h-8 rounded-xl text-xs font-bold transition-all cursor-pointer ${
                         safeCurrentPage === pg
-                          ? 'bg-[#593CFF] text-white shadow-xs'
+                          ? 'bg-[#0F766E] text-white shadow-xs'
                           : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
                       }`}
                     >
@@ -1378,7 +1319,7 @@ export default function FreelancerDashboard() {
           </>
           ) : (
             <div className="bg-white rounded-3xl border border-slate-200/80 p-12 text-center">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-[#593CFF] flex items-center justify-center mx-auto mb-3">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-[#0F766E] flex items-center justify-center mx-auto mb-3">
                 <Briefcase className="w-6 h-6" />
               </div>
               <h3 className="text-base font-extrabold text-[#030B3D]">No gigs currently in this category</h3>
@@ -1405,7 +1346,7 @@ export default function FreelancerDashboard() {
               >
                 <span>My Proposals ({realProposals.length})</span>
                 {activeTab === 'proposals' && (
-                  <span className="absolute -bottom-3 left-0 right-0 h-0.5 bg-[#593CFF] rounded-full" />
+                  <span className="absolute -bottom-3 left-0 right-0 h-0.5 bg-[#0F766E] rounded-full" />
                 )}
               </button>
 
@@ -1417,7 +1358,7 @@ export default function FreelancerDashboard() {
               >
                 <span>Active Contracts ({contracts.length})</span>
                 {activeTab === 'contracts' && (
-                  <span className="absolute -bottom-3 left-0 right-0 h-0.5 bg-[#593CFF] rounded-full" />
+                  <span className="absolute -bottom-3 left-0 right-0 h-0.5 bg-[#0F766E] rounded-full" />
                 )}
               </button>
             </div>
@@ -1508,8 +1449,8 @@ export default function FreelancerDashboard() {
                                 {contract.status === 'in-progress' ? 'Active Contract' : contract.status}
                               </span>
 
-                              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-[#593CFF] border border-indigo-100 flex items-center gap-1">
-                                <ShieldCheck className="w-3 h-3 text-[#593CFF]" />
+                              <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-indigo-50 text-[#0F766E] border border-indigo-100 flex items-center gap-1">
+                                <ShieldCheck className="w-3 h-3 text-[#0F766E]" />
                                 Demo Escrow Funded
                               </span>
                             </div>
@@ -1554,7 +1495,7 @@ export default function FreelancerDashboard() {
                         <div className="space-y-3 pt-1">
                           <div className="flex items-center justify-between">
                             <h5 className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                              <Layers className="w-3.5 h-3.5 text-[#593CFF]" />
+                              <Layers className="w-3.5 h-3.5 text-[#0F766E]" />
                               <span>Work Tracking & Milestones ({milestones.length})</span>
                             </h5>
                             <span className="text-[11px] text-slate-400 font-medium">
@@ -1632,7 +1573,7 @@ export default function FreelancerDashboard() {
                                         {mPending && (
                                           <button
                                             onClick={() => handleOpenDeliverableModal(contract._id, m)}
-                                            className="text-xs font-bold text-white bg-[#593CFF] hover:bg-[#472fe0] px-3 py-1.5 rounded-xl shadow-xs transition cursor-pointer flex items-center gap-1"
+                                            className="text-xs font-bold text-white bg-[#0F766E] hover:bg-[#115E59] px-3 py-1.5 rounded-xl shadow-xs transition cursor-pointer flex items-center gap-1"
                                           >
                                             <Send className="w-3 h-3" />
                                             <span>Submit Work</span>
@@ -1694,7 +1635,7 @@ export default function FreelancerDashboard() {
                                               href={m.deliverableUrl.startsWith('http') ? m.deliverableUrl : `https://${m.deliverableUrl}`}
                                               target="_blank" 
                                               rel="noopener noreferrer"
-                                              className="inline-flex items-center gap-1 text-xs font-bold text-[#593CFF] hover:underline"
+                                              className="inline-flex items-center gap-1 text-xs font-bold text-[#0F766E] hover:underline"
                                             >
                                               <ExternalLink className="w-3.5 h-3.5" />
                                               <span>{m.deliverableUrl}</span>
@@ -1722,7 +1663,7 @@ export default function FreelancerDashboard() {
                 </div>
               ) : (
                 <div className="bg-white rounded-3xl border border-slate-200/80 p-8 text-center space-y-2">
-                  <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-[#593CFF] flex items-center justify-center mx-auto mb-2">
+                  <div className="w-12 h-12 rounded-2xl bg-indigo-50 text-[#0F766E] flex items-center justify-center mx-auto mb-2">
                     <Briefcase className="w-6 h-6" />
                   </div>
                   <h4 className="font-bold text-sm text-[#030B3D]">No Active Contracts</h4>
@@ -1750,7 +1691,7 @@ export default function FreelancerDashboard() {
               </h3>
               <button
                 onClick={() => setIsAddPortfolioOpen(true)}
-                className="text-xs font-bold text-[#593CFF] hover:text-[#472fe0] inline-flex items-center gap-1 cursor-pointer hover:underline"
+                className="text-xs font-bold text-[#0F766E] hover:text-[#115E59] inline-flex items-center gap-1 cursor-pointer hover:underline"
               >
                 <Plus className="w-3.5 h-3.5" />
                 <span>Add Work</span>
@@ -1770,7 +1711,7 @@ export default function FreelancerDashboard() {
                             href={projectUrl.startsWith('http') ? projectUrl : `https://${projectUrl}`} 
                             target="_blank" 
                             rel="noreferrer" 
-                            className="text-slate-400 hover:text-[#593CFF] transition inline-flex items-center gap-1 text-[11px] font-bold"
+                            className="text-slate-400 hover:text-[#0F766E] transition inline-flex items-center gap-1 text-[11px] font-bold"
                             title="Open repository or demo"
                           >
                             <span>Repo / Demo</span>
@@ -1814,8 +1755,6 @@ export default function FreelancerDashboard() {
 
         </section>
 
-      </main>
-
       {/* --- MODAL 1: Edit Profile (Bio & Skills) --- */}
       {isEditProfileOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
@@ -1847,11 +1786,11 @@ export default function FreelancerDashboard() {
               <div>
                 <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1.5">Profile Photo / Avatar</label>
                 <div className="flex items-center gap-3 mb-2">
-                  <div className="w-12 h-12 rounded-full bg-slate-100 border-2 border-[#593CFF] overflow-hidden flex items-center justify-center shrink-0 shadow-xs">
+                  <div className="w-12 h-12 rounded-full bg-slate-100 border-2 border-[#0F766E] overflow-hidden flex items-center justify-center shrink-0 shadow-xs">
                     {profileForm.avatar ? (
                       <img src={profileForm.avatar} alt="Avatar Preview" loading="lazy" width="48" height="48" className="w-full h-full object-cover" />
                     ) : (
-                      <span className="font-black text-sm text-[#593CFF]">{(profileForm.name || 'U').charAt(0)}</span>
+                      <span className="font-black text-sm text-[#0F766E]">{(profileForm.name || 'U').charAt(0)}</span>
                     )}
                   </div>
                   <div className="flex-1 space-y-1">
@@ -1869,7 +1808,7 @@ export default function FreelancerDashboard() {
                           onClick={() => setProfileForm(p => ({ ...p, avatar: preset.url }))}
                           className={`text-[10px] font-semibold px-2 py-1 rounded-lg border transition-all cursor-pointer ${
                             profileForm.avatar === preset.url
-                              ? 'bg-[#593CFF] text-white border-[#593CFF]'
+                              ? 'bg-[#0F766E] text-white border-[#0F766E]'
                               : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
                           }`}
                         >
@@ -1884,7 +1823,7 @@ export default function FreelancerDashboard() {
                   placeholder="Or enter custom image URL: https://..."
                   value={profileForm.avatar}
                   onChange={(e) => setProfileForm(p => ({ ...p, avatar: e.target.value }))}
-                  className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                  className="w-full px-3.5 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                 />
               </div>
 
@@ -1895,7 +1834,7 @@ export default function FreelancerDashboard() {
                   required
                   value={profileForm.name}
                   onChange={(e) => setProfileForm(p => ({ ...p, name: e.target.value }))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                 />
               </div>
 
@@ -1906,7 +1845,7 @@ export default function FreelancerDashboard() {
                   placeholder="e.g. Full-Stack Developer specializing in MERN, FastAPI and hyper-responsive UI."
                   value={profileForm.bio}
                   onChange={(e) => setProfileForm(p => ({ ...p, bio: e.target.value }))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                 />
               </div>
 
@@ -1919,7 +1858,7 @@ export default function FreelancerDashboard() {
                   placeholder="React.js, Node.js, MongoDB, Tailwind CSS, Python"
                   value={profileForm.skills}
                   onChange={(e) => setProfileForm(p => ({ ...p, skills: e.target.value }))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                 />
               </div>
 
@@ -1932,7 +1871,7 @@ export default function FreelancerDashboard() {
                   placeholder="e.g. 500"
                   value={profileForm.hourlyRate}
                   onChange={(e) => setProfileForm(p => ({ ...p, hourlyRate: e.target.value }))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                 />
               </div>
 
@@ -1957,7 +1896,7 @@ export default function FreelancerDashboard() {
                     setIsEditProfileOpen(false);
                     setIsAddPortfolioOpen(true);
                   }}
-                  className="px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-[#593CFF] text-[#593CFF] font-bold text-xs shadow-2xs hover:shadow-xs transition-all cursor-pointer shrink-0"
+                  className="px-3 py-1.5 rounded-xl bg-white border border-slate-200 hover:border-[#0F766E] text-[#0F766E] font-bold text-xs shadow-2xs hover:shadow-xs transition-all cursor-pointer shrink-0"
                 >
                   + Add Project
                 </button>
@@ -1974,7 +1913,7 @@ export default function FreelancerDashboard() {
                 <button
                   type="submit"
                   disabled={submittingAction}
-                  className="px-5 py-2 rounded-xl bg-[#593CFF] hover:bg-[#472fe0] text-white font-bold transition shadow-xs cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
+                  className="px-5 py-2 rounded-xl bg-[#0F766E] hover:bg-[#115E59] text-white font-bold transition shadow-xs cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
                 >
                   {submittingAction && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                   <span>Save Changes</span>
@@ -2019,7 +1958,7 @@ export default function FreelancerDashboard() {
                   placeholder="e.g. Hyperlocal Delivery App"
                   value={portfolioForm.title}
                   onChange={(e) => setPortfolioForm(p => ({ ...p, title: e.target.value }))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                 />
               </div>
 
@@ -2030,7 +1969,7 @@ export default function FreelancerDashboard() {
                   placeholder="What was built, key features, and your contribution."
                   value={portfolioForm.description}
                   onChange={(e) => setPortfolioForm(p => ({ ...p, description: e.target.value }))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                 />
               </div>
 
@@ -2041,7 +1980,7 @@ export default function FreelancerDashboard() {
                   placeholder="https://myproject.com"
                   value={portfolioForm.link}
                   onChange={(e) => setPortfolioForm(p => ({ ...p, link: e.target.value }))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                 />
               </div>
 
@@ -2052,7 +1991,7 @@ export default function FreelancerDashboard() {
                   placeholder="https://github.com/myname/repo"
                   value={portfolioForm.githubUrl}
                   onChange={(e) => setPortfolioForm(p => ({ ...p, githubUrl: e.target.value }))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                 />
               </div>
 
@@ -2063,7 +2002,7 @@ export default function FreelancerDashboard() {
                   placeholder="React, Node.js, Socket.io"
                   value={portfolioForm.tags}
                   onChange={(e) => setPortfolioForm(p => ({ ...p, tags: e.target.value }))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                 />
               </div>
 
@@ -2078,7 +2017,7 @@ export default function FreelancerDashboard() {
                 <button
                   type="submit"
                   disabled={submittingAction}
-                  className="px-5 py-2 rounded-xl bg-[#593CFF] hover:bg-[#472fe0] text-white font-bold transition shadow-xs cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
+                  className="px-5 py-2 rounded-xl bg-[#0F766E] hover:bg-[#115E59] text-white font-bold transition shadow-xs cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
                 >
                   {submittingAction && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                   <span>Add Project</span>
@@ -2139,7 +2078,7 @@ export default function FreelancerDashboard() {
                     value={proposalForm.bidAmount}
                     onFocus={(e) => e.target.select()}
                     onChange={(e) => setProposalForm(p => ({ ...p, bidAmount: e.target.value }))}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 font-bold focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                   />
                 </div>
 
@@ -2151,7 +2090,7 @@ export default function FreelancerDashboard() {
                     placeholder="e.g. 3 days"
                     value={proposalForm.estimatedTime}
                     onChange={(e) => setProposalForm(p => ({ ...p, estimatedTime: e.target.value }))}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                   />
                 </div>
               </div>
@@ -2166,7 +2105,7 @@ export default function FreelancerDashboard() {
                   placeholder="Explain why you are the best fit for this gig and your proposed approach."
                   value={proposalForm.coverLetter}
                   onChange={(e) => setProposalForm(p => ({ ...p, coverLetter: e.target.value }))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                 />
               </div>
 
@@ -2189,7 +2128,7 @@ export default function FreelancerDashboard() {
                 <button
                   type="submit"
                   disabled={submittingAction}
-                  className="px-5 py-2 rounded-xl bg-[#593CFF] hover:bg-[#472fe0] text-white font-bold transition shadow-xs cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
+                  className="px-5 py-2 rounded-xl bg-[#0F766E] hover:bg-[#115E59] text-white font-bold transition shadow-xs cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
                 >
                   {submittingAction && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                   <span>Submit Proposal</span>
@@ -2206,7 +2145,7 @@ export default function FreelancerDashboard() {
           <div className="bg-white rounded-3xl border border-slate-200/90 shadow-2xl w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-200">
             <div className="p-6 border-b border-slate-100 flex items-center justify-between">
               <div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#593CFF] bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-100">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-[#0F766E] bg-indigo-50 px-2.5 py-0.5 rounded-full border border-indigo-100">
                   Step 6 • Work Tracking
                 </span>
                 <h3 className="font-extrabold text-base text-[#030B3D] mt-1">
@@ -2233,7 +2172,7 @@ export default function FreelancerDashboard() {
                   </span>
                 </div>
                 <div className="text-right">
-                  <span className="text-xs font-black text-[#593CFF] block">
+                  <span className="text-xs font-black text-[#0F766E] block">
                     ₹{Number(selectedContractMilestone.milestone.amount || 0).toLocaleString('en-IN')}
                   </span>
                   <span className="text-[10px] text-slate-400 font-semibold">Demo Escrow</span>
@@ -2257,7 +2196,7 @@ export default function FreelancerDashboard() {
                     placeholder="https://github.com/... or https://figma.com/..."
                     value={deliverableForm.deliverableUrl}
                     onChange={(e) => setDeliverableForm(prev => ({ ...prev, deliverableUrl: e.target.value }))}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                   />
                   <span className="text-[10px] text-slate-400 mt-0.5 block">
                     Add link to your codebase, deployed app, design file, or assets.
@@ -2273,13 +2212,13 @@ export default function FreelancerDashboard() {
                     placeholder="Describe the tasks completed, test results, instructions for the client to run or inspect your work..."
                     value={deliverableForm.deliverableNotes}
                     onChange={(e) => setDeliverableForm(prev => ({ ...prev, deliverableNotes: e.target.value }))}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                   />
                 </div>
 
                 <div className="p-3 rounded-xl bg-indigo-50/60 border border-indigo-100 text-[11px] text-slate-600 space-y-1">
                   <div className="font-bold text-[#030B3D] flex items-center gap-1.5">
-                    <ShieldCheck className="w-3.5 h-3.5 text-[#593CFF]" />
+                    <ShieldCheck className="w-3.5 h-3.5 text-[#0F766E]" />
                     <span>Demo Escrow Protection</span>
                   </div>
                   <p>Client will review your submitted deliverable. They can either accept and release demo escrow funds, or request revisions with specific comments.</p>
@@ -2296,7 +2235,7 @@ export default function FreelancerDashboard() {
                   <button
                     type="submit"
                     disabled={submittingDeliverable}
-                    className="px-5 py-2 rounded-xl bg-[#593CFF] hover:bg-[#472fe0] text-white font-bold transition shadow-xs cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
+                    className="px-5 py-2 rounded-xl bg-[#0F766E] hover:bg-[#115E59] text-white font-bold transition shadow-xs cursor-pointer disabled:opacity-50 flex items-center gap-1.5"
                   >
                     {submittingDeliverable && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                     <span>Submit Deliverable</span>
@@ -2361,7 +2300,7 @@ export default function FreelancerDashboard() {
                   setIncompleteProfileModal({ isOpen: false, missingFields: [] });
                   navigate('/freelancer/setup');
                 }}
-                className="flex-1 py-2.5 px-4 rounded-xl bg-[#593CFF] hover:bg-[#472fe0] text-white font-bold text-xs shadow-md shadow-[#593CFF]/20 transition cursor-pointer flex items-center justify-center gap-1.5"
+                className="flex-1 py-2.5 px-4 rounded-xl bg-[#0F766E] hover:bg-[#115E59] text-white font-bold text-xs shadow-md shadow-[#0F766E]/20 transition cursor-pointer flex items-center justify-center gap-1.5"
               >
                 <span>Complete Profile Now</span>
                 <ChevronRight className="w-4 h-4" />
@@ -2371,22 +2310,7 @@ export default function FreelancerDashboard() {
         </div>
       )}
 
-      {/* Footer */}
-      <footer className="text-center text-xs text-slate-400 py-6 border-t border-slate-200/60 mt-12 bg-white/50">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="font-bold text-slate-700">GigOra Freelancer Studio</span>
-            <span>•</span>
-            <span>Zero Platform Commission</span>
-          </div>
-          <div className="flex items-center gap-4 text-[11px]">
-            <Link to="/terms" className="hover:text-slate-600 transition">Terms</Link>
-            <Link to="/privacy" className="hover:text-slate-600 transition">Privacy</Link>
-            <span>© {currentYear} GigOra</span>
-          </div>
-        </div>
-      </footer>
-
-    </div>
+      <div id="lower-sections" />
+    </DashboardLayout>
   );
 }
