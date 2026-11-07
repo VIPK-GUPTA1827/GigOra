@@ -54,6 +54,7 @@ export default function PublicProfile() {
   const [profileData, setProfileData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [avatarFailed, setAvatarFailed] = useState(false);
   const [copied, setCopied] = useState(false);
 
   // Check if viewing own profile
@@ -216,10 +217,11 @@ export default function PublicProfile() {
               {/* Avatar + Main Info */}
               <div className="flex items-end gap-4 sm:gap-6">
                 <div className="relative">
-                  {profileData.avatar ? (
+                  {profileData.avatar && !avatarFailed ? (
                     <img
                       src={profileData.avatar}
                       alt={displayName}
+                      onError={() => setAvatarFailed(true)}
                       loading="lazy"
                       width="128"
                       height="128"
