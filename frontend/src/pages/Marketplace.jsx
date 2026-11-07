@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Search, ArrowLeft, MapPin, Clock, Briefcase, RefreshCw, X } from 'lucide-react';
 import api from '../utils/api';
+import { useAuth } from '../context/AuthContext';
 import { SkeletonGrid } from '../components/Skeleton';
 
 const CATEGORIES = [
@@ -20,6 +21,13 @@ const formatINR = (n) =>
   new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n || 0);
 
 export default function Marketplace() {
+  const { user } = useAuth();
+  const backUrl = user
+    ? user.role === 'client'
+      ? '/dashboard/client'
+      : '/dashboard/freelancer'
+    : '/';
+  const backLabel = user ? 'Back to Dashboard' : 'Back to GigOra';
   const [searchParams, setSearchParams] = useSearchParams();
   const [gigs, setGigs] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
@@ -104,9 +112,9 @@ export default function Marketplace() {
   return (
     <div className="min-h-screen bg-slate-50">
       <header className="border-b border-stone-200/80 bg-white/90 backdrop-blur-md sticky top-0 z-50 py-4 px-6 sm:px-12 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 text-sm font-bold text-[#030B3D] hover:text-[#593CFF] transition-colors">
+        <Link to={backUrl} className="flex items-center gap-2 text-sm font-semibold text-[#030B3D] hover:text-[#0F766E] transition-colors">
           <ArrowLeft className="h-4 w-4" />
-          <span>Back to GigOra</span>
+          <span>{backLabel}</span>
         </Link>
         <div className="flex items-center gap-2">
           <div className="h-7 w-7 rounded-full bg-[#030B3D] text-white flex items-center justify-center font-bold text-xs">G</div>
@@ -120,7 +128,7 @@ export default function Marketplace() {
             <div>
               <h1 className="text-2xl font-bold text-slate-900">Find your next project</h1>
               <p className="text-sm text-slate-500 mt-1">
-                Browse open gigs posted by verified clients. {!loading && totalCount > 0 && <span className="font-semibold text-indigo-600">({totalCount} available)</span>}
+                Browse open gigs posted by verified clients. {!loading && totalCount > 0 && <span className="font-semibold text-[#0F766E]">({totalCount} available)</span>}
               </p>
             </div>
             {hasActiveFilters && (
@@ -144,7 +152,7 @@ export default function Marketplace() {
                 onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="Search projects by title, skill, or keyword..."
                 aria-label="Search projects"
-                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 outline-none"
+                className="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:border-[#0D9488] focus:ring-2 focus:ring-[#0D9488]/15 outline-none"
               />
             </div>
             <div className="flex gap-2">
@@ -155,7 +163,7 @@ export default function Marketplace() {
                 onChange={(e) => setMinInput(e.target.value)}
                 placeholder="Min ₹"
                 aria-label="Minimum budget"
-                className="w-24 px-3 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-indigo-500"
+                className="w-24 px-3 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-[#0D9488]"
               />
               <input
                 type="number"
@@ -164,11 +172,11 @@ export default function Marketplace() {
                 onChange={(e) => setMaxInput(e.target.value)}
                 placeholder="Max ₹"
                 aria-label="Maximum budget"
-                className="w-24 px-3 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-indigo-500"
+                className="w-24 px-3 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-[#0D9488]"
               />
               <button
                 type="submit"
-                className="px-5 py-2.5 rounded-xl bg-indigo-600 text-white font-medium text-sm hover:bg-indigo-700 transition"
+                className="px-5 py-2.5 rounded-xl bg-[#0F766E] text-white font-medium text-sm hover:bg-[#115E59] transition"
               >
                 Filter
               </button>
@@ -176,7 +184,7 @@ export default function Marketplace() {
                 value={sort}
                 onChange={(e) => updateParams({ sort: e.target.value === 'newest' ? '' : e.target.value })}
                 aria-label="Sort projects"
-                className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-indigo-500 bg-white text-slate-700 cursor-pointer"
+                className="px-3 py-2.5 rounded-xl border border-slate-200 text-sm outline-none focus:border-[#0D9488] bg-white text-slate-700 cursor-pointer"
               >
                 <option value="newest">Newest First</option>
                 <option value="budget_desc">Highest Budget</option>
@@ -196,7 +204,7 @@ export default function Marketplace() {
                   onClick={() => updateParams({ category: c === 'All' ? '' : c })}
                   className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium transition ${
                     active
-                      ? 'bg-indigo-600 text-white shadow-sm'
+                      ? 'bg-[#0F766E] text-white shadow-sm'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                   }`}
                 >
@@ -233,8 +241,8 @@ export default function Marketplace() {
         ) : gigs.length === 0 ? (
           /* Empty State */
           <div className="text-center py-20 px-4 rounded-3xl border border-dashed border-slate-200 bg-white">
-            <div className="w-16 h-16 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto mb-4">
-              <Briefcase className="w-8 h-8 text-indigo-500" />
+            <div className="w-16 h-16 rounded-2xl bg-[#F0FDFA] text-[#0F766E] flex items-center justify-center mx-auto mb-4">
+              <Briefcase className="w-8 h-8 text-[#0D9488]" />
             </div>
             <h3 className="text-slate-800 font-bold text-lg">No open projects found</h3>
             <p className="text-sm text-slate-500 mt-1.5 max-w-md mx-auto">
@@ -246,7 +254,7 @@ export default function Marketplace() {
               <button
                 type="button"
                 onClick={clearAllFilters}
-                className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 text-white text-xs font-semibold hover:bg-indigo-700 transition"
+                className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0F766E] text-white text-xs font-semibold hover:bg-[#115E59] transition"
               >
                 Clear all filters
               </button>
@@ -259,10 +267,10 @@ export default function Marketplace() {
               <Link
                 key={gig._id}
                 to={`/gigs/${gig._id}`}
-                className="group block rounded-2xl border border-slate-200 bg-white p-5 hover:border-indigo-400 hover:shadow-md transition duration-200"
+                className="group block rounded-2xl border border-slate-200 bg-white p-5 hover:border-[#0D9488] hover:shadow-md transition duration-200"
               >
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-[11px] font-semibold uppercase tracking-wide text-indigo-600 bg-indigo-50 px-2.5 py-0.5 rounded-full">
+                  <span className="text-[11px] font-semibold uppercase tracking-wide text-[#0F766E] bg-[#F0FDFA] px-2.5 py-0.5 rounded-full">
                     {gig.category}
                   </span>
                   <span className="text-xs text-slate-400 flex items-center gap-1">
@@ -270,7 +278,7 @@ export default function Marketplace() {
                     {new Date(gig.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
                   </span>
                 </div>
-                <h2 className="mt-3 text-base font-semibold text-slate-900 group-hover:text-indigo-600 transition-colors line-clamp-2">
+                <h2 className="mt-3 text-base font-semibold text-slate-900 group-hover:text-[#0F766E] transition-colors line-clamp-2">
                   {gig.title}
                 </h2>
                 <p className="mt-1.5 text-sm text-slate-500 line-clamp-2 leading-relaxed">
@@ -326,7 +334,7 @@ export default function Marketplace() {
                     onClick={() => updateParams({ page: String(p) })}
                     className={`min-w-[36px] h-9 rounded-xl text-xs font-semibold transition ${
                       page === p
-                        ? 'bg-indigo-600 text-white shadow-sm'
+                        ? 'bg-[#0F766E] text-white shadow-sm'
                         : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                     }`}
                   >
