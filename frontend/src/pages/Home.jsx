@@ -82,19 +82,19 @@ export default function Home() {
 
             {/* Desktop Navigation Links — only on lg (1024px+) to prevent any cramping */}
             <div className="hidden lg:flex items-center gap-6 xl:gap-8 text-[15px] font-medium text-[#030B3D]/80">
-              <a href="#how-it-works" className="hover:text-[#593CFF] transition-colors relative group py-1">
+              <a href="#how-it-works" className="hover:text-accent-text transition-colors relative group py-1">
                 <span>How It Works</span>
                 <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-accent to-accent-soft group-hover:w-full transition-all duration-200"></span>
               </a>
-              <a href="#categories" className="hover:text-[#593CFF] transition-colors relative group py-1">
+              <a href="#categories" className="hover:text-accent-text transition-colors relative group py-1">
                 <span>Tech Services</span>
                 <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-accent to-accent-soft group-hover:w-full transition-all duration-200"></span>
               </a>
-              <a href="#choose-path" className="hover:text-[#593CFF] transition-colors relative group py-1">
+              <a href="#choose-path" className="hover:text-accent-text transition-colors relative group py-1">
                 <span>Clients &amp; Devs</span>
                 <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-accent to-accent-soft group-hover:w-full transition-all duration-200"></span>
               </a>
-              <a href="#faq" className="hover:text-[#593CFF] transition-colors relative group py-1">
+              <a href="#faq" className="hover:text-accent-text transition-colors relative group py-1">
                 <span>FAQ</span>
                 <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-accent to-accent-soft group-hover:w-full transition-all duration-200"></span>
               </a>
@@ -104,13 +104,13 @@ export default function Home() {
             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
               <Link 
                 to="/login"
-                className="hidden sm:inline-flex text-xs sm:text-sm font-bold text-[#030B3D] hover:text-[#593CFF] px-3 py-1.5 transition-colors"
+                className="hidden sm:inline-flex text-xs sm:text-sm font-bold text-[#030B3D] hover:text-accent-text px-3 py-1.5 transition-colors"
               >
                 Sign In
               </Link>
               <Link 
                 to="/signup" 
-                className="rounded-full bg-[#030B3D] hover:bg-[#593CFF] px-3.5 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:shadow-md active:scale-95 transition-all cursor-pointer whitespace-nowrap"
+                className="rounded-full bg-[#030B3D] hover:bg-accent-deep px-3.5 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:shadow-md active:scale-95 transition-all cursor-pointer whitespace-nowrap"
               >
                 Sign Up
               </Link>
@@ -176,7 +176,7 @@ export default function Home() {
                 <Link
                   to="/signup"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex-1 text-center py-2.5 rounded-xl bg-[#593CFF] text-white text-xs font-bold shadow-xs hover:bg-[#472fe0]"
+                  className="flex-1 text-center py-2.5 rounded-xl bg-accent-text text-white text-xs font-bold shadow-xs hover:bg-[#472fe0]"
                 >
                   Sign Up
                 </Link>
@@ -191,7 +191,7 @@ export default function Home() {
         
         {/* Clean brand backdrop glows */}
         <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-32 -left-24 w-[420px] h-[420px] rounded-full bg-[#593CFF]/8 blur-3xl" />
+          <div className="absolute -top-32 -left-24 w-[420px] h-[420px] rounded-full bg-accent-text/8 blur-3xl" />
         </div>
 
         {/* Hero Content Container */}
@@ -213,7 +213,7 @@ export default function Home() {
                   onClick={() => setActiveTab('client')}
                   className={`px-2.5 sm:px-5 py-2.5 sm:py-2 rounded-full text-xs sm:text-sm md:text-base font-bold transition-all min-h-[42px] text-center cursor-pointer ${
                     activeTab === 'client'
-                      ? 'bg-[#593CFF] text-white shadow-xs'
+                      ? 'bg-accent-text text-white shadow-xs'
                       : 'text-[#030B3D] hover:bg-[#030B3D]/[0.08]'
                   }`}
                 >
@@ -223,7 +223,7 @@ export default function Home() {
                   onClick={() => setActiveTab('freelancer')}
                   className={`px-2.5 sm:px-5 py-2.5 sm:py-2 rounded-full text-xs sm:text-sm md:text-base font-bold transition-all min-h-[42px] text-center cursor-pointer ${
                     activeTab === 'freelancer'
-                      ? 'bg-[#593CFF] text-white shadow-xs'
+                      ? 'bg-accent-text text-white shadow-xs'
                       : 'text-[#030B3D] hover:bg-[#030B3D]/[0.08]'
                   }`}
                 >
@@ -246,7 +246,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="text-xs md:text-sm font-bold uppercase tracking-[0.08em] text-[#593CFF] mb-2.5 md:mb-3"
+                  className="text-xs md:text-sm font-bold uppercase tracking-[0.08em] text-accent-text mb-2.5 md:mb-3"
                 >
                   FOR FOUNDERS &amp; TECH TEAMS
                 </motion.p>
@@ -259,7 +259,7 @@ export default function Home() {
                   <span className="block">
                     Hire India's tech talent,
                   </span>
-                  <span className="block text-[#593CFF]">
+                  <span className="block text-accent-text">
                     milestone by milestone.
                   </span>
                 </h1>
@@ -278,7 +278,7 @@ export default function Home() {
                 {/* Offer Line */}
                 <div className="overflow-hidden mb-5 md:mb-6">
                   <p 
-                    className="font-medium text-[#030B3D] leading-[1.45] max-w-[32em] text-xs sm:text-sm bg-[#593CFF]/8 border border-[#593CFF]/20 px-3.5 py-2.5 rounded-xl"
+                    className="font-medium text-[#030B3D] leading-[1.45] max-w-[32em] text-xs sm:text-sm bg-accent-text/8 border border-accent/20 px-3.5 py-2.5 rounded-xl"
                   >
                     <strong>GigOra is in preview.</strong> Marketplace and workspaces are live; payments run in demo mode, so no real money moves yet.
                   </p>
@@ -288,7 +288,7 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full">
                   <Link
                     to="/marketplace"
-                    className="rounded-full bg-[#593CFF] hover:bg-[#472fe0] px-7 py-3.5 text-sm md:text-base font-bold text-white shadow-[0_16px_32px_-16px_rgba(89,60,255,0.7)] active:scale-95 transition-all text-center min-h-[48px] flex items-center justify-center cursor-pointer"
+                    className="rounded-full bg-accent-text hover:bg-[#472fe0] px-7 py-3.5 text-sm md:text-base font-bold text-white shadow-[0_16px_32px_-16px_rgba(89,60,255,0.7)] active:scale-95 transition-all text-center min-h-[48px] flex items-center justify-center cursor-pointer"
                   >
                     Browse open projects
                   </Link>
@@ -313,7 +313,7 @@ export default function Home() {
                   initial={{ opacity: 0, y: 15 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="text-xs md:text-sm font-bold uppercase tracking-[0.08em] text-[#593CFF] mb-2.5 md:mb-3"
+                  className="text-xs md:text-sm font-bold uppercase tracking-[0.08em] text-accent-text mb-2.5 md:mb-3"
                 >
                   FOR SOFTWARE ENGINEERS &amp; DEVELOPERS
                 </motion.p>
@@ -326,7 +326,7 @@ export default function Home() {
                   <span className="block">
                     Show your work and
                   </span>
-                  <span className="block text-[#593CFF]">
+                  <span className="block text-accent-text">
                     find projects with clear milestones.
                   </span>
                 </h1>
@@ -345,7 +345,7 @@ export default function Home() {
                 {/* Offer Line */}
                 <div className="overflow-hidden mb-5 md:mb-6">
                   <p 
-                    className="font-medium text-[#030B3D] leading-[1.45] max-w-[32em] text-xs sm:text-sm bg-[#593CFF]/8 border border-[#593CFF]/20 px-3.5 py-2.5 rounded-xl"
+                    className="font-medium text-[#030B3D] leading-[1.45] max-w-[32em] text-xs sm:text-sm bg-accent-text/8 border border-accent/20 px-3.5 py-2.5 rounded-xl"
                   >
                     <strong>GigOra is in preview.</strong> Marketplace and workspaces are live; payments run in demo mode, so no real money moves yet.
                   </p>
@@ -355,7 +355,7 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full">
                   <Link
                     to="/marketplace"
-                    className="rounded-full bg-[#030B3D] hover:bg-[#593CFF] px-8 py-3.5 text-sm md:text-base font-bold text-white shadow-md active:scale-95 transition-all text-center min-h-[48px] flex items-center justify-center cursor-pointer"
+                    className="rounded-full bg-[#030B3D] hover:bg-accent-deep px-8 py-3.5 text-sm md:text-base font-bold text-white shadow-md active:scale-95 transition-all text-center min-h-[48px] flex items-center justify-center cursor-pointer"
                   >
                     Find work as a freelancer
                   </Link>
@@ -456,7 +456,7 @@ export default function Home() {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 md:gap-6 items-stretch">
             
             <div className="flex items-center gap-2.5 sm:gap-3 justify-start p-2.5 sm:p-3 rounded-2xl bg-stone-50/80 md:bg-transparent border border-stone-200/60 md:border-0 shadow-xs md:shadow-none">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-[#593CFF]/10 text-[#593CFF] flex items-center justify-center shrink-0">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-accent-text/10 text-accent-text flex items-center justify-center shrink-0">
                 <Globe className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="min-w-0">
@@ -601,7 +601,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-14" data-aos="fade-up">
-            <span className="text-xs font-black uppercase tracking-[0.12em] text-[#593CFF] bg-[#593CFF]/10 px-4 py-1.5 rounded-full border border-[#593CFF]/20">
+            <span className="text-xs font-black uppercase tracking-[0.12em] text-accent-text bg-accent-text/10 px-4 py-1.5 rounded-full border border-accent/20">
               HOW IT WORKS
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-[#030B3D] tracking-tight mt-3 mb-3">
@@ -619,12 +619,12 @@ export default function Home() {
             <div 
               data-aos="fade-up" 
               data-aos-delay="0"
-              className="bg-white rounded-3xl p-7 sm:p-8 border border-stone-200 shadow-xs hover:shadow-md hover:border-[#593CFF]/40 transition-all group flex flex-col justify-between"
+              className="bg-white rounded-3xl p-7 sm:p-8 border border-stone-200 shadow-xs hover:shadow-md hover:border-accent/40 transition-all group flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-5">
-                  <span className="text-3xl font-display font-black text-[#593CFF]/30 group-hover:text-[#593CFF] transition-colors">01</span>
-                  <div className="w-11 h-11 rounded-2xl bg-accent-tint text-[#593CFF] flex items-center justify-center font-bold shadow-xs">
+                  <span className="text-3xl font-display font-black text-accent-text/30 group-hover:text-accent-text transition-colors">01</span>
+                  <div className="w-11 h-11 rounded-2xl bg-accent-tint text-accent-text flex items-center justify-center font-bold shadow-xs">
                     <Terminal className="w-5 h-5" />
                   </div>
                 </div>
@@ -635,7 +635,7 @@ export default function Home() {
                   Tell us what you're building, which skills you need, and what you expect to receive. Then connect with freelancers who match your project.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-stone-100 flex items-center text-xs font-semibold text-[#593CFF]">
+              <div className="mt-6 pt-4 border-t border-stone-100 flex items-center text-xs font-semibold text-accent-text">
                 Clear Scope · No Spam Pitches
               </div>
             </div>
@@ -644,11 +644,11 @@ export default function Home() {
             <div 
               data-aos="fade-up" 
               data-aos-delay="50"
-              className="bg-white rounded-3xl p-7 sm:p-8 border border-stone-200 shadow-xs hover:shadow-md hover:border-[#593CFF]/40 transition-all group flex flex-col justify-between"
+              className="bg-white rounded-3xl p-7 sm:p-8 border border-stone-200 shadow-xs hover:shadow-md hover:border-accent/40 transition-all group flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-5">
-                  <span className="text-3xl font-display font-black text-[#593CFF]/30 group-hover:text-[#593CFF] transition-colors">02</span>
+                  <span className="text-3xl font-display font-black text-accent-text/30 group-hover:text-accent-text transition-colors">02</span>
                   <div className="w-11 h-11 rounded-2xl bg-accent-tint text-accent-text flex items-center justify-center font-bold shadow-xs">
                     <Layers className="w-5 h-5" />
                   </div>
@@ -669,11 +669,11 @@ export default function Home() {
             <div 
               data-aos="fade-up" 
               data-aos-delay="100"
-              className="bg-white rounded-3xl p-7 sm:p-8 border border-stone-200 shadow-xs hover:shadow-md hover:border-[#593CFF]/40 transition-all group flex flex-col justify-between"
+              className="bg-white rounded-3xl p-7 sm:p-8 border border-stone-200 shadow-xs hover:shadow-md hover:border-accent/40 transition-all group flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-5">
-                  <span className="text-3xl font-display font-black text-[#593CFF]/30 group-hover:text-[#593CFF] transition-colors">03</span>
+                  <span className="text-3xl font-display font-black text-accent-text/30 group-hover:text-accent-text transition-colors">03</span>
                   <div className="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold shadow-xs">
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
@@ -707,7 +707,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-14" data-aos="fade-up">
-            <span className="text-xs font-black uppercase tracking-[0.12em] text-[#593CFF] bg-[#593CFF]/10 px-4 py-1.5 rounded-full border border-[#593CFF]/20">
+            <span className="text-xs font-black uppercase tracking-[0.12em] text-accent-text bg-accent-text/10 px-4 py-1.5 rounded-full border border-accent/20">
               CHOOSE YOUR PATH
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-[#030B3D] tracking-tight mt-3 mb-3">
@@ -724,10 +724,10 @@ export default function Home() {
             <div 
               data-aos="fade-up"
               data-aos-delay="0"
-              className="rounded-3xl p-8 sm:p-10 bg-[#FAF8F5] border border-stone-200 hover:border-[#593CFF]/50 hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
+              className="rounded-3xl p-8 sm:p-10 bg-[#FAF8F5] border border-stone-200 hover:border-accent/50 hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
             >
               <div>
-                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-100 text-[#593CFF] text-xs font-bold mb-5">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-100 text-accent-text text-xs font-bold mb-5">
                   <Users className="w-3.5 h-3.5" /> For Founders &amp; Clients
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-display font-black text-[#030B3D] mb-3">
@@ -744,7 +744,7 @@ export default function Home() {
                     'Active workspace for founders and technical talent'
                   ].map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-stone-700">
-                      <Check className="w-4 h-4 text-[#593CFF] shrink-0 mt-0.5" />
+                      <Check className="w-4 h-4 text-accent-text shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -752,7 +752,7 @@ export default function Home() {
               </div>
               <Link 
                 to="/signup" 
-                className="rounded-full bg-[#030B3D] hover:bg-[#593CFF] text-white text-center py-3.5 px-6 font-bold text-sm shadow-sm hover:shadow-md transition-all block cursor-pointer"
+                className="rounded-full bg-[#030B3D] hover:bg-accent-deep text-white text-center py-3.5 px-6 font-bold text-sm shadow-sm hover:shadow-md transition-all block cursor-pointer"
               >
                 Join as Client
               </Link>
@@ -790,7 +790,7 @@ export default function Home() {
               </div>
               <Link 
                 to="/signup" 
-                className="rounded-full bg-[#593CFF] hover:bg-[#472fe0] text-white text-center py-3.5 px-6 font-bold text-sm shadow-sm hover:shadow-md transition-all block cursor-pointer"
+                className="rounded-full bg-accent-text hover:bg-[#472fe0] text-white text-center py-3.5 px-6 font-bold text-sm shadow-sm hover:shadow-md transition-all block cursor-pointer"
               >
                 Join as Freelancer
               </Link>
@@ -806,7 +806,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
-            <span className="text-xs font-black uppercase tracking-[0.12em] text-[#593CFF] bg-[#593CFF]/10 px-4 py-1.5 rounded-full border border-[#593CFF]/20">
+            <span className="text-xs font-black uppercase tracking-[0.12em] text-accent-text bg-accent-text/10 px-4 py-1.5 rounded-full border border-accent/20">
               ENGINEERED FOR TRUST
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-[#030B3D] tracking-tight mt-4 mb-4">
@@ -833,10 +833,10 @@ export default function Home() {
                 className={`group p-8 rounded-3xl bg-white border border-stone-200/80 ${feature.border} hover:shadow-[0_20px_40px_-15px_rgba(3,11,61,0.08)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between`}
               >
                 <div>
-                  <div className="w-12 h-12 rounded-2xl bg-white border border-stone-200 flex items-center justify-center text-[#593CFF] shadow-xs group-hover:scale-110 group-hover:bg-[#593CFF] group-hover:text-white transition-all duration-300 mb-5">
+                  <div className="w-12 h-12 rounded-2xl bg-white border border-stone-200 flex items-center justify-center text-accent-text shadow-xs group-hover:scale-110 group-hover:bg-accent-deep group-hover:text-white transition-all duration-300 mb-5">
                     <feature.icon className="h-6 w-6" />
                   </div>
-                  <h3 className="text-xl font-display font-bold text-[#030B3D] mb-2.5 group-hover:text-[#593CFF] transition-colors">
+                  <h3 className="text-xl font-display font-bold text-[#030B3D] mb-2.5 group-hover:text-accent-text transition-colors">
                     {feature.title}
                   </h3>
                   <p className="text-sm text-stone-600 leading-relaxed font-normal">
@@ -855,7 +855,7 @@ export default function Home() {
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           
           <div className="text-center max-w-2xl mx-auto mb-14" data-aos="fade-up">
-            <span className="text-xs font-black uppercase tracking-[0.12em] text-[#593CFF] bg-[#593CFF]/10 px-4 py-1.5 rounded-full border border-[#593CFF]/20">
+            <span className="text-xs font-black uppercase tracking-[0.12em] text-accent-text bg-accent-text/10 px-4 py-1.5 rounded-full border border-accent/20">
               TRANSPARENCY FIRST
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-[#030B3D] tracking-tight mt-4 mb-3">
@@ -882,10 +882,10 @@ export default function Home() {
                   id={`faq-btn-${idx}`}
                   aria-expanded={openFaq === idx}
                   aria-controls={`faq-answer-${idx}`}
-                  className="w-full flex items-center justify-between p-6 text-left text-base sm:text-lg font-display font-bold text-[#030B3D] hover:text-[#593CFF] transition-colors cursor-pointer"
+                  className="w-full flex items-center justify-between p-6 text-left text-base sm:text-lg font-display font-bold text-[#030B3D] hover:text-accent-text transition-colors cursor-pointer"
                 >
                   <span>{faq.q}</span>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-stone-100 shrink-0 ml-4 transition-transform duration-200 ${openFaq === idx ? 'rotate-180 bg-[#593CFF] text-white' : 'text-stone-500'}`}>
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-stone-100 shrink-0 ml-4 transition-transform duration-200 ${openFaq === idx ? 'rotate-180 bg-accent-text text-white' : 'text-stone-500'}`}>
                     <ChevronDown className="h-4 w-4" />
                   </div>
                 </button>
@@ -908,7 +908,7 @@ export default function Home() {
 
       {/* FINAL PRODUCT CTA BANNER */}
       <section className="py-24 lg:py-28 bg-[#030B3D] text-white relative overflow-hidden">
-        <div className="absolute -top-20 right-1/4 w-96 h-96 bg-[#593CFF]/30 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute -top-20 right-1/4 w-96 h-96 bg-accent-text/30 rounded-full blur-3xl pointer-events-none" />
         <div className="mx-auto max-w-4xl px-4 text-center relative z-10" data-aos="fade-up">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-5 text-balance">
             Ready to start your next project?
@@ -917,7 +917,7 @@ export default function Home() {
             Post a project or find work with clear milestones. Free during preview, payments in demo mode.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link to="/signup" className="rounded-full bg-[#593CFF] hover:bg-[#472fe0] px-8 py-4 font-bold text-sm active:scale-95 transition-all text-center">
+            <Link to="/signup" className="rounded-full bg-accent-text hover:bg-[#472fe0] px-8 py-4 font-bold text-sm active:scale-95 transition-all text-center">
               Post a project
             </Link>
             <Link to="/marketplace" className="rounded-full bg-white/10 border border-white/20 hover:bg-white/15 px-8 py-4 font-bold text-sm active:scale-95 transition-all text-center">

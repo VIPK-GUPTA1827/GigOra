@@ -105,7 +105,7 @@ export default function PublicProfile() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center text-slate-600">
-        <div className="w-10 h-10 border-4 border-[#593CFF] border-t-transparent rounded-full animate-spin mb-4" />
+        <div className="w-10 h-10 border-4 border-accent border-t-transparent rounded-full animate-spin mb-4" />
         <p className="text-sm font-semibold">Loading profile details...</p>
       </div>
     );
@@ -129,7 +129,7 @@ export default function PublicProfile() {
             </button>
             <Link
               to="/"
-              className="px-4 py-2 text-xs font-bold text-white bg-[#593CFF] hover:bg-[#472fe0] rounded-xl transition shadow-xs"
+              className="px-4 py-2 text-xs font-bold text-white bg-accent-text hover:bg-[#472fe0] rounded-xl transition shadow-xs"
             >
               Browse Marketplace
             </Link>
@@ -190,7 +190,7 @@ export default function PublicProfile() {
             {isOwnProfile && (
               <Link
                 to={isFreelancer ? '/freelancer/setup' : '/client/dashboard'}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-[#593CFF] hover:bg-[#472fe0] px-3.5 py-2 rounded-xl transition shadow-xs"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-accent-text hover:bg-[#472fe0] px-3.5 py-2 rounded-xl transition shadow-xs"
               >
                 <Edit3 className="w-3.5 h-3.5" />
                 <span>Edit Profile</span>
@@ -243,7 +243,7 @@ export default function PublicProfile() {
                     <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
                       {isFreelancer ? displayName : (profileData.companyName || displayName)}
                     </h1>
-                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-accent-tint text-[#593CFF] border border-accent-soft/60 uppercase tracking-wider">
+                    <span className="text-xs font-bold px-2.5 py-0.5 rounded-full bg-accent-tint text-accent-text border border-accent-soft/60 uppercase tracking-wider">
                       {profileData.role}
                     </span>
                   </div>
@@ -292,8 +292,8 @@ export default function PublicProfile() {
                 ) : (
                   <div>
                     <div className="text-xs font-bold uppercase tracking-wider text-slate-500">Client Status</div>
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-tint text-[#593CFF] text-xs font-bold border border-accent-soft">
-                      <ShieldCheck className="w-3.5 h-3.5 text-[#593CFF]" />
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-tint text-accent-text text-xs font-bold border border-accent-soft">
+                      <ShieldCheck className="w-3.5 h-3.5 text-accent-text" />
                       Verified Hirer (Demo Sandbox)
                     </div>
                   </div>
@@ -337,7 +337,7 @@ export default function PublicProfile() {
                       : `https://${profileData.socialLinks?.website || profileData.companyWebsite}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#593CFF] hover:text-[#472fe0] bg-accent-tint/60 hover:bg-indigo-100/60 border border-accent-soft px-3 py-1.5 rounded-xl transition"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-accent-text hover:text-[#472fe0] bg-accent-tint/60 hover:bg-indigo-100/60 border border-accent-soft px-3 py-1.5 rounded-xl transition"
                   >
                     <Globe className="w-4 h-4" />
                     <span>{isFreelancer ? 'Portfolio Website' : 'Company Website'}</span>
@@ -372,7 +372,7 @@ export default function PublicProfile() {
               {/* About / Bio */}
               <div className="bg-white p-6 sm:p-7 rounded-3xl border border-slate-200/90 shadow-xs space-y-3">
                 <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-[#593CFF]" />
+                  <FileText className="w-4 h-4 text-accent-text" />
                   About Me
                 </h2>
                 <div className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
@@ -388,13 +388,13 @@ export default function PublicProfile() {
               <div className="bg-white p-6 sm:p-7 rounded-3xl border border-slate-200/90 shadow-xs space-y-4">
                 <div className="flex items-center justify-between">
                   <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-[#593CFF]" />
+                    <Sparkles className="w-4 h-4 text-accent-text" />
                     Portfolio & Featured Work ({profileData.portfolio?.length || 0})
                   </h2>
                   {isOwnProfile && (
                     <Link
                       to="/freelancer/setup"
-                      className="text-xs font-bold text-[#593CFF] hover:underline flex items-center gap-1"
+                      className="text-xs font-bold text-accent-text hover:underline flex items-center gap-1"
                     >
                       + Add Work
                     </Link>
@@ -406,7 +406,7 @@ export default function PublicProfile() {
                     {profileData.portfolio.map((item, idx) => (
                       <div
                         key={item._id || idx}
-                        className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-[#593CFF]/50 transition flex flex-col justify-between space-y-3"
+                        className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-accent/50 transition flex flex-col justify-between space-y-3"
                       >
                         <div className="space-y-1.5">
                           <h3 className="text-sm font-bold text-slate-900 line-clamp-1">
@@ -435,7 +435,7 @@ export default function PublicProfile() {
                               href={projectLink.startsWith('http') ? projectLink : `https://${projectLink}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 text-xs font-bold text-[#593CFF] hover:text-[#472fe0] mt-auto"
+                              className="inline-flex items-center gap-1.5 text-xs font-bold text-accent-text hover:text-[#472fe0] mt-auto"
                             >
                               <span>View Repository / Live App</span>
                               <ExternalLink className="w-3.5 h-3.5" />
@@ -451,7 +451,7 @@ export default function PublicProfile() {
                     {isOwnProfile && (
                       <Link
                         to="/freelancer/setup"
-                        className="text-xs font-bold text-[#593CFF] hover:underline inline-block"
+                        className="text-xs font-bold text-accent-text hover:underline inline-block"
                       >
                         Add your top projects to boost hiring chances →
                       </Link>
@@ -523,7 +523,7 @@ export default function PublicProfile() {
                     skillsList.map((skill, idx) => (
                       <span
                         key={idx}
-                        className="text-xs font-bold bg-[#593CFF]/10 text-[#593CFF] border border-[#593CFF]/20 px-3 py-1.5 rounded-xl"
+                        className="text-xs font-bold bg-accent-text/10 text-accent-text border border-accent/20 px-3 py-1.5 rounded-xl"
                       >
                         {skill}
                       </span>
@@ -584,7 +584,7 @@ export default function PublicProfile() {
                   </div>
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-slate-500 font-medium">Demo Escrow Protected</span>
-                    <strong className="text-[#593CFF] font-black flex items-center gap-1">
+                    <strong className="text-accent-text font-black flex items-center gap-1">
                       <ShieldCheck className="w-3.5 h-3.5" /> Test Mode
                     </strong>
                   </div>
@@ -604,7 +604,7 @@ export default function PublicProfile() {
               {/* About Company */}
               <div className="bg-white p-6 sm:p-7 rounded-3xl border border-slate-200/90 shadow-xs space-y-3">
                 <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
-                  <Building2 className="w-4 h-4 text-[#593CFF]" />
+                  <Building2 className="w-4 h-4 text-accent-text" />
                   About Our Company
                 </h2>
                 <div className="text-sm text-slate-600 leading-relaxed whitespace-pre-line">
@@ -619,7 +619,7 @@ export default function PublicProfile() {
               {/* Company Profile Details */}
               <div className="bg-white p-6 sm:p-7 rounded-3xl border border-slate-200/90 shadow-xs space-y-4">
                 <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
-                  <Briefcase className="w-4 h-4 text-[#593CFF]" />
+                  <Briefcase className="w-4 h-4 text-accent-text" />
                   Organization Details
                 </h2>
 
@@ -673,8 +673,8 @@ export default function PublicProfile() {
                   </div>
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-slate-500 font-medium">Escrow Mode</span>
-                    <strong className="text-[#593CFF] font-black flex items-center gap-1">
-                      <ShieldCheck className="w-3.5 h-3.5 text-[#593CFF]" /> Simulated Sandbox Escrow
+                    <strong className="text-accent-text font-black flex items-center gap-1">
+                      <ShieldCheck className="w-3.5 h-3.5 text-accent-text" /> Simulated Sandbox Escrow
                     </strong>
                   </div>
                 </div>
@@ -682,14 +682,14 @@ export default function PublicProfile() {
 
               {/* Quick Actions */}
               {isOwnProfile && (
-                <div className="bg-gradient-to-br from-accent/10 to-indigo-100/50 p-6 rounded-3xl border border-[#593CFF]/20 space-y-3">
+                <div className="bg-gradient-to-br from-accent/10 to-indigo-100/50 p-6 rounded-3xl border border-accent/20 space-y-3">
                   <h3 className="text-sm font-black text-slate-900">Manage Client Workspace</h3>
                   <p className="text-xs text-slate-600">
                     Post new projects, manage proposals, and hire top freelancers in India.
                   </p>
                   <Link
                     to="/client/dashboard"
-                    className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-[#593CFF] hover:bg-[#472fe0] text-white text-xs font-bold transition shadow-xs"
+                    className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-accent-text hover:bg-[#472fe0] text-white text-xs font-bold transition shadow-xs"
                   >
                     Go to Client Dashboard →
                   </Link>

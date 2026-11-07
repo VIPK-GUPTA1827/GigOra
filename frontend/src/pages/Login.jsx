@@ -77,10 +77,10 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col justify-between py-8 px-4 sm:px-6 relative overflow-hidden selection:bg-[#593CFF] selection:text-white">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col justify-between py-8 px-4 sm:px-6 relative overflow-hidden selection:bg-accent-text selection:text-white">
       
       {/* Ambient Gradient Background Glows */}
-      <div className="absolute -top-32 -left-32 w-96 h-96 bg-[#593CFF]/10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -top-32 -left-32 w-96 h-96 bg-accent-text/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/4 -right-32 w-[32rem] h-[32rem] bg-[#8E51FF]/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-32 left-1/3 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -95,7 +95,7 @@ export default function Login() {
 
         <Link 
           to="/" 
-          className="text-xs sm:text-sm font-semibold text-slate-500 hover:text-[#593CFF] transition-colors inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-white/80"
+          className="text-xs sm:text-sm font-semibold text-slate-500 hover:text-accent-text transition-colors inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-white/80"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           <span>Back to Home</span>
@@ -158,7 +158,7 @@ export default function Login() {
                 placeholder="you@domain.com"
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
-                className={`w-full px-4 py-3 rounded-xl bg-slate-50/70 border text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#593CFF] focus:bg-white transition-all shadow-2xs ${
+                className={`w-full px-4 py-3 rounded-xl bg-slate-50/70 border text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-accent focus:bg-white transition-all shadow-2xs ${
                   fieldErrors.email ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200'
                 }`}
               />
@@ -175,7 +175,7 @@ export default function Login() {
                 </label>
                 <Link
                   to="/forgot-password"
-                  className="text-xs font-semibold text-[#593CFF] hover:underline cursor-pointer"
+                  className="text-xs font-semibold text-accent-text hover:underline cursor-pointer"
                 >
                   Forgot password?
                 </Link>
@@ -188,7 +188,7 @@ export default function Login() {
                   placeholder="••••••••••••"
                   value={formData.password}
                   onChange={(e) => handleInputChange('password', e.target.value)}
-                  className={`w-full pl-4 pr-11 py-3 rounded-xl bg-slate-50/70 border text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#593CFF] focus:bg-white transition-all shadow-2xs ${
+                  className={`w-full pl-4 pr-11 py-3 rounded-xl bg-slate-50/70 border text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-accent focus:bg-white transition-all shadow-2xs ${
                     fieldErrors.password ? 'border-rose-400 bg-rose-50/30' : 'border-slate-200'
                   }`}
                 />
@@ -210,7 +210,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3.5 px-6 rounded-xl bg-[#593CFF] hover:bg-[#472fe0] text-white font-bold text-sm shadow-md shadow-[#593CFF]/20 transition-all active:scale-[0.99] cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full py-3.5 px-6 rounded-xl bg-accent-text hover:bg-[#472fe0] text-white font-bold text-sm shadow-md shadow-accent/20 transition-all active:scale-[0.99] cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {submitting ? (
                   <>
@@ -227,7 +227,7 @@ export default function Login() {
           {/* Footer Link */}
           <div className="mt-6 text-center text-xs text-slate-500">
             Don't have an account?{' '}
-            <Link to="/signup" className="font-bold text-[#593CFF] hover:underline cursor-pointer">
+            <Link to="/signup" className="font-bold text-accent-text hover:underline cursor-pointer">
               Create one now
             </Link>
           </div>

@@ -83,9 +83,9 @@ export default function VerifyEmail() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-stone-900 flex flex-col justify-between py-8 px-4 sm:px-6 relative overflow-hidden selection:bg-[#593CFF] selection:text-white">
+    <div className="min-h-screen bg-[#FAF8F5] text-stone-900 flex flex-col justify-between py-8 px-4 sm:px-6 relative overflow-hidden selection:bg-accent-text selection:text-white">
       {/* Corner glow */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#593CFF]/8 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-accent-text/8 rounded-full blur-3xl pointer-events-none" />
 
       {/* Top Header */}
       <header className="max-w-[540px] w-full mx-auto flex items-center justify-between py-4 relative z-10">
@@ -103,7 +103,7 @@ export default function VerifyEmail() {
           
           {loading && (
             <div className="py-8 space-y-4">
-              <Loader2 className="w-10 h-10 animate-spin text-[#593CFF] mx-auto" />
+              <Loader2 className="w-10 h-10 animate-spin text-accent-text mx-auto" />
               <h2 className="text-xl font-bold text-[#030B3D]">Verifying your email...</h2>
               <p className="text-xs text-stone-500">Checking your secure token against the database.</p>
             </div>
@@ -126,7 +126,7 @@ export default function VerifyEmail() {
                 <button
                   type="button"
                   onClick={handleContinue}
-                  className="py-3 px-8 rounded-xl bg-[#593CFF] hover:bg-[#472fe0] text-white font-bold text-sm shadow-sm transition-all cursor-pointer inline-flex items-center gap-2"
+                  className="py-3 px-8 rounded-xl bg-accent-text hover:bg-[#472fe0] text-white font-bold text-sm shadow-sm transition-all cursor-pointer inline-flex items-center gap-2"
                 >
                   <span>Continue to Dashboard</span>
                   <ArrowRight className="w-4 h-4" />

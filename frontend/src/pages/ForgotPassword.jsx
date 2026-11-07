@@ -49,10 +49,10 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-stone-900 flex flex-col justify-between py-6 px-4 sm:px-6 relative overflow-hidden selection:bg-[#593CFF] selection:text-white">
+    <div className="min-h-screen bg-[#FAF8F5] text-stone-900 flex flex-col justify-between py-6 px-4 sm:px-6 relative overflow-hidden selection:bg-accent-text selection:text-white">
       
       {/* Corner purple glow */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#593CFF]/8 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-accent-text/8 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#8E51FF]/5 rounded-full blur-3xl pointer-events-none" />
 
       {/* Top Bar */}
@@ -66,7 +66,7 @@ export default function ForgotPassword() {
 
         <Link 
           to="/login" 
-          className="text-xs sm:text-sm font-semibold text-stone-500 hover:text-[#593CFF] transition-colors flex items-center gap-1.5"
+          className="text-xs sm:text-sm font-semibold text-stone-500 hover:text-accent-text transition-colors flex items-center gap-1.5"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           Back to sign in
@@ -81,7 +81,7 @@ export default function ForgotPassword() {
             <>
               {/* Header */}
               <div className="text-center mb-7">
-                <div className="w-14 h-14 rounded-2xl bg-accent-tint text-[#593CFF] flex items-center justify-center mx-auto mb-4">
+                <div className="w-14 h-14 rounded-2xl bg-accent-tint text-accent-text flex items-center justify-center mx-auto mb-4">
                   <KeyRound className="w-7 h-7" />
                 </div>
                 <span className="text-[11px] font-bold uppercase tracking-widest text-stone-400 block mb-1">
@@ -115,7 +115,7 @@ export default function ForgotPassword() {
                     placeholder="name@example.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-4 py-3 rounded-xl bg-[#FAF9F6] border border-stone-200/80 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-[#593CFF] focus:bg-white transition-all"
+                    className="w-full px-4 py-3 rounded-xl bg-[#FAF9F6] border border-stone-200/80 text-sm text-stone-900 placeholder:text-stone-400 focus:outline-none focus:ring-2 focus:ring-accent focus:bg-white transition-all"
                   />
                 </div>
 
@@ -123,7 +123,7 @@ export default function ForgotPassword() {
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full py-3.5 px-4 rounded-xl bg-[#593CFF] hover:bg-[#4a2fe6] active:bg-[#3f25d4] text-white font-bold text-sm tracking-wide shadow-md shadow-[#593CFF]/20 hover:shadow-lg hover:shadow-[#593CFF]/30 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
+                    className="w-full py-3.5 px-4 rounded-xl bg-accent-text hover:bg-[#4a2fe6] active:bg-[#3f25d4] text-white font-bold text-sm tracking-wide shadow-md shadow-accent/20 hover:shadow-lg hover:shadow-accent/30 transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
                   >
                     {submitting ? (
                       <>
@@ -140,7 +140,7 @@ export default function ForgotPassword() {
               {/* Footer link */}
               <div className="mt-6 text-center text-xs text-stone-500">
                 Remember your password?{' '}
-                <Link to="/login" className="font-bold text-[#593CFF] hover:underline">
+                <Link to="/login" className="font-bold text-accent-text hover:underline">
                   Sign in
                 </Link>
               </div>
@@ -179,7 +179,7 @@ export default function ForgotPassword() {
               {/* Dev mode Ethereal direct link */}
               {etherealUrl && (
                 <div className="mb-6 p-4 rounded-2xl bg-accent-tint/80 border border-accent-soft/80 text-left">
-                  <div className="text-[11px] font-bold uppercase tracking-wider text-[#593CFF] mb-1">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-accent-text mb-1">
                     Development Email Preview
                   </div>
                   <p className="text-xs text-stone-600 mb-2">
@@ -189,7 +189,7 @@ export default function ForgotPassword() {
                     href={etherealUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#593CFF] bg-white border border-accent-soft px-3 py-1.5 rounded-lg shadow-xs hover:bg-purple-100/50 transition-all"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-accent-text bg-white border border-accent-soft px-3 py-1.5 rounded-lg shadow-xs hover:bg-purple-100/50 transition-all"
                   >
                     <span>Open in Ethereal Mailbox</span>
                     <ExternalLink className="w-3.5 h-3.5" />

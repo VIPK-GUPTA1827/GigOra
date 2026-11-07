@@ -78,9 +78,9 @@ export default function CheckEmail() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-stone-900 flex flex-col justify-between py-8 px-4 sm:px-6 relative overflow-hidden selection:bg-[#593CFF] selection:text-white">
+    <div className="min-h-screen bg-[#FAF8F5] text-stone-900 flex flex-col justify-between py-8 px-4 sm:px-6 relative overflow-hidden selection:bg-accent-text selection:text-white">
       {/* Corner glow */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-[#593CFF]/8 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-accent-text/8 rounded-full blur-3xl pointer-events-none" />
 
       {/* Top Header */}
       <header className="max-w-[540px] w-full mx-auto flex items-center justify-between py-4 relative z-10">
@@ -93,7 +93,7 @@ export default function CheckEmail() {
 
         <Link 
           to="/login" 
-          className="text-xs sm:text-sm font-semibold text-stone-500 hover:text-[#593CFF] transition-colors"
+          className="text-xs sm:text-sm font-semibold text-stone-500 hover:text-accent-text transition-colors"
         >
           Back to sign in
         </Link>
@@ -104,7 +104,7 @@ export default function CheckEmail() {
         <div className="bg-white rounded-3xl border border-stone-200/80 shadow-[0_10px_35px_-10px_rgba(0,0,0,0.05)] p-6 sm:p-10 text-center">
           
           {/* Icon */}
-          <div className="w-16 h-16 rounded-2xl bg-accent-tint text-[#593CFF] flex items-center justify-center mx-auto mb-5 shadow-xs">
+          <div className="w-16 h-16 rounded-2xl bg-accent-tint text-accent-text flex items-center justify-center mx-auto mb-5 shadow-xs">
             <Mail className="w-8 h-8" />
           </div>
 

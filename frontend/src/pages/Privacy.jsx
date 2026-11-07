@@ -11,7 +11,7 @@ export default function Privacy() {
     <div className="min-h-screen bg-[#FAF8F5] text-slate-900 font-sans selection:bg-accent-text selection:text-white">
       {/* Header */}
       <header className="border-b border-stone-200/80 bg-white/90 backdrop-blur-md sticky top-0 z-50 py-4 px-6 sm:px-12 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 text-sm font-bold text-[#030B3D] hover:text-[#593CFF] transition-colors">
+        <Link to="/" className="flex items-center gap-2 text-sm font-bold text-[#030B3D] hover:text-accent-text transition-colors">
           <ArrowLeft className="h-4 w-4" />
           <span>Back to GigOra</span>
         </Link>
@@ -23,7 +23,7 @@ export default function Privacy() {
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <div className="mb-6 text-left">
-          <span className="text-xs font-mono font-bold text-[#593CFF] bg-[#593CFF]/10 px-3 py-1 rounded-full uppercase tracking-wider">
+          <span className="text-xs font-mono font-bold text-accent-text bg-accent-text/10 px-3 py-1 rounded-full uppercase tracking-wider">
             Transparency & Security
           </span>
           <h1 className="text-3xl sm:text-5xl font-display font-black text-[#030B3D] tracking-tight mt-3 mb-2">
@@ -34,7 +34,7 @@ export default function Privacy() {
 
         {/* Current Architecture Notice */}
         <div className="p-4 sm:p-5 rounded-2xl bg-accent-tint border border-accent-soft text-indigo-950 text-xs sm:text-sm leading-relaxed mb-8 text-left flex items-start gap-3">
-          <Shield className="w-5 h-5 text-[#593CFF] shrink-0 mt-0.5" />
+          <Shield className="w-5 h-5 text-accent-text shrink-0 mt-0.5" />
           <div>
             <span className="font-bold block text-indigo-950 mb-1">Live Preview Architecture Disclosure</span>
             <p className="text-indigo-900/90 leading-relaxed font-medium">
@@ -48,7 +48,7 @@ export default function Privacy() {
           {/* Section 1: Authentication & Credentials */}
           <section className="space-y-3">
             <h2 className="text-xl sm:text-2xl font-display font-bold text-[#030B3D] flex items-center gap-2">
-              <Lock className="w-5 h-5 text-[#593CFF]" />
+              <Lock className="w-5 h-5 text-accent-text" />
               1. Account Authentication & Credential Storage
             </h2>
             <p>
@@ -64,7 +64,7 @@ export default function Privacy() {
           {/* Section 2: Professional Profiles & Work Showcase */}
           <section className="space-y-3">
             <h2 className="text-xl sm:text-2xl font-display font-bold text-[#030B3D] flex items-center gap-2">
-              <FileCode className="w-5 h-5 text-[#593CFF]" />
+              <FileCode className="w-5 h-5 text-accent-text" />
               2. Profiles, Skills & Portfolio Data
             </h2>
             <p>
@@ -140,7 +140,7 @@ export default function Privacy() {
               7. Data Retention & Account Deletion
             </h2>
             <p>
-              Your data is retained for as long as your account remains active. If you request account deletion by emailing <a href="mailto:support@gigora.in" className="text-[#593CFF] font-medium hover:underline">support@gigora.in</a>, all personal identity records and active profile listings will be permanently deleted within 30 days, except where retention is strictly required to comply with statutory legal or tax obligations.
+              Your data is retained for as long as your account remains active. If you request account deletion by emailing <a href="mailto:support@gigora.in" className="text-accent-text font-medium hover:underline">support@gigora.in</a>, all personal identity records and active profile listings will be permanently deleted within 30 days, except where retention is strictly required to comply with statutory legal or tax obligations.
             </p>
           </section>
 
@@ -155,7 +155,7 @@ export default function Privacy() {
             <ul className="space-y-2 list-disc list-inside text-stone-600 text-sm">
               <li><strong>Right to Access:</strong> You may request a summary of the personal data held about you and the processing activities performed.</li>
               <li><strong>Right to Correction & Erasure:</strong> You may request correction of inaccurate data or deletion of data no longer necessary for the purpose it was collected.</li>
-              <li><strong>Grievance Redressal:</strong> If you have concerns regarding your data privacy, you may contact our Grievance Officer at <a href="mailto:support@gigora.in" className="text-[#593CFF] font-medium hover:underline">support@gigora.in</a>. We respond to all formal grievance requests within 30 business days.</li>
+              <li><strong>Grievance Redressal:</strong> If you have concerns regarding your data privacy, you may contact our Grievance Officer at <a href="mailto:support@gigora.in" className="text-accent-text font-medium hover:underline">support@gigora.in</a>. We respond to all formal grievance requests within 30 business days.</li>
             </ul>
           </section>
 
@@ -165,19 +165,19 @@ export default function Privacy() {
               9. Contact & Support
             </h2>
             <p>
-              For privacy-related questions, data export requests, or general inquiries, please contact our team at <a href="mailto:support@gigora.in" className="font-mono text-[#593CFF] font-semibold hover:underline">support@gigora.in</a>.
+              For privacy-related questions, data export requests, or general inquiries, please contact our team at <a href="mailto:support@gigora.in" className="font-mono text-accent-text font-semibold hover:underline">support@gigora.in</a>.
             </p>
           </section>
 
           {/* Navigation Cross Links */}
           <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-stone-500 pt-4 border-t border-stone-200">
-            <Link to="/about" className="hover:text-[#593CFF] transition-colors">About</Link>
+            <Link to="/about" className="hover:text-accent-text transition-colors">About</Link>
             <span>•</span>
-            <Link to="/terms" className="hover:text-[#593CFF] transition-colors">Terms of Service</Link>
+            <Link to="/terms" className="hover:text-accent-text transition-colors">Terms of Service</Link>
             <span>•</span>
-            <Link to="/privacy" className="text-[#593CFF] font-bold">Privacy Policy</Link>
+            <Link to="/privacy" className="text-accent-text font-bold">Privacy Policy</Link>
             <span>•</span>
-            <Link to="/marketplace" className="hover:text-[#593CFF] transition-colors">Marketplace</Link>
+            <Link to="/marketplace" className="hover:text-accent-text transition-colors">Marketplace</Link>
           </div>
 
           <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-stone-100 text-xs text-stone-400">

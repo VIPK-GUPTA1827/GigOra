@@ -119,7 +119,7 @@ export default function GoogleAuthButton({ role = 'client', isSignup = false, te
     <div className="w-full relative">
       {loading && (
         <div className="absolute inset-0 bg-white/80 z-20 flex items-center justify-center rounded-xl backdrop-blur-xs">
-          <div className="flex items-center gap-2 text-xs font-semibold text-[#593CFF]">
+          <div className="flex items-center gap-2 text-xs font-semibold text-accent-text">
             <Loader2 className="w-4 h-4 animate-spin" />
             <span>Connecting Google account...</span>
           </div>

@@ -11,7 +11,7 @@ export default function About() {
     <div className="min-h-screen bg-[#FAF8F5] text-slate-900 font-sans selection:bg-accent-text selection:text-white">
       {/* Header */}
       <header className="border-b border-stone-200/80 bg-white/90 backdrop-blur-md sticky top-0 z-50 py-4 px-6 sm:px-12 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 text-sm font-bold text-[#030B3D] hover:text-[#593CFF] transition-colors">
+        <Link to="/" className="flex items-center gap-2 text-sm font-bold text-[#030B3D] hover:text-accent-text transition-colors">
           <ArrowLeft className="h-4 w-4" />
           <span>Back to GigOra</span>
         </Link>
@@ -23,7 +23,7 @@ export default function About() {
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <div className="mb-8 text-left">
-          <span className="text-xs font-mono font-bold text-[#593CFF] bg-[#593CFF]/10 px-3 py-1 rounded-full uppercase tracking-wider">
+          <span className="text-xs font-mono font-bold text-accent-text bg-accent-text/10 px-3 py-1 rounded-full uppercase tracking-wider">
             Our Story & Vision
           </span>
           <h1 className="text-3xl sm:text-5xl font-display font-black text-[#030B3D] tracking-tight mt-3 mb-3">
@@ -36,7 +36,7 @@ export default function About() {
 
         {/* Live Preview Callout */}
         <div className="p-4 sm:p-5 rounded-2xl bg-accent-tint/80 border border-accent-soft/80 text-indigo-950 text-xs sm:text-sm flex items-start gap-3 mb-8 text-left">
-          <AlertCircle className="w-5 h-5 text-[#593CFF] shrink-0 mt-0.5" />
+          <AlertCircle className="w-5 h-5 text-accent-text shrink-0 mt-0.5" />
           <div>
             <span className="font-bold block text-indigo-950 mb-0.5">Live Preview</span>
             <p className="text-indigo-900/90 leading-relaxed">
@@ -66,7 +66,7 @@ export default function About() {
           {/* 3 Pillars */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-5 pt-2">
             <div className="p-5 rounded-2xl bg-[#FAF8F5] border border-stone-200/80 space-y-2">
-              <div className="h-10 w-10 rounded-xl bg-white border border-stone-200 text-[#593CFF] flex items-center justify-center font-bold">
+              <div className="h-10 w-10 rounded-xl bg-white border border-stone-200 text-accent-text flex items-center justify-center font-bold">
                 <Code2 className="h-5 w-5" />
               </div>
               <h3 className="font-bold text-[#030B3D] text-base">Proof Over Resumes</h3>
@@ -111,7 +111,7 @@ export default function About() {
 
           {/* Action CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
-            <Link to="/marketplace" className="rounded-full bg-[#593CFF] hover:bg-[#472fe0] text-white text-center py-3 px-6 font-bold text-sm active:scale-95 transition-all">
+            <Link to="/marketplace" className="rounded-full bg-accent-text hover:bg-[#472fe0] text-white text-center py-3 px-6 font-bold text-sm active:scale-95 transition-all">
               Browse projects
             </Link>
             <Link to="/signup" className="rounded-full border border-[#030B3D]/20 text-[#030B3D] text-center py-3 px-6 font-bold text-sm hover:bg-stone-50 active:scale-95 transition-all">
@@ -121,13 +121,13 @@ export default function About() {
 
           {/* Navigation Cross Links */}
           <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-stone-500 pt-4 border-t border-stone-200">
-            <Link to="/about" className="text-[#593CFF] font-bold">About</Link>
+            <Link to="/about" className="text-accent-text font-bold">About</Link>
             <span>•</span>
-            <Link to="/terms" className="hover:text-[#593CFF] transition-colors">Terms of Service</Link>
+            <Link to="/terms" className="hover:text-accent-text transition-colors">Terms of Service</Link>
             <span>•</span>
-            <Link to="/privacy" className="hover:text-[#593CFF] transition-colors">Privacy Policy</Link>
+            <Link to="/privacy" className="hover:text-accent-text transition-colors">Privacy Policy</Link>
             <span>•</span>
-            <Link to="/marketplace" className="hover:text-[#593CFF] transition-colors">Marketplace</Link>
+            <Link to="/marketplace" className="hover:text-accent-text transition-colors">Marketplace</Link>
           </div>
 
           <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-stone-100 text-xs text-stone-400">

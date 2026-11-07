@@ -143,7 +143,7 @@ export default function NotificationBell({ userRole = 'freelancer', onNavigateTo
       case 'revision_requested':
         return <AlertCircle className="w-4 h-4 text-amber-600" />;
       default:
-        return <Sparkles className="w-4 h-4 text-[#593CFF]" />;
+        return <Sparkles className="w-4 h-4 text-accent-text" />;
     }
   };
 
@@ -169,7 +169,7 @@ export default function NotificationBell({ userRole = 'freelancer', onNavigateTo
       >
         <Bell className="w-4 h-4" />
         {unreadCount > 0 && (
-          <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-[#593CFF] text-white text-[10px] font-black flex items-center justify-center shadow-xs animate-in zoom-in">
+          <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 rounded-full bg-accent-text text-white text-[10px] font-black flex items-center justify-center shadow-xs animate-in zoom-in">
             {unreadCount > 9 ? '9+' : unreadCount}
           </span>
         )}
@@ -183,7 +183,7 @@ export default function NotificationBell({ userRole = 'freelancer', onNavigateTo
             <div className="flex items-center gap-2">
               <span className="font-extrabold text-sm text-slate-900">Notifications</span>
               {unreadCount > 0 && (
-                <span className="px-2 py-0.5 rounded-full bg-[#593CFF]/10 text-[#593CFF] text-[11px] font-bold">
+                <span className="px-2 py-0.5 rounded-full bg-accent-text/10 text-accent-text text-[11px] font-bold">
                   {unreadCount} new
                 </span>
               )}
@@ -192,7 +192,7 @@ export default function NotificationBell({ userRole = 'freelancer', onNavigateTo
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
-                className="text-[11px] font-bold text-[#593CFF] hover:text-[#472fe0] inline-flex items-center gap-1 cursor-pointer transition hover:underline"
+                className="text-[11px] font-bold text-accent-text hover:text-[#472fe0] inline-flex items-center gap-1 cursor-pointer transition hover:underline"
               >
                 <CheckCheck className="w-3.5 h-3.5" />
                 <span>Mark all read</span>
@@ -243,7 +243,7 @@ export default function NotificationBell({ userRole = 'freelancer', onNavigateTo
                   </div>
 
                   {!notif.read && (
-                    <span className="w-2 h-2 rounded-full bg-[#593CFF] shrink-0 mt-2" />
+                    <span className="w-2 h-2 rounded-full bg-accent-text shrink-0 mt-2" />
                   )}
                 </div>
               ))

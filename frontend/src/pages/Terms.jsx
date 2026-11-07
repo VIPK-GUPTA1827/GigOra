@@ -11,7 +11,7 @@ export default function Terms() {
     <div className="min-h-screen bg-[#FAF8F5] text-slate-900 font-sans selection:bg-accent-text selection:text-white">
       {/* Header */}
       <header className="border-b border-stone-200/80 bg-white/90 backdrop-blur-md sticky top-0 z-50 py-4 px-6 sm:px-12 flex items-center justify-between">
-        <Link to="/" className="flex items-center gap-2 text-sm font-bold text-[#030B3D] hover:text-[#593CFF] transition-colors">
+        <Link to="/" className="flex items-center gap-2 text-sm font-bold text-[#030B3D] hover:text-accent-text transition-colors">
           <ArrowLeft className="h-4 w-4" />
           <span>Back to GigOra</span>
         </Link>
@@ -23,7 +23,7 @@ export default function Terms() {
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <div className="mb-6 text-left">
-          <span className="text-xs font-mono font-bold text-[#593CFF] bg-[#593CFF]/10 px-3 py-1 rounded-full uppercase tracking-wider">
+          <span className="text-xs font-mono font-bold text-accent-text bg-accent-text/10 px-3 py-1 rounded-full uppercase tracking-wider">
             Terms of Service
           </span>
           <h1 className="text-3xl sm:text-5xl font-display font-black text-[#030B3D] tracking-tight mt-3 mb-2">
@@ -158,19 +158,19 @@ export default function Terms() {
               10. Updates to These Terms & Contact
             </h2>
             <p>
-              These are preview terms. They will be replaced by binding production Terms of Service before real payments go live. For inquiries, contact <a href="mailto:support@gigora.in" className="font-mono text-[#593CFF] font-semibold hover:underline">support@gigora.in</a>.
+              These are preview terms. They will be replaced by binding production Terms of Service before real payments go live. For inquiries, contact <a href="mailto:support@gigora.in" className="font-mono text-accent-text font-semibold hover:underline">support@gigora.in</a>.
             </p>
           </section>
 
           {/* Navigation Cross Links */}
           <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-stone-500 pt-4 border-t border-stone-200">
-            <Link to="/about" className="hover:text-[#593CFF] transition-colors">About</Link>
+            <Link to="/about" className="hover:text-accent-text transition-colors">About</Link>
             <span>•</span>
-            <Link to="/terms" className="text-[#593CFF] font-bold">Terms of Service</Link>
+            <Link to="/terms" className="text-accent-text font-bold">Terms of Service</Link>
             <span>•</span>
-            <Link to="/privacy" className="hover:text-[#593CFF] transition-colors">Privacy Policy</Link>
+            <Link to="/privacy" className="hover:text-accent-text transition-colors">Privacy Policy</Link>
             <span>•</span>
-            <Link to="/marketplace" className="hover:text-[#593CFF] transition-colors">Marketplace</Link>
+            <Link to="/marketplace" className="hover:text-accent-text transition-colors">Marketplace</Link>
           </div>
 
           <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-stone-100 text-xs text-stone-400">

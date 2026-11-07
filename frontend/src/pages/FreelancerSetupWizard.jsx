@@ -99,7 +99,7 @@ const FreelancerSetupWizard = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#F8FAFC] flex flex-col items-center justify-center text-sm font-semibold text-slate-700">
-        <Loader2 className="w-6 h-6 animate-spin text-[#593CFF] mb-2" />
+        <Loader2 className="w-6 h-6 animate-spin text-accent-text mb-2" />
         <span>Loading setup wizard...</span>
       </div>
     );
@@ -264,7 +264,7 @@ const FreelancerSetupWizard = () => {
   const progressPercentage = (currentStep / 4) * 100;
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col relative selection:bg-[#593CFF] selection:text-white">
+    <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col relative selection:bg-accent-text selection:text-white">
       
       {/* Top Navigation */}
       <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200">
@@ -278,7 +278,7 @@ const FreelancerSetupWizard = () => {
 
           <div className="flex items-center gap-4">
             <span className="text-xs font-bold text-slate-500">
-              Step <span className="text-[#593CFF]">{currentStep}</span> of 4
+              Step <span className="text-accent-text">{currentStep}</span> of 4
             </span>
             <button
               onClick={() => handleSaveProfile(true, true)}
@@ -293,7 +293,7 @@ const FreelancerSetupWizard = () => {
         {/* Progress Bar */}
         <div className="w-full bg-slate-100 h-1">
           <div 
-            className="bg-[#593CFF] h-1 transition-all duration-300 ease-out"
+            className="bg-accent-text h-1 transition-all duration-300 ease-out"
             style={{ width: `${progressPercentage}%` }}
           />
         </div>
@@ -317,7 +317,7 @@ const FreelancerSetupWizard = () => {
           {currentStep === 1 && (
             <div className="space-y-6 animate-in fade-in duration-200">
               <div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#593CFF]/10 text-[#593CFF] text-xs font-bold mb-2">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-text/10 text-accent-text text-xs font-bold mb-2">
                   <Sparkles className="w-3.5 h-3.5" />
                   <span>Personalize Your Feed</span>
                 </div>
@@ -344,7 +344,7 @@ const FreelancerSetupWizard = () => {
                         onClick={() => handleToggleCategory(category)}
                         className={`text-xs font-bold px-3.5 py-2 rounded-xl transition-all cursor-pointer flex items-center gap-1.5 ${
                           isSelected
-                            ? 'bg-[#593CFF] text-white shadow-xs scale-[1.02]'
+                            ? 'bg-accent-text text-white shadow-xs scale-[1.02]'
                             : 'bg-slate-50 text-slate-600 border border-slate-200 hover:bg-slate-100'
                         }`}
                       >
@@ -375,7 +375,7 @@ const FreelancerSetupWizard = () => {
                         handleAddSkill(customSkillInput);
                       }
                     }}
-                    className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                    className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                   <button
                     type="button"
@@ -396,7 +396,7 @@ const FreelancerSetupWizard = () => {
                         key={skill}
                         type="button"
                         onClick={() => handleAddSkill(skill)}
-                        className="text-[11px] font-medium px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-accent-tint hover:text-[#593CFF] border border-slate-200 transition cursor-pointer"
+                        className="text-[11px] font-medium px-2.5 py-1 rounded-lg bg-slate-100 text-slate-600 hover:bg-accent-tint hover:text-accent-text border border-slate-200 transition cursor-pointer"
                       >
                         + {skill}
                       </button>
@@ -414,7 +414,7 @@ const FreelancerSetupWizard = () => {
                       {formData.skills.map(skill => (
                         <span 
                           key={skill}
-                          className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-lg bg-white border border-[#593CFF]/30 text-[#593CFF] shadow-2xs"
+                          className="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-lg bg-white border border-accent/30 text-accent-text shadow-2xs"
                         >
                           <span>{skill}</span>
                           <button
@@ -441,7 +441,7 @@ const FreelancerSetupWizard = () => {
           {currentStep === 2 && (
             <div className="space-y-6 animate-in fade-in duration-200">
               <div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#593CFF]/10 text-[#593CFF] text-xs font-bold mb-2">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-text/10 text-accent-text text-xs font-bold mb-2">
                   <UserCheck className="w-3.5 h-3.5" />
                   <span>Profile Pitch</span>
                 </div>
@@ -463,7 +463,7 @@ const FreelancerSetupWizard = () => {
                   placeholder="e.g. Full-Stack MERN Developer | Hyperlocal Web Specialist"
                   value={formData.headline}
                   onChange={(e) => setFormData(p => ({ ...p, headline: e.target.value }))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent"
                 />
               </div>
 
@@ -484,7 +484,7 @@ const FreelancerSetupWizard = () => {
                       onClick={() => setFormData(p => ({ ...p, experienceLevel: item.level }))}
                       className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
                         formData.experienceLevel === item.level
-                          ? 'border-[#593CFF] bg-[#593CFF]/5 ring-2 ring-[#593CFF]/20'
+                          ? 'border-accent bg-accent-text/5 ring-2 ring-[#593CFF]/20'
                           : 'border-slate-200 bg-slate-50/50 hover:bg-slate-100'
                       }`}
                     >
@@ -508,7 +508,7 @@ const FreelancerSetupWizard = () => {
                   placeholder="Write 2-3 sentences about your tech stack, your problem solving approach, and why clients enjoy working with you."
                   value={formData.bio}
                   onChange={(e) => setFormData(p => ({ ...p, bio: e.target.value }))}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent"
                 />
               </div>
 
@@ -516,7 +516,7 @@ const FreelancerSetupWizard = () => {
               <div className="pt-4 border-t border-slate-100 space-y-3">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-[#593CFF]" />
+                    <Sparkles className="w-3.5 h-3.5 text-accent-text" />
                     Social Links & Code Repositories
                   </label>
                   <span className="text-[10px] font-bold text-accent-text bg-accent-tint px-2 py-0.5 rounded-full">
@@ -532,7 +532,7 @@ const FreelancerSetupWizard = () => {
                       placeholder="github.com/yourhandle"
                       value={formData.github}
                       onChange={(e) => setFormData(p => ({ ...p, github: e.target.value }))}
-                      className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent"
                     />
                   </div>
 
@@ -543,7 +543,7 @@ const FreelancerSetupWizard = () => {
                       placeholder="linkedin.com/in/yourhandle"
                       value={formData.linkedin}
                       onChange={(e) => setFormData(p => ({ ...p, linkedin: e.target.value }))}
-                      className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                      className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent"
                     />
                   </div>
                 </div>
@@ -555,7 +555,7 @@ const FreelancerSetupWizard = () => {
                     placeholder="https://yourportfolio.dev"
                     value={formData.website}
                     onChange={(e) => setFormData(p => ({ ...p, website: e.target.value }))}
-                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
               </div>
@@ -566,7 +566,7 @@ const FreelancerSetupWizard = () => {
           {currentStep === 3 && (
             <div className="space-y-6 animate-in fade-in duration-200">
               <div>
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#593CFF]/10 text-[#593CFF] text-xs font-bold mb-2">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-text/10 text-accent-text text-xs font-bold mb-2">
                   <Briefcase className="w-3.5 h-3.5" />
                   <span>Work Preferences</span>
                 </div>
@@ -591,7 +591,7 @@ const FreelancerSetupWizard = () => {
                     step="50"
                     value={formData.hourlyRate}
                     onChange={(e) => setFormData(p => ({ ...p, hourlyRate: e.target.value }))}
-                    className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm font-black text-[#030B3D] focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                    className="w-full pl-8 pr-4 py-2.5 rounded-xl border border-slate-200 text-sm font-black text-[#030B3D] focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
                 <div className="flex items-center gap-1.5">
@@ -628,12 +628,12 @@ const FreelancerSetupWizard = () => {
                         onClick={() => setFormData(p => ({ ...p, workPreference: pref.id }))}
                         className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
                           formData.workPreference === pref.id
-                            ? 'border-[#593CFF] bg-[#593CFF]/5 ring-2 ring-[#593CFF]/20'
+                            ? 'border-accent bg-accent-text/5 ring-2 ring-[#593CFF]/20'
                             : 'border-slate-200 bg-slate-50/50 hover:bg-slate-100'
                         }`}
                       >
                         <div className="flex items-center gap-2 mb-1">
-                          <Icon className="w-4 h-4 text-[#593CFF]" />
+                          <Icon className="w-4 h-4 text-accent-text" />
                           <span className="font-bold text-xs text-[#030B3D]">{pref.label}</span>
                         </div>
                         <span className="text-[11px] text-slate-500 font-medium">{pref.desc}</span>
@@ -653,7 +653,7 @@ const FreelancerSetupWizard = () => {
                     type="text"
                     value={formData.city}
                     onChange={(e) => setFormData(p => ({ ...p, city: e.target.value }))}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
                 <div>
@@ -664,7 +664,7 @@ const FreelancerSetupWizard = () => {
                     type="text"
                     value={formData.state}
                     onChange={(e) => setFormData(p => ({ ...p, state: e.target.value }))}
-                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
               </div>
@@ -683,7 +683,7 @@ const FreelancerSetupWizard = () => {
                       onClick={() => setFormData(p => ({ ...p, weeklyCapacity: cap }))}
                       className={`py-2 px-3 rounded-xl border text-xs font-bold text-center transition cursor-pointer ${
                         formData.weeklyCapacity === cap
-                          ? 'border-[#593CFF] bg-[#593CFF] text-white shadow-xs'
+                          ? 'border-accent bg-accent-text text-white shadow-xs'
                           : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                       }`}
                     >
@@ -721,7 +721,7 @@ const FreelancerSetupWizard = () => {
                     placeholder="e.g. MERN E-Commerce Dashboard"
                     value={formData.portfolioTitle}
                     onChange={(e) => setFormData(p => ({ ...p, portfolioTitle: e.target.value }))}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
 
@@ -734,7 +734,7 @@ const FreelancerSetupWizard = () => {
                     placeholder="Briefly describe what you built and the tools used."
                     value={formData.portfolioDesc}
                     onChange={(e) => setFormData(p => ({ ...p, portfolioDesc: e.target.value }))}
-                    className="w-full px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                    className="w-full px-3.5 py-2 rounded-xl bg-white border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
 
@@ -747,7 +747,7 @@ const FreelancerSetupWizard = () => {
                     placeholder="https://github.com/myusername/my-project"
                     value={formData.portfolioUrl}
                     onChange={(e) => setFormData(p => ({ ...p, portfolioUrl: e.target.value }))}
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#593CFF]"
+                    className="w-full px-3.5 py-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent"
                   />
                 </div>
               </div>
@@ -785,7 +785,7 @@ const FreelancerSetupWizard = () => {
                     type="button"
                     onClick={() => handleSaveProfile(false)}
                     disabled={submitting}
-                    className="px-6 py-2.5 rounded-xl bg-[#593CFF] hover:bg-[#472fe0] text-white font-bold text-xs shadow-xs active:scale-95 transition cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+                    className="px-6 py-2.5 rounded-xl bg-accent-text hover:bg-[#472fe0] text-white font-bold text-xs shadow-xs active:scale-95 transition cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
                   >
                     {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                     <span>Save & Go to Dashboard</span>
@@ -796,7 +796,7 @@ const FreelancerSetupWizard = () => {
                 <button
                   type="button"
                   onClick={handleNextStep}
-                  className="px-6 py-2.5 rounded-xl bg-[#593CFF] hover:bg-[#472fe0] text-white font-bold text-xs shadow-xs active:scale-95 transition cursor-pointer flex items-center gap-1.5"
+                  className="px-6 py-2.5 rounded-xl bg-accent-text hover:bg-[#472fe0] text-white font-bold text-xs shadow-xs active:scale-95 transition cursor-pointer flex items-center gap-1.5"
                 >
                   <span>Continue</span>
                   <ChevronRight className="w-4 h-4" />
