@@ -46,6 +46,9 @@ describe('Auth Endpoints', () => {
         role: 'client'
       });
 
+    // Mark email verified for authorized login flow
+    await User.updateOne({ email: 'login.user@gmail.com' }, { isEmailVerified: true });
+
     const res = await request(app)
       .post('/api/auth/login')
       .send({
@@ -70,6 +73,9 @@ describe('Auth Endpoints', () => {
         role: 'client'
       });
 
+    // Mark email verified for authorized login flow
+    await User.updateOne({ email: 'mobile.user@gmail.com' }, { isEmailVerified: true });
+
     const res = await request(app)
       .post('/api/auth/login')
       .set('x-client-type', 'mobile')
@@ -81,6 +87,30 @@ describe('Auth Endpoints', () => {
     expect(res.status).toBe(200);
     expect(res.body.token).toBeDefined();
     expect(res.body.refreshToken).toBeDefined();
+  });
+
+  it('POST /api/auth/login returns 403 when email is not verified', async () => {
+    await request(app)
+      .post('/api/auth/register')
+      .send({
+        name: 'Unverified Guy',
+        username: 'unverifiedguy',
+        email: 'unverified.guy@gmail.com',
+        password: 'Password123!',
+        role: 'client'
+      });
+
+    const res = await request(app)
+      .post('/api/auth/login')
+      .send({
+        email: 'unverified.guy@gmail.com',
+        password: 'Password123!'
+      });
+
+    expect(res.status).toBe(403);
+    expect(res.body.success).toBe(false);
+    expect(res.body.requiresVerification).toBe(true);
+    expect(res.body.message).toMatch(/verify your email/i);
   });
 
   it('POST /api/auth/login returns 401 on wrong password', async () => {
@@ -127,6 +157,9 @@ describe('Auth Endpoints', () => {
         password: 'Password123!',
         role: 'freelancer'
       });
+
+    // Mark email verified for login flow
+    await User.updateOne({ email: 'refresh.test@gmail.com' }, { isEmailVerified: true });
 
     const loginRes = await request(app)
       .post('/api/auth/login')

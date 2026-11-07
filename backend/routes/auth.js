@@ -397,6 +397,15 @@ router.post('/login', authLimiter, validate({ body: loginSchema }), async (req, 
             return res.status(401).json({ success: false, message: 'Invalid email or password' });
         }
 
+        // Block login if email is not yet verified
+        if (!user.isEmailVerified) {
+            return res.status(403).json({
+                success: false,
+                requiresVerification: true,
+                message: 'Please verify your email before logging in. Check your inbox.'
+            });
+        }
+
         // Generate token and attach secure HTTP-only cookie
         const tokens = await sendAuthTokens(req, res, user);
 

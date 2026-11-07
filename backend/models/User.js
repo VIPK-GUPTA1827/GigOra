@@ -245,4 +245,13 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 
 userSchema.index({ role: 1 });
 
+// Option B: Automatically expire/delete unverified accounts after 7 days
+userSchema.index(
+    { createdAt: 1 },
+    {
+        expireAfterSeconds: 7 * 24 * 60 * 60, // 7 days (604,800s)
+        partialFilterExpression: { isEmailVerified: false }
+    }
+);
+
 module.exports = mongoose.model('User', userSchema);
