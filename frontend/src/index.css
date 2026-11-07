@@ -1,93 +1,60 @@
 @import "tailwindcss";
 
+/* 1. Design tokens (Tailwind v4 @theme). One accent, one dark sidebar, neutral surfaces. */
+@theme {
+  --color-navy: #030B3D;
+  --color-navy-soft: #0B1A5C;
+  --color-accent: #0D9488; /* icons, logo, tints. Not for white text */
+  --color-accent-hover: #0F766E;
+  --color-accent-deep: #115E59; /* button hover; white text on it passes AA */
+  --color-accent-text: #0F766E; /* accent for small text on white (contrast ok) */
+  --color-accent-tint: #F0FDFA;
+  --color-accent-soft: #CCFBF1;
+  --color-page: #F8FAFC;
+  --color-surface: #FFFFFF;
+  --color-border: #E2E8F0;
+  --color-ink: #0F172A;
+  --color-muted: #64748B;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
 html {
   scroll-behavior: smooth;
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-}
-
 @layer base {
-  :root {
-    --bg-main: #F8FAFC;
-    --bg-surface: #FFFFFF;
-    --text-heading: #0F172A;
-    --text-body: #475569;
-    --text-muted: #94A3B8;
-    --accent-blue: #4F46E5;
-    --accent-blue-hover: #4338CA;
-    --border-light: #E2E8F0;
-  }
-
   body {
-    background-color: var(--bg-main);
-    color: var(--text-heading);
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    letter-spacing: -0.01em;
-    overflow-x: hidden;
+    background-color: var(--color-page);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
   }
-
-  .font-display {
-    font-family: 'Red Hat Display', 'Plus Jakarta Sans', sans-serif;
-  }
-}
-
-@keyframes float-slow {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-8px);
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
   }
 }
 
-@keyframes pulse-glow {
-  0%, 100% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
+/* Compatibility: marketing pages still use this class. Now maps to the single font token. */
+.font-display {
+  font-family: var(--font-sans);
 }
 
-.animate-float-slow {
-  animation: float-slow 4s ease-in-out infinite;
+/* 2. Small motion only. Respect reduced motion. */
+@keyframes gigora-fade-up {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 3s ease-in-out infinite;
-}
-
-@keyframes gigoraKenBurns {
-  from {
-    transform: scale(1) translate3d(0, 0, 0);
-  }
-  to {
-    transform: scale(1.07) translate3d(-1%, -1%, 0);
-  }
-}
-
-.animate-ken-burns {
-  animation: gigoraKenBurns 28s ease-in-out infinite alternate;
-  will-change: transform;
+.animate-fade-up {
+  animation: gigora-fade-up 320ms ease-out both;
 }
 
 @media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
   *, ::before, ::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-  [data-aos] {
-    transition-property: none !important;
-    transform: none !important;
-    opacity: 1 !important;
   }
 }
-
