@@ -979,7 +979,7 @@ export default function FreelancerDashboard() {
                 }`}
               >
                 <CheckCircle2 className="w-3.5 h-3.5" />
-                <span>Real Client Projects</span>
+                <span>Client Projects</span>
                 <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${gigScopeFilter === 'real' ? 'bg-emerald-700 text-white' : 'bg-emerald-100 text-emerald-800'}`}>
                   {realGigs.length}
                 </span>
