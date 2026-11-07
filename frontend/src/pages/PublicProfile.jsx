@@ -161,7 +161,7 @@ export default function PublicProfile() {
               <ArrowLeft className="w-5 h-5" />
             </button>
             <Link to="/" className="font-black text-xl text-slate-900 tracking-tight flex items-center gap-1.5">
-              <span className="w-8 h-8 rounded-xl bg-gradient-to-br from-[#593CFF] to-[#3B82F6] flex items-center justify-center text-white text-sm font-black shadow-sm">
+              <span className="w-8 h-8 rounded-xl bg-gradient-to-br from-accent to-accent-deep flex items-center justify-center text-white text-sm font-black shadow-sm">
                 G
               </span>
               GigOra
@@ -206,7 +206,7 @@ export default function PublicProfile() {
         {/* Profile Hero Card */}
         <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xs overflow-hidden">
           {/* Decorative Cover Gradient */}
-          <div className="h-32 sm:h-44 bg-gradient-to-r from-[#593CFF] via-[#4F46E5] to-[#2563EB] relative">
+          <div className="h-32 sm:h-44 bg-gradient-to-r from-accent via-accent to-accent-deep relative">
             <div className="absolute inset-0 opacity-20 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]" />
           </div>
 
@@ -226,7 +226,7 @@ export default function PublicProfile() {
                       className="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl object-cover border-4 border-white shadow-md bg-white"
                     />
                   ) : (
-                    <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-br from-[#593CFF] to-[#3B82F6] text-white flex items-center justify-center text-3xl sm:text-4xl font-black border-4 border-white shadow-md">
+                    <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-3xl bg-gradient-to-br from-accent to-accent-deep text-white flex items-center justify-center text-3xl sm:text-4xl font-black border-4 border-white shadow-md">
                       {displayName.charAt(0).toUpperCase()}
                     </div>
                   )}
@@ -682,7 +682,7 @@ export default function PublicProfile() {
 
               {/* Quick Actions */}
               {isOwnProfile && (
-                <div className="bg-gradient-to-br from-[#593CFF]/10 to-indigo-100/50 p-6 rounded-3xl border border-[#593CFF]/20 space-y-3">
+                <div className="bg-gradient-to-br from-accent/10 to-indigo-100/50 p-6 rounded-3xl border border-[#593CFF]/20 space-y-3">
                   <h3 className="text-sm font-black text-slate-900">Manage Client Workspace</h3>
                   <p className="text-xs text-slate-600">
                     Post new projects, manage proposals, and hire top freelancers in India.

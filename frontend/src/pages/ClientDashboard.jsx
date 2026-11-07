@@ -1592,7 +1592,7 @@ export default function ClientDashboard() {
               {/* Profile Card Summary */}
               <div className="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-xs space-y-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0F766E] to-[#3B82F6] text-white flex items-center justify-center font-black text-lg">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0F766E] to-accent-deep text-white flex items-center justify-center font-black text-lg">
                     {(profileFormData.companyName || profileFormData.name || 'C').charAt(0).toUpperCase()}
                   </div>
                   <div>

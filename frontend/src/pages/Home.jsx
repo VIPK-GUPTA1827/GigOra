@@ -84,19 +84,19 @@ export default function Home() {
             <div className="hidden lg:flex items-center gap-6 xl:gap-8 text-[15px] font-medium text-[#030B3D]/80">
               <a href="#how-it-works" className="hover:text-[#593CFF] transition-colors relative group py-1">
                 <span>How It Works</span>
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-[#593CFF] to-[#AA85FF] group-hover:w-full transition-all duration-200"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-accent to-accent-soft group-hover:w-full transition-all duration-200"></span>
               </a>
               <a href="#categories" className="hover:text-[#593CFF] transition-colors relative group py-1">
                 <span>Tech Services</span>
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-[#593CFF] to-[#AA85FF] group-hover:w-full transition-all duration-200"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-accent to-accent-soft group-hover:w-full transition-all duration-200"></span>
               </a>
               <a href="#choose-path" className="hover:text-[#593CFF] transition-colors relative group py-1">
                 <span>Clients &amp; Devs</span>
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-[#593CFF] to-[#AA85FF] group-hover:w-full transition-all duration-200"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-accent to-accent-soft group-hover:w-full transition-all duration-200"></span>
               </a>
               <a href="#faq" className="hover:text-[#593CFF] transition-colors relative group py-1">
                 <span>FAQ</span>
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-[#593CFF] to-[#AA85FF] group-hover:w-full transition-all duration-200"></span>
+                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-accent to-accent-soft group-hover:w-full transition-all duration-200"></span>
               </a>
             </div>
 
