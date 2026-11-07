@@ -63,6 +63,9 @@ function App() {
                       <Route path="/reset-password/:token" element={<ResetPassword />} />
                       <Route path="/check-email" element={<CheckEmail />} />
                       <Route path="/verify-email/:token" element={<VerifyEmail />} />
+                      <Route path="/dashboard/client" element={<Navigate to="/client/dashboard" replace />} />
+                      <Route path="/dashboard/freelancer" element={<Navigate to="/freelancer/dashboard" replace />} />
+                      <Route path="/dashboard" element={<Navigate to="/freelancer/dashboard" replace />} />
                       <Route path="/client/dashboard" element={<ProtectedRoute role="client"><ClientDashboard /></ProtectedRoute>} />
                       <Route path="/freelancer/dashboard" element={<ProtectedRoute role="freelancer"><FreelancerDashboard /></ProtectedRoute>} />
                       <Route path="/freelancer/setup" element={<ProtectedRoute role="freelancer"><FreelancerSetupWizard /></ProtectedRoute>} />

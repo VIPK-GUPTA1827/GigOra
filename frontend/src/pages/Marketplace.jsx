@@ -24,8 +24,8 @@ export default function Marketplace() {
   const { user } = useAuth();
   const backUrl = user
     ? user.role === 'client'
-      ? '/dashboard/client'
-      : '/dashboard/freelancer'
+      ? '/client/dashboard'
+      : '/freelancer/dashboard'
     : '/';
   const backLabel = user ? 'Back to Dashboard' : 'Back to GigOra';
   const [searchParams, setSearchParams] = useSearchParams();
