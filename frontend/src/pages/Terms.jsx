@@ -158,7 +158,7 @@ export default function Terms() {
               10. Updates to These Terms & Contact
             </h2>
             <p>
-              These are preview terms. They will be replaced by binding production Terms of Service before real payments go live. For inquiries, contact <a href="mailto:support@gigora.in" className="font-mono text-accent-text font-semibold hover:underline">support@gigora.in</a>.
+              These are preview terms. They will be replaced by binding production Terms of Service before real payments go live. For inquiries, contact <a href="mailto:dev.vipingupta@gmail.com" className="font-mono text-accent-text font-semibold hover:underline">dev.vipingupta@gmail.com</a>.
             </p>
           </section>
 

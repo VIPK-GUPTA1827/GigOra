@@ -140,7 +140,7 @@ export default function Privacy() {
               7. Data Retention & Account Deletion
             </h2>
             <p>
-              Your data is retained for as long as your account remains active. If you request account deletion by emailing <a href="mailto:support@gigora.in" className="text-accent-text font-medium hover:underline">support@gigora.in</a>, all personal identity records and active profile listings will be permanently deleted within 30 days, except where retention is strictly required to comply with statutory legal or tax obligations.
+              Your data is retained for as long as your account remains active. If you request account deletion by emailing <a href="mailto:dev.vipingupta@gmail.com" className="text-accent-text font-medium hover:underline">dev.vipingupta@gmail.com</a>, all personal identity records and active profile listings will be permanently deleted within 30 days, except where retention is strictly required to comply with statutory legal or tax obligations.
             </p>
           </section>
 
@@ -155,7 +155,7 @@ export default function Privacy() {
             <ul className="space-y-2 list-disc list-inside text-stone-600 text-sm">
               <li><strong>Right to Access:</strong> You may request a summary of the personal data held about you and the processing activities performed.</li>
               <li><strong>Right to Correction & Erasure:</strong> You may request correction of inaccurate data or deletion of data no longer necessary for the purpose it was collected.</li>
-              <li><strong>Grievance Redressal:</strong> If you have concerns regarding your data privacy, you may contact our Grievance Officer at <a href="mailto:support@gigora.in" className="text-accent-text font-medium hover:underline">support@gigora.in</a>. We respond to all formal grievance requests within 30 business days.</li>
+              <li><strong>Grievance Redressal:</strong> If you have concerns regarding your data privacy, you may contact our Grievance Officer at <a href="mailto:dev.vipingupta@gmail.com" className="text-accent-text font-medium hover:underline">dev.vipingupta@gmail.com</a>. We respond to all formal grievance requests within 30 business days.</li>
             </ul>
           </section>
 
@@ -165,7 +165,7 @@ export default function Privacy() {
               9. Contact & Support
             </h2>
             <p>
-              For privacy-related questions, data export requests, or general inquiries, please contact our team at <a href="mailto:support@gigora.in" className="font-mono text-accent-text font-semibold hover:underline">support@gigora.in</a>.
+              For privacy-related questions, data export requests, or general inquiries, please contact our team at <a href="mailto:dev.vipingupta@gmail.com" className="font-mono text-accent-text font-semibold hover:underline">dev.vipingupta@gmail.com</a>.
             </p>
           </section>
 
