@@ -987,7 +987,7 @@ export default function Home() {
           
           <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-slate-500 text-xs text-center sm:text-left">
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4">
-              <p>© 2026 GigOra Technologies. All rights reserved.</p>
+              <p>© 2026 GigOra. All rights reserved.</p>
               <Link to="/terms" className="hover:text-slate-300 transition-colors">Terms</Link>
               <Link to="/privacy" className="hover:text-slate-300 transition-colors">Privacy</Link>
               <Link to="/about" className="hover:text-slate-300 transition-colors">About</Link>

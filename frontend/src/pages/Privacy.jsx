@@ -181,7 +181,7 @@ export default function Privacy() {
           </div>
 
           <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-stone-100 text-xs text-stone-400">
-            <span>GigOra Technologies · Privacy Policy</span>
+            <span>GigOra · Privacy Policy</span>
             <span className="font-medium text-stone-500">Last updated: October 2026</span>
           </div>
 

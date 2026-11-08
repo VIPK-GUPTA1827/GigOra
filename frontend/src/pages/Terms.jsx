@@ -138,7 +138,7 @@ export default function Terms() {
               8. Limitation of Liability
             </h2>
             <p>
-              GigOra is provided on an "as is" and "as available" basis during preview. To the maximum extent permitted by applicable law, GigOra Technologies and its team shall not be liable for any indirect, incidental, special, or consequential damages arising from the use of this preview service.
+              GigOra is provided on an "as is" and "as available" basis during preview. To the maximum extent permitted by applicable law, GigOra and its team shall not be liable for any indirect, incidental, special, or consequential damages arising from the use of this preview service.
             </p>
           </section>
 
@@ -174,7 +174,7 @@ export default function Terms() {
           </div>
 
           <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-stone-100 text-xs text-stone-400">
-            <span>GigOra Technologies · Terms of Service</span>
+            <span>GigOra · Terms of Service</span>
             <span className="font-medium text-stone-500">Last updated: October 2026</span>
           </div>
 
