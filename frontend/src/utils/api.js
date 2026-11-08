@@ -61,10 +61,14 @@ async function request(path, options = {}) {
     data = { message: res.statusText || 'Request failed' };
   }
 
-  // Redirect unverified users to verification prompt
+  // Redirect unverified users to verification prompt (except login form where inline error is preferred)
   if (res.status === 403 && data?.requiresVerification) {
-    if (window.location.pathname !== '/check-email') {
-      window.location.assign('/check-email');
+    if (data?.email && typeof localStorage !== 'undefined') {
+      localStorage.setItem('pendingEmail', data.email);
+    }
+    if (!path.startsWith('/api/auth/login') && window.location.pathname !== '/check-email') {
+      const q = data?.email ? `?email=${encodeURIComponent(data.email)}` : '';
+      window.location.assign(`/check-email${q}`);
     }
   }
 

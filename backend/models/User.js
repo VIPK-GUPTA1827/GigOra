@@ -245,11 +245,11 @@ userSchema.methods.matchPassword = async function (enteredPassword) {
 
 userSchema.index({ role: 1 });
 
-// Option B: Automatically expire/delete unverified accounts after 7 days
+// Option B: Automatically expire/delete unverified accounts after 3 days
 userSchema.index(
     { createdAt: 1 },
     {
-        expireAfterSeconds: 7 * 24 * 60 * 60, // 7 days (604,800s)
+        expireAfterSeconds: 3 * 24 * 60 * 60, // 3 days (259,200s)
         partialFilterExpression: { isEmailVerified: false }
     }
 );

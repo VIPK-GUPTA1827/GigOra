@@ -18,7 +18,12 @@ export default function CheckEmail() {
 
   useEffect(() => {
     document.title = 'Check Your Email — GigOra';
-  }, []);
+    const qEmail = searchParams.get('email');
+    if (qEmail) {
+      setEmail(qEmail);
+      try { localStorage.setItem('pendingEmail', qEmail); } catch (_) {}
+    }
+  }, [searchParams]);
 
   // Agar pending email nahi hai aur search param bhi nahi hai, toh /me se email uthao
   useEffect(() => {

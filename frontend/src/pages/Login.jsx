@@ -26,6 +26,7 @@ export default function Login() {
 
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [unverifiedEmail, setUnverifiedEmail] = useState('');
   const [fieldErrors, setFieldErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
 
@@ -37,6 +38,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setUnverifiedEmail('');
     setFieldErrors({});
 
     if (!formData.email.trim()) {
@@ -64,6 +66,9 @@ export default function Login() {
     } catch (err) {
       const d = err.response?.data || err.data;
       setError(d?.message || err.message || 'Invalid email or password. Please try again.');
+      if (d?.requiresVerification) {
+        setUnverifiedEmail(d?.email || formData.email.trim());
+      }
       if (Array.isArray(d?.errors)) {
         const fMap = {};
         d.errors.forEach((item) => {
@@ -117,9 +122,21 @@ export default function Login() {
 
           {/* Error Alert */}
           {error && (
-            <div className="mb-5 p-3.5 rounded-xl bg-rose-50 border border-rose-200/90 flex items-start gap-2.5 text-rose-700 text-xs sm:text-sm animate-in fade-in duration-200">
-              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
-              <span className="font-medium">{error}</span>
+            <div className="mb-5 p-3.5 rounded-xl bg-rose-50 border border-rose-200/90 flex flex-col gap-1.5 text-rose-700 text-xs sm:text-sm animate-in fade-in duration-200">
+              <div className="flex items-start gap-2.5">
+                <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span className="font-medium">{error}</span>
+              </div>
+              {unverifiedEmail && (
+                <div className="pl-6.5 text-xs">
+                  <Link 
+                    to={`/check-email?email=${encodeURIComponent(unverifiedEmail)}`} 
+                    className="underline hover:text-rose-900 font-semibold inline-flex items-center gap-1"
+                  >
+                    Click here to verify or resend email &rarr;
+                  </Link>
+                </div>
+              )}
             </div>
           )}
 
