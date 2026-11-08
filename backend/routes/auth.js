@@ -120,6 +120,20 @@ const formatUserResponse = (user) => {
     };
 };
 
+const safeErrorMessage = (error, defaultMsg = 'Service temporarily unavailable. Please try again later.') => {
+    if (!error) return defaultMsg;
+    const isConnErr = error.name === 'MongooseServerSelectionError' || 
+                      error.name === 'MongoNetworkError' || 
+                      (error.message && (error.message.includes('ENOTFOUND') || error.message.includes('ECONNREFUSED')));
+    if (isConnErr) {
+        return 'Unable to connect to database server. Please check your internet connection and try again.';
+    }
+    if (process.env.NODE_ENV === 'production') {
+        return defaultMsg;
+    }
+    return error.message || defaultMsg;
+};
+
 // Real email providers only: signup rejects made-up domains like gemail.com
 const ALLOWED_EMAIL_DOMAINS = [
     'gmail.com',
@@ -353,7 +367,7 @@ router.post('/register', authLimiter, validate({ body: registerSchema }), async 
                 message: `${field.charAt(0).toUpperCase() + field.slice(1)} is already in use. Please use a different value.` 
             });
         }
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: safeErrorMessage(error, 'Unable to complete registration. Please try again later.') });
     }
 });
 
@@ -419,7 +433,7 @@ router.post('/login', authLimiter, validate({ body: loginSchema }), async (req, 
         });
     } catch (error) {
         console.error('Login error:', error.message);
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: safeErrorMessage(error, 'Unable to sign in. Please try again later.') });
     }
 });
 
@@ -771,7 +785,7 @@ router.post('/forgot-password', authLimiter, async (req, res) => {
         });
     } catch (error) {
         console.error('Forgot password error:', error.message);
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: safeErrorMessage(error, 'Unable to process password reset. Please try again later.') });
     }
 });
 
@@ -838,7 +852,7 @@ router.put('/reset-password/:token', authLimiter, async (req, res) => {
         });
     } catch (error) {
         console.error('Reset password error:', error.message);
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: safeErrorMessage(error, 'Unable to reset password. Please try again later.') });
     }
 });
 
@@ -853,7 +867,7 @@ router.get('/me', protect, async (req, res) => {
             user: formatUserResponse(req.user)
         });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: safeErrorMessage(error, 'Unable to complete registration. Please try again later.') });
     }
 });
 
@@ -994,7 +1008,7 @@ router.put('/profile', protect, async (req, res) => {
             user: formatUserResponse(user)
         });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: safeErrorMessage(error, 'Unable to complete registration. Please try again later.') });
     }
 });
 
@@ -1023,7 +1037,7 @@ router.post('/portfolio', protect, authorize('freelancer'), async (req, res) => 
         await user.save();
         res.status(201).json({ success: true, message: 'Portfolio item added successfully', data: user });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: safeErrorMessage(error, 'Unable to complete registration. Please try again later.') });
     }
 });
 
@@ -1042,7 +1056,7 @@ router.delete('/portfolio/:itemId', protect, authorize('freelancer'), async (req
 
         res.status(200).json({ success: true, message: 'Portfolio item deleted successfully', data: user });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: safeErrorMessage(error, 'Unable to complete registration. Please try again later.') });
     }
 });
 
@@ -1115,7 +1129,7 @@ router.get('/user/:id', optionalAuth, async (req, res) => {
 
         res.json({ success: true, data: userObj });
     } catch (error) {
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: safeErrorMessage(error, 'Unable to complete registration. Please try again later.') });
     }
 });
 
@@ -1155,7 +1169,7 @@ router.post('/switch-role', protect, async (req, res) => {
         });
     } catch (error) {
         console.error('Switch role error:', error.message);
-        res.status(500).json({ success: false, message: error.message });
+        res.status(500).json({ success: false, message: safeErrorMessage(error, 'Unable to switch role. Please try again later.') });
     }
 });
 

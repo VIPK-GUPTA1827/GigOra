@@ -30,11 +30,20 @@ async function request(path, options = {}) {
     ...(options.headers || {})
   };
 
-  const res = await fetch(`${BASE}${path}`, {
-    ...options,
-    headers,
-    credentials: 'include'
-  });
+  let res;
+  try {
+    res = await fetch(`${BASE}${path}`, {
+      ...options,
+      headers,
+      credentials: 'include'
+    });
+  } catch (netErr) {
+    const error = new Error('Network error: Unable to connect to server. Please check your internet connection.');
+    error.status = 0;
+    error.data = { message: error.message };
+    error.response = { status: 0, data: error.data };
+    throw error;
+  }
 
   // Handle 401: try silent token refresh before redirecting to login
   const isAuthPath = NO_REFRESH_PATHS.some((p) => path.startsWith(p));
