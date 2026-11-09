@@ -148,11 +148,11 @@ const FreelancerSetupWizard = () => {
     setErrorMsg('');
     if (step === 1) {
       if (formData.preferredCategories.length === 0) {
-        setErrorMsg('Please select at least 1 primary category of work.');
+        setErrorMsg('Pick at least one category.');
         return false;
       }
       if (formData.skills.length === 0) {
-        setErrorMsg('Please add at least 1 core technical skill to enable gig matching.');
+        setErrorMsg('Add at least one skill so we can match you with projects.');
         return false;
       }
     }
@@ -162,17 +162,17 @@ const FreelancerSetupWizard = () => {
         return false;
       }
       if (!formData.bio.trim() || formData.bio.trim().length < 15) {
-        setErrorMsg('Please write a brief bio of at least 15 characters.');
+        setErrorMsg('Write a short bio (at least 15 characters).');
         return false;
       }
     }
     if (step === 3) {
       if (!formData.hourlyRate || Number(formData.hourlyRate) <= 0) {
-        setErrorMsg('Please set a valid positive hourly rate (₹/hr).');
+        setErrorMsg('Enter your hourly rate in ₹.');
         return false;
       }
       if (!formData.city.trim()) {
-        setErrorMsg('Please provide your location city (e.g. Mumbai).');
+        setErrorMsg('Enter your city (for example, Mumbai).');
         return false;
       }
     }
@@ -255,7 +255,7 @@ const FreelancerSetupWizard = () => {
       updateUser(data.data || { ...user, ...payload, isProfileComplete: payload.isProfileComplete });
       navigate('/freelancer/dashboard', { replace: true });
     } catch (err) {
-      setErrorMsg(err.message || 'An error occurred while saving your profile.');
+      setErrorMsg(err.message || "Couldn't save your profile. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -319,13 +319,13 @@ const FreelancerSetupWizard = () => {
               <div>
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-accent-text/10 text-accent-text text-xs font-bold mb-2">
                   <Sparkles className="w-3.5 h-3.5" />
-                  <span>Personalize Your Feed</span>
+                  <span>Set up your feed</span>
                 </div>
                 <h2 className="text-2xl font-black text-[#030B3D] tracking-tight">
-                  What services & skills do you offer?
+                  What do you do?
                 </h2>
                 <p className="text-xs text-slate-500 font-medium mt-1">
-                  GigOra uses your skills and categories to filter out irrelevant gigs and show you high-match client contracts.
+                  We use your skills and categories to hide projects that don't fit and show you the ones that do.
                 </p>
               </div>
 
@@ -430,7 +430,7 @@ const FreelancerSetupWizard = () => {
                   </div>
                 ) : (
                   <p className="text-xs text-amber-700 bg-amber-50 border border-amber-200 p-2.5 rounded-xl font-medium">
-                    Please add at least 1 skill above to unlock your personalized gig matches.
+                    Add at least one skill to see projects that match you.
                   </p>
                 )}
               </div>
@@ -446,10 +446,10 @@ const FreelancerSetupWizard = () => {
                   <span>Profile Pitch</span>
                 </div>
                 <h2 className="text-2xl font-black text-[#030B3D] tracking-tight">
-                  Tell clients about your expertise
+                  Tell clients about yourself
                 </h2>
                 <p className="text-xs text-slate-500 font-medium mt-1">
-                  A crisp headline and concise bio help clients trust your background when reviewing bids.
+                  A clear headline and a short bio help clients know who you are when they read your proposal.
                 </p>
               </div>
 
@@ -499,13 +499,13 @@ const FreelancerSetupWizard = () => {
               <div>
                 <div className="flex items-center justify-between mb-1.5">
                   <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
-                    Short Bio & Overview *
+                    Short bio *
                   </label>
                   <span className="text-[11px] text-slate-400">{formData.bio.length} characters</span>
                 </div>
                 <textarea
                   rows="4"
-                  placeholder="Write 2-3 sentences about your tech stack, your problem solving approach, and why clients enjoy working with you."
+                  placeholder="Write 2 or 3 lines about what you build, the tools you use, and how you like to work with clients."
                   value={formData.bio}
                   onChange={(e) => setFormData(p => ({ ...p, bio: e.target.value }))}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-accent"
@@ -517,7 +517,7 @@ const FreelancerSetupWizard = () => {
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
                     <Sparkles className="w-3.5 h-3.5 text-accent-text" />
-                    Social Links & Code Repositories
+                    Your links
                   </label>
                   <span className="text-[10px] font-bold text-accent-text bg-accent-tint px-2 py-0.5 rounded-full">
                     Optional (Boosts Trust +70%)
@@ -571,10 +571,10 @@ const FreelancerSetupWizard = () => {
                   <span>Work Preferences</span>
                 </div>
                 <h2 className="text-2xl font-black text-[#030B3D] tracking-tight">
-                  Rates & Location Expectations
+                  Rate and location
                 </h2>
                 <p className="text-xs text-slate-500 font-medium mt-1">
-                  Specify your hourly rate baseline and whether you prefer local Mumbai contracts or remote delivery.
+                  Tell us your hourly rate and whether you want local work in Mumbai or remote work.
                 </p>
               </div>
 
@@ -701,13 +701,13 @@ const FreelancerSetupWizard = () => {
               <div>
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold mb-2">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  <span>Optional Finishing Touch</span>
+                  <span>One last thing (optional)</span>
                 </div>
                 <h2 className="text-2xl font-black text-[#030B3D] tracking-tight">
                   Add a Proof of Work (Portfolio)
                 </h2>
                 <p className="text-xs text-slate-500 font-medium mt-1">
-                  Adding a past project gives your profile an immediate +20% score boost and builds immediate client trust. You can also skip this and add it later.
+                  Adding a past project helps clients trust you. You can skip this and add it later.
                 </p>
               </div>
 

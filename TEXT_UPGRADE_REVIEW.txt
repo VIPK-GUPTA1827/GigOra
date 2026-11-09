@@ -1,0 +1,264 @@
+GIGORA - COMPLETE WEBSITE COPY REVIEW
+
+All text across GigOra frontend components and pages written in plain, human language.
+
+================================================================================
+1. LANDING PAGE (pages/Home.jsx)
+================================================================================
+
+Hero (Client Tab):
+- Tab description: Hire developers and designers. Agree on the work first, pay in milestones, review as you go.
+- Headline: Hire Indian developers and designers, one milestone at a time.
+- Body: Find developers and designers, agree on what you expect, and track the work milestone by milestone.
+
+Hero (Freelancer Tab):
+- Tab description: Show your work and find projects where the scope is clear from day one.
+- Headline: Show your work. Find projects with a clear scope.
+- Body: Put your work in front of clients and take on projects with agreed milestones.
+- Link: See what you get ->
+
+Feature Badges (Top Row):
+- Developer profiles
+- Track progress • Demo payments
+- Portfolios with real work
+
+How It Works (3 Steps):
+- Section Subtitle: Three steps from idea to delivered work.
+- Step 1: Tell us what you're building, what skills you need and what you expect to get. Freelancers who fit will send you proposals. (Clear scope, no spam)
+- Step 2: Agree on what gets delivered, by when and for how much, before work starts. Milestones keep everyone on the same page. (Work in stages)
+- Step 3: Check the work through a demo or a GitHub pull request, then mark the milestone as done. (Review and sign off)
+- Demo Note: Proposals, milestones, reviews and tracking all work today. Payments are demo-only for now.
+
+Audience Comparison ("Choose Your Path"):
+- Eyebrow: ARE YOU HIRING OR FREELANCING?
+- Headline: Made for clients and freelancers
+- Subhead: Hiring for your startup or looking for your next project? GigOra keeps both sides clear on what's expected.
+- Client Card Title: Build your product in clear stages
+- Client Card Body: Talk through what you need and agree on the deliverables before work starts.
+- Client Bullets:
+  * Deliverables, dates and budget fixed upfront
+  * Review work on GitHub or a live staging site
+  * Approve each milestone when you're happy with it
+  * A shared workspace for you and your freelancer
+- Freelancer Card Title: Show your work. Find projects with a clear scope.
+- Freelancer Card Body: You'll know the scope, timeline and terms before you start, so there are no surprises halfway through.
+- Freelancer Bullets:
+  * Share your GitHub repos and live projects
+  * Scope agreed before you start
+  * Milestone amounts in rupees (demo mode)
+  * Quick signup and easy proposals
+
+Core Features Grid ("What You Get"):
+- Eyebrow: WHAT YOU GET
+- Headline: Everything a project needs
+- Subhead: Proposals, messages, files and milestones in one place.
+- Item 1: Clients post projects, freelancers send proposals, and clients pick the best fit.
+- Item 2: Break a project into milestones and approve each one as it's delivered.
+- Item 3: Message your client or freelancer directly in your workspace.
+- Item 4: Leave reviews after a project ends.
+- Item 5: Share briefs, designs and PDFs directly in your project workspace.
+- Item 6: Get notified when proposals, milestones or messages come in.
+
+FAQ Section:
+- Eyebrow: STRAIGHT ANSWERS
+- Subhead: Honest answers about how GigOra works right now.
+- Profile Verification Q&A: Anyone can create a profile for now. You can see skills, bio and reviews on each one. We don't verify profiles yet.
+
+Footer:
+- Brand line: Milestones · Clear scope · Portfolios
+- Closing tagline: Built for people who build software.
+
+================================================================================
+2. ABOUT PAGE (pages/About.jsx)
+================================================================================
+
+Hero Section:
+- Eyebrow: Our story
+- Title: A simpler way to hire and work together
+- Subhead: GigOra is a freelance marketplace for tech talent in India. Founders find developers, agree on the scope, and pay as each milestone is delivered.
+
+Why We're Building Section:
+- Title: Why we're building GigOra
+- Para 1: We think hiring and freelancing in tech keeps running into the same problems: unclear requirements, mismatched expectations, and messages that go unanswered.
+- Para 2: We think it's hard to judge a developer from a resume alone. Developers, in turn, often end up on projects where the scope keeps growing and nobody is sure what "done" means.
+- Para 3: We think a good freelance platform comes down to three things:
+
+3 Pillars:
+- Pillar 1 Title: Real work, not just resumes
+- Pillar 1 Body: Developers can add GitHub and live links to their profile so you judge them by what they've built: real code and live projects.
+- Pillar 2 Title: Clear milestones
+- Pillar 2 Body: Agree on what each stage includes, and how you'll know it's done, before work begins.
+- Pillar 3 Title: Easy to work together
+- Pillar 3 Body: One place for startups and tech professionals to talk, share files and deliver work.
+
+Direction & Footer:
+- Focus Heading: Where we're starting
+- Focus Body: We're starting with software engineering, web and mobile development, AI/ML, cloud/DevOps and UI/UX. Staying focused lets us fix what isn't working and learn what both sides actually need.
+- Future Body: As more people use GigOra and we learn from them, we'll add more tools and more kinds of work.
+- Footer tagline: Built for India's tech community
+
+================================================================================
+3. AUTH & PASSWORD PAGES
+================================================================================
+
+Login (Login.jsx):
+- Subtitle: Log in to see your dashboard, wallet and current projects.
+- Trust Badges: Email-verified accounts • Secure login
+
+Signup (Signup.jsx):
+- Subtitle: Sign up to post projects or send proposals. Payments are in demo mode while we test.
+- Trust Badges: Demo escrow • Secure connection (HTTPS)
+
+Email Verification (VerifyEmail.jsx):
+- Loading text: Just a moment, we're checking your link.
+
+Forgot Password (ForgotPassword.jsx):
+- Badge: RESET PASSWORD
+- Subtitle: Enter your email and we'll send you a link to reset your password.
+- Test mode notice: Emails are in test mode, so this one won't reach Gmail. Use the preview below.
+- Confirmation: If there's an account for [email], a reset link is on its way.
+- Box Header: Good to know:
+- Rule: Each link works only once.
+- Footer: GigOra © 2026
+
+Reset Password (ResetPassword.jsx):
+- Badge: NEW PASSWORD
+- Subtitle: Pick a new password for your GigOra account.
+- Success text: Your password is updated. You can log in with it now.
+- Footer: GigOra © 2026
+
+Password Strength Meter (PasswordStrengthMeter.jsx):
+- Label: Password strength:
+- Common warning: That password is too common. Pick a different one.
+- Weak warning: Password is too weak. Mix upper and lower case letters, numbers or symbols.
+- Easy guess warning: This password is too easy to guess. Try something longer and less common.
+
+================================================================================
+4. MARKETPLACE & PROJECT VIEW
+================================================================================
+
+Marketplace (Marketplace.jsx):
+- Filtered Empty State: No projects match those filters. Try fewer filters or clear them.
+- Global Empty State: No open projects right now. Check back soon, or post one yourself.
+
+Gig Details (GigDetail.jsx):
+- Role Notice: Only freelancer accounts can send proposals. Switch to your freelancer account to apply.
+
+================================================================================
+5. FREELANCER SETUP WIZARD (FreelancerSetupWizard.jsx)
+================================================================================
+
+- Step 1 Validation: Pick at least one category.
+- Step 1 Validation: Add at least one skill so we can match you with projects.
+- Step 2 Validation: Write a short bio (at least 15 characters).
+- Step 3 Validation: Enter your hourly rate in ₹.
+- Step 3 Validation: Enter your city (for example, Mumbai).
+- Save Error: Couldn't save your profile. Please try again.
+- Step 1 Heading: What do you do?
+- Step 1 Subtitle: We use your skills and categories to hide projects that don't fit and show you the ones that do.
+- Step 1 Prompt: Add at least one skill to see projects that match you.
+- Step 2 Heading: Tell clients about yourself
+- Step 2 Subtitle: A clear headline and a short bio help clients know who you are when they read your proposal.
+- Step 2 Bio Label: Short bio *
+- Step 2 Bio Placeholder: Write 2 or 3 lines about what you build, the tools you use, and how you like to work with clients.
+- Step 2 Social Label: Your links
+- Step 3 Heading: Rate and location
+- Step 3 Subtitle: Tell us your hourly rate and whether you want local work in Mumbai or remote work.
+- Step 4 Badge: One last thing (optional)
+- Step 4 Subtitle: Adding a past project helps clients trust you. You can skip this and add it later.
+
+================================================================================
+6. PUBLIC PROFILE & NOTIFICATION BELL
+================================================================================
+
+Public Profile (PublicProfile.jsx):
+- Error Title: Profile not found
+- Error Subhead: We couldn't find this profile. It may be private or removed.
+- Empty Bio: No bio yet.
+- Empty Portfolio: No portfolio projects yet.
+- Add Work Prompt: Add your best projects to get hired faster ->
+- Escrow Row: Demo escrow
+- Company Description Empty: No company description yet.
+- Company Details Box: Company details
+- Independent Hirer Label: Independent client
+- Hiring History Box: Hiring history
+- Sandbox Label: Demo escrow (no real money)
+- Client Manage Box: Post projects, manage proposals and hire freelancers.
+
+Notification Bell (NotificationBell.jsx):
+- Empty State: You'll see updates on proposals, deliveries and payments here.
+- Footer: Live notifications
+
+================================================================================
+7. CLIENT DASHBOARD (ClientDashboard.jsx)
+================================================================================
+
+- Form Validation: Enter your name.
+- Success Message: Profile saved. It's live on your public page.
+- Description Validation: Add a short description (at least 10 characters).
+- Budget Validation: Enter your budget in ₹.
+- Skills Validation: Add at least one skill.
+- Draft Publish: Your project is live. Freelancers can now send proposals.
+- Status Open: Your project is open. Freelancers can send proposals.
+- Status Paused: Project paused. New proposals are on hold.
+- Decline Confirm: Decline this proposal?
+- Accept Confirm: Accept this proposal? This is demo mode, so no real money will be charged.
+- Approve Milestone Confirm: Approve this deliverable? In demo mode, the escrow amount will be released to the freelancer's wallet.
+- Milestone Approved Toast: Milestone approved and demo payment released.
+- Revision Feedback Validation: Tell the freelancer what to change (at least 5 characters).
+- Revision Requested Toast: Revision requested. The freelancer has been notified.
+- Email Strip: Please verify your email to start contracts and send messages.
+- Loading Projects: Loading your projects...
+- Filter Empty: Try the 'All' filter, or post a new project.
+- Milestone Header: Work and milestones
+- Revision Note: The freelancer has been told and is working on a new version.
+- No Proposals State: Freelancers whose skills fit will send proposals with their price, pitch and past work. They'll show up here.
+- Company Profile Card: Tell freelancers who you are
+- Trust Boosters Box: More about your company
+- Company Mission Label: About your company
+- Company Profile Advantage: A complete profile helps freelancers understand what you need, so you get better proposals, faster.
+- Post Modal Description Label: Project description *
+- Post Modal Placeholder: Describe what you need built, the tech you want to use, and what you expect to receive...
+- Revision Feedback Label: What needs to change *
+- Revision Helper: At least 5 characters. The freelancer will see this and send a new version.
+- Revision Escrow Guarantee: The demo escrow stays locked until you approve the updated work.
+
+================================================================================
+8. FREELANCER DASHBOARD (FreelancerDashboard.jsx)
+================================================================================
+
+- Demo Proposal Guard: You can't send proposals on sample projects. They're only for practice.
+- Bid Validation: Enter your bid in ₹.
+- Proposal Sent Toast: Proposal sent!
+- Deliverable URL Validation: Add a link (GitHub, Figma, Drive) or a few notes about what you've done.
+- Email Strip: Verify your email to send proposals and receive payouts.
+- Empty Skills Pill: No skills yet. Add some in your profile to get matched with projects.
+- Wallet Balance Pill: Demo mode: no real money
+- Incomplete Profile Card: Add your skills to see projects that fit you.
+- Incomplete Profile Subhead: Fill in your skills, rate and preferences in the setup to see matching projects.
+- Projects Heading: Projects for your skills
+- Sample Practice Heading: Sample projects (for practice)
+- Projects Subhead: Projects picked from your skills and categories.
+- Sample Projects Subhead: Sample projects to practice bidding on. Add your skills above to see real matches.
+- All Open Projects Subhead: Showing all open projects. Add your skills to see ones that fit you.
+- Reset Filter Title: Clear search and filters
+- Sample Tab Button: Sample projects
+- Skill Prompt Tag: • Add skills to get matches
+- Demo Bidding Disabled Tooltip: You can't send proposals on sample projects
+- Category Empty State: Check back soon. New projects are posted often.
+- Proposals Empty State: You haven't sent any proposals yet. Pick a project above to send your first one.
+- Contract Milestones Empty: No milestones set for this contract yet.
+- Revision Requested Alert: Update your link or notes, then click "Resubmit Work" above.
+- No Contracts Empty State: Once a client accepts your proposal, your milestones and progress will show up here.
+- No Projects Empty State: Add GitHub repos or live links so clients can see your work.
+- Portfolio Description Placeholder: What you built, the main features, and your part in it.
+- Unverified Pitch Alert: Verify your email to bid
+- Unverified Pitch Detail: You can read the details and write your pitch now, but you need a verified email to send it.
+- Cover Letter Label: Your pitch
+- Cover Letter Placeholder: Say why you're a good fit and how you'd approach the project.
+- Escrow Notice: Demo mode: no real money moves.
+- Deliverable URL Help: Add a link to your code, live app, design file or assets.
+- Deliverable Notes Label: Notes on your work
+- Deliverable Notes Placeholder: Say what you finished and how the client can run or check it...
+- Deliverable Approval Notice: The client will review your work. They can approve it and release the demo payment, or ask for changes.
+- Incomplete Profile Modal: Finish your profile to bid

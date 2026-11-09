@@ -116,7 +116,7 @@ export default function Login() {
               Welcome Back
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1.5">
-              Access your dashboard, escrow wallet, and active gigs.
+              Log in to see your dashboard, wallet and current projects.
             </p>
           </div>
 
@@ -256,15 +256,11 @@ export default function Login() {
       <footer className="w-full max-w-[440px] mx-auto text-center relative z-10 pt-2">
         <div className="flex items-center justify-center gap-4 text-[11px] text-slate-400 font-medium">
           <span className="flex items-center gap-1">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Verified Accounts
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Email-verified accounts
           </span>
           <span>•</span>
           <span className="flex items-center gap-1">
-            <Zap className="w-3.5 h-3.5 text-amber-500" /> Fast Auth
-          </span>
-          <span>•</span>
-          <span className="flex items-center gap-1">
-            <Lock className="w-3.5 h-3.5 text-blue-500" /> Secure Sessions
+            <Lock className="w-3.5 h-3.5 text-blue-500" /> Secure login
           </span>
         </div>
       </footer>

@@ -174,7 +174,7 @@ export default function ClientDashboard() {
     setSuccessMsg('');
 
     if (!profileFormData.name.trim()) {
-      setErrorMsg('Please enter your contact person / client name.');
+      setErrorMsg('Enter your name.');
       setIsSavingProfile(false);
       return;
     }
@@ -207,7 +207,7 @@ export default function ClientDashboard() {
       }
 
       updateUser(data.data || { ...user, ...payload });
-      setSuccessMsg('Company profile updated successfully! Changes are live on your public profile.');
+      setSuccessMsg("Profile saved. It's live on your public page.");
     } catch (err) {
       setErrorMsg(err.message || 'Error updating profile');
     } finally {
@@ -315,15 +315,15 @@ export default function ClientDashboard() {
 
     if (targetStatus === 'open') {
       if (!formData.description.trim() || formData.description.length < 10) {
-        setErrorMsg('Please provide a detailed project description (minimum 10 characters).');
+        setErrorMsg('Add a short description (at least 10 characters).');
         return;
       }
       if (!formData.budget || Number(formData.budget) <= 0) {
-        setErrorMsg('Please enter a valid project budget in INR (₹).');
+        setErrorMsg('Enter your budget in ₹.');
         return;
       }
       if (formData.skillsRequired.length === 0) {
-        setErrorMsg('Please add at least 1 required skill.');
+        setErrorMsg('Add at least one skill.');
         return;
       }
     }
@@ -389,7 +389,7 @@ export default function ClientDashboard() {
       });
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.message || 'Failed to publish draft');
-      setSuccessMsg(`Project published successfully! Freelancers can now bid.`);
+      setSuccessMsg(`Your project is live. Freelancers can now send proposals.`);
       await fetchClientData();
     } catch (err) {
       setErrorMsg(err.message);
@@ -412,8 +412,8 @@ export default function ClientDashboard() {
       if (!res.ok || !data.success) throw new Error(data.message || `Failed to update status to ${newStatus}`);
       
       const statusLabels = {
-        open: 'Project is now Open! Freelancers can submit proposals.',
-        paused: 'Project paused. Freelancer bidding is temporarily on hold.',
+        open: 'Your project is open. Freelancers can send proposals.',
+        paused: 'Project paused. New proposals are on hold.',
         closed: 'Project closed.'
       };
       setSuccessMsg(statusLabels[newStatus] || `Project marked as ${newStatus}!`);
@@ -453,8 +453,8 @@ export default function ClientDashboard() {
 
   // Handle Proposal Accept / Reject
   const handleProposalAction = async (proposalId, status) => {
-    if (status === 'rejected' && !window.confirm('Are you sure you want to decline this candidate proposal?')) return;
-    if (status === 'accepted' && !window.confirm('Accept this proposal in Demo Mode? (Simulated Escrow without real banking charge)')) return;
+    if (status === 'rejected' && !window.confirm('Decline this proposal?')) return;
+    if (status === 'accepted' && !window.confirm('Accept this proposal? This is demo mode, so no real money will be charged.')) return;
     setErrorMsg('');
     setSuccessMsg('');
     try {
@@ -482,7 +482,7 @@ export default function ClientDashboard() {
 
   // Step 6 Work Tracking: Milestone Approval (Demo Escrow release)
   const handleApproveMilestone = async (gigId, milestoneId) => {
-    if (!window.confirm('Are you sure you want to approve this deliverable? In test/demo mode, escrow funds will be unlocked and credited to the freelancer wallet.')) {
+    if (!window.confirm("Approve this deliverable? In demo mode, the escrow amount will be released to the freelancer's wallet.")) {
       return;
     }
     setMilestoneActionLoading(true);
@@ -497,7 +497,7 @@ export default function ClientDashboard() {
       if (!res.ok || !data.success) {
         throw new Error(data.message || 'Failed to approve milestone deliverable');
       }
-      setSuccessMsg('Milestone deliverable approved and payment released (Demo Escrow)!');
+      setSuccessMsg('Milestone approved and demo payment released.');
       await fetchClientData();
     } catch (err) {
       setErrorMsg(err.message || 'Error approving milestone');
@@ -519,7 +519,7 @@ export default function ClientDashboard() {
     e.preventDefault();
     if (!selectedMilestoneForRevision) return;
     if (!revisionFeedback || revisionFeedback.trim().length < 5) {
-      setRevisionError('Please provide at least 5 characters of feedback explaining what needs revision.');
+      setRevisionError('Tell the freelancer what to change (at least 5 characters).');
       return;
     }
     setMilestoneActionLoading(true);
@@ -537,7 +537,7 @@ export default function ClientDashboard() {
         throw new Error(data.message || 'Failed to request revision');
       }
       setRevisionModalOpen(false);
-      setSuccessMsg('Revision requested successfully. Freelancer has been notified.');
+      setSuccessMsg('Revision requested. The freelancer has been notified.');
       await fetchClientData();
     } catch (err) {
       setRevisionError(err.message || 'Error requesting revision');
@@ -620,7 +620,7 @@ export default function ClientDashboard() {
             <div className="flex items-center gap-2.5">
               <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
               <span>
-                <strong>Email verification pending:</strong> Please verify your email to unlock all escrow contracts and direct messaging.
+                Please verify your email to start contracts and send messages.
               </span>
             </div>
             <a 
@@ -771,7 +771,7 @@ export default function ClientDashboard() {
 
             {loadingData ? (
               <div className="bg-white rounded-2xl border border-slate-200 p-12 text-center text-slate-500 text-sm">
-                Fetching your project listings...
+                Loading your projects...
               </div>
             ) : realMyGigs.length === 0 ? (
               <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center space-y-4">
@@ -798,7 +798,7 @@ export default function ClientDashboard() {
                   <Briefcase className="w-6 h-6" />
                 </div>
                 <h4 className="text-sm font-bold text-slate-800">No {projectStatusFilter} projects found</h4>
-                <p className="text-xs text-slate-500">Switch filter to 'All' or create a new project listing.</p>
+                <p className="text-xs text-slate-500">Try the 'All' filter, or post a new project.</p>
                 <button
                   onClick={() => setProjectStatusFilter('all')}
                   className="text-xs font-bold text-[#0F766E] hover:underline pt-1 cursor-pointer"
@@ -894,7 +894,7 @@ export default function ClientDashboard() {
                               </div>
                               <div>
                                 <h4 className="text-xs font-bold text-[#030B3D] flex items-center gap-1.5">
-                                  <span>Work Tracking & Milestones</span>
+                                  <span>Work and milestones</span>
                                   <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
                                     Demo Escrow Funded
                                   </span>
@@ -1025,7 +1025,7 @@ export default function ClientDashboard() {
                                       </div>
                                       <p className="italic">"{m.revisionNotes}"</p>
                                       <span className="text-[10px] text-amber-800 block">
-                                        Freelancer has been notified and is preparing an updated submission.
+                                        The freelancer has been told and is working on a new version.
                                       </span>
                                     </div>
                                   )}
@@ -1218,7 +1218,7 @@ export default function ClientDashboard() {
                 </div>
                 <h3 className="text-base font-bold text-slate-800">No proposals received yet</h3>
                 <p className="text-xs text-slate-500 max-w-md mx-auto">
-                  Freelancers with matching skills will submit proposals with their custom quote, pitch, and proof of work. They will appear here.
+                  Freelancers whose skills fit will send proposals with their price, pitch and past work. They'll show up here.
                 </p>
                 {selectedGigFilter !== 'all' && (
                   <button
@@ -1379,7 +1379,7 @@ export default function ClientDashboard() {
                     </div>
                     <div>
                       <h2 className="text-lg font-black text-slate-900">Company & Brand Profile</h2>
-                      <p className="text-xs text-slate-500">Showcase your organization to attract top tech talent in India</p>
+                      <p className="text-xs text-slate-500">Tell freelancers who you are</p>
                     </div>
                   </div>
                   <Link
@@ -1471,7 +1471,7 @@ export default function ClientDashboard() {
                     <div className="flex items-center justify-between pb-1 border-b border-slate-100">
                       <span className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
                         <Sparkles className="w-3.5 h-3.5 text-[#0F766E]" />
-                        Company Details & Trust Boosters
+                        More about your company
                       </span>
                       <span className="text-[10px] font-bold text-accent-text bg-accent-tint px-2 py-0.5 rounded-full">
                         Optional (Boosts Trust +80%)
@@ -1553,7 +1553,7 @@ export default function ClientDashboard() {
 
                     <div className="space-y-1.5">
                       <label className="text-xs font-bold text-slate-800 flex items-center justify-between">
-                        <span>About Company / Project Mission</span>
+                        <span>About your company</span>
                         <span className="text-[10px] font-normal text-slate-400">Optional</span>
                       </label>
                       <textarea
@@ -1632,7 +1632,7 @@ export default function ClientDashboard() {
                   <h4 className="text-xs font-black uppercase tracking-wider text-slate-800">Client Workspace Advantage</h4>
                 </div>
                 <p className="text-xs text-slate-600 leading-relaxed">
-                  Completing your company profile helps freelancers understand your requirements faster, leading to higher proposal quality and rapid responses.
+                  A complete profile helps freelancers understand what you need, so you get better proposals, faster.
                 </p>
               </div>
             </div>
@@ -1854,14 +1854,14 @@ export default function ClientDashboard() {
                 {/* Project Description */}
                 <div className="space-y-1.5">
                   <label className="text-xs font-bold text-slate-800">
-                    Project Description & Deliverables <span className="text-rose-500">*</span>
+                    Project description <span className="text-rose-500">*</span>
                   </label>
                   <textarea
                     rows={4}
                     required
                     value={formData.description}
                     onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                    placeholder="Describe the scope, tech stack requirements, expected deliverables, and any architecture specifications..."
+                    placeholder="Describe what you need built, the tech you want to use, and what you expect to receive..."
                     className="w-full text-xs sm:text-sm p-3 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
                   />
                 </div>
@@ -1956,7 +1956,7 @@ export default function ClientDashboard() {
                 <form onSubmit={handleSubmitRevision} className="space-y-4 text-xs">
                   <div>
                     <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">
-                      Revision Instructions & Feedback <span className="text-rose-500">*</span>
+                      What needs to change <span className="text-rose-500">*</span>
                     </label>
                     <textarea
                       rows="4"
@@ -1967,7 +1967,7 @@ export default function ClientDashboard() {
                       className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                     />
                     <span className="text-[10px] text-slate-400 mt-0.5 block">
-                      Minimum 5 characters. The freelancer will receive this feedback to revise and resubmit.
+                      At least 5 characters. The freelancer will see this and send a new version.
                     </span>
                   </div>
 
@@ -1976,7 +1976,7 @@ export default function ClientDashboard() {
                       <ShieldCheck className="w-3.5 h-3.5 text-amber-700" />
                       <span>Demo Escrow Security</span>
                     </div>
-                    <p>Demo escrow funds will remain safely locked and will NOT be released until you review and approve the updated deliverable.</p>
+                    <p>The demo escrow stays locked until you approve the updated work.</p>
                   </div>
 
                   <div className="pt-2 flex justify-end gap-2">

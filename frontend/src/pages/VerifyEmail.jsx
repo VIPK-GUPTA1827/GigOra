@@ -105,7 +105,7 @@ export default function VerifyEmail() {
             <div className="py-8 space-y-4">
               <Loader2 className="w-10 h-10 animate-spin text-accent-text mx-auto" />
               <h2 className="text-xl font-bold text-[#030B3D]">Verifying your email...</h2>
-              <p className="text-xs text-stone-500">Checking your secure token against the database.</p>
+              <p className="text-xs text-stone-500">Just a moment, we're checking your link.</p>
             </div>
           )}
 

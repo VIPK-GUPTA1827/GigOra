@@ -348,7 +348,7 @@ export default function FreelancerDashboard() {
   const handleOpenProposalModal = (gig) => {
     // Strictly block bidding on demo/sample projects
     if (gig.isDemo || gig.isSample) {
-      alert('Submitting proposals on Demo / Sample projects is disabled. These listings are for preview and practice only.');
+      alert("You can't send proposals on sample projects. They're only for practice.");
       return;
     }
     if (gig.status !== 'open') {
@@ -390,7 +390,7 @@ export default function FreelancerDashboard() {
 
     const bid = Number(proposalForm.bidAmount);
     if (isNaN(bid) || bid <= 0) {
-      setActionError('Please enter a valid bid amount in INR (₹).');
+      setActionError('Enter your bid in ₹.');
       setSubmittingAction(false);
       return;
     }
@@ -420,7 +420,7 @@ export default function FreelancerDashboard() {
       }
 
       setProposals(prev => [data.data, ...prev]);
-      setActionSuccess('Proposal sent to client successfully!');
+      setActionSuccess('Proposal sent!');
       setTimeout(() => {
         setIsProposalModalOpen(false);
         setActionSuccess('');
@@ -465,7 +465,7 @@ export default function FreelancerDashboard() {
     e.preventDefault();
     if (!selectedContractMilestone) return;
     if (!deliverableForm.deliverableUrl?.trim() && !deliverableForm.deliverableNotes?.trim()) {
-      setDeliverableError('Please provide a deliverable link (e.g. GitHub, Figma, Drive) or summary notes.');
+      setDeliverableError("Add a link (GitHub, Figma, Drive) or a few notes about what you've done.");
       return;
     }
     setSubmittingDeliverable(true);
@@ -623,7 +623,7 @@ export default function FreelancerDashboard() {
         <div className="bg-amber-50 border border-amber-200/80 rounded-lg p-3 text-xs font-medium text-amber-900 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
-            <span>Your email is not verified yet. Verify your email to activate full proposal submission and escrow payouts.</span>
+            <span>Verify your email to send proposals and receive payouts.</span>
           </div>
           <Link 
             to={`/check-email?email=${encodeURIComponent(user.email || '')}`}
@@ -673,7 +673,7 @@ export default function FreelancerDashboard() {
                     );
                   })
                 ) : (
-                  <span className="text-xs text-slate-400 italic">No skills listed yet. Add skills in profile to match client gigs.</span>
+                  <span className="text-xs text-slate-400 italic">No skills yet. Add some in your profile to get matched with projects.</span>
                 )}
               </div>
             </div>
@@ -827,7 +827,7 @@ export default function FreelancerDashboard() {
               ₹{(user.walletBalance || 0).toLocaleString('en-IN')}
             </div>
             <div className="text-[11px] text-amber-800/90 mt-1 font-semibold flex items-center gap-1">
-              <span>⚠️ Sandbox Demo • No Real Currency</span>
+              <span>Demo mode: no real money</span>
             </div>
           </div>
 
@@ -842,10 +842,10 @@ export default function FreelancerDashboard() {
               </div>
               <div>
                 <h3 className="font-extrabold text-sm text-[#030B3D]">
-                  Add your skills to view personalized project recommendations matching your expertise.
+                  Add your skills to see projects that fit you.
                 </h3>
                 <p className="text-xs text-slate-500 font-medium mt-0.5">
-                  Complete your skills, hourly rate, and work preferences in the wizard to unlock rule-matched client contracts.
+                  Fill in your skills, rate and preferences in the setup to see matching projects.
                 </p>
               </div>
             </div>
@@ -867,8 +867,8 @@ export default function FreelancerDashboard() {
               <div className="flex items-center gap-2">
                 <h2 className="text-xl font-extrabold text-[#030B3D] tracking-tight">
                   {user.skills && user.skills.length > 0 
-                    ? (gigScopeFilter === 'demo' ? 'Sample Practice Projects' : 'Projects Matched to Your Skills')
-                    : (gigScopeFilter === 'demo' ? 'Sample Listings — Practice ke liye' : 'Open Client Projects')}
+                    ? (gigScopeFilter === 'demo' ? 'Sample Practice Projects' : 'Projects for your skills')
+                    : (gigScopeFilter === 'demo' ? 'Sample projects (for practice)' : 'Open Client Projects')}
                 </h2>
                 {user.skills && user.skills.length > 0 ? (
                   <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
@@ -882,10 +882,10 @@ export default function FreelancerDashboard() {
               </div>
               <p className="text-xs text-slate-500 font-medium mt-0.5">
                 {user.skills && user.skills.length > 0 
-                  ? 'Personalized project recommendations based on your tech skills and category preferences.'
+                  ? 'Projects picked from your skills and categories.'
                   : (gigScopeFilter === 'demo' 
-                      ? 'Curated sample client requirements for bidding practice. Add skills above to unlock real matching.'
-                      : 'Browsing all open projects. Add your skills in profile to activate tailored recommendations.')}
+                      ? 'Sample projects to practice bidding on. Add your skills above to see real matches.'
+                      : 'Showing all open projects. Add your skills to see ones that fit you.')}
               </p>
             </div>
 
@@ -934,7 +934,7 @@ export default function FreelancerDashboard() {
                 <button
                   onClick={handleResetFilters}
                   className="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer shrink-0"
-                  title="Reset all search and filters"
+                  title="Clear search and filters"
                 >
                   <RotateCcw className="w-3.5 h-3.5 text-slate-500" />
                   <span>Reset</span>
@@ -994,7 +994,7 @@ export default function FreelancerDashboard() {
                 }`}
               >
                 <AlertCircle className="w-3.5 h-3.5" />
-                <span>Demo / Sample Listings</span>
+                <span>Sample projects</span>
                 <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${gigScopeFilter === 'demo' ? 'bg-amber-700 text-white' : 'bg-amber-100 text-amber-900'}`}>
                   {demoGigs.length}
                 </span>
@@ -1039,7 +1039,7 @@ export default function FreelancerDashboard() {
                 <>
                   Showing <span className="font-bold text-slate-900">{filteredGigs.length}</span> available projects
                   <span className="text-[11px] text-[#0F766E] font-medium bg-[#0F766E]/8 px-2 py-0.5 rounded-full">
-                    • Add profile skills for tailored matches
+                    • Add skills to get matches
                   </span>
                 </>
               )}
@@ -1225,7 +1225,7 @@ export default function FreelancerDashboard() {
                     {gig.isDemo || gig.isSample ? (
                       <div 
                         className="px-3 py-2 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 text-xs font-bold flex items-center gap-1.5 cursor-not-allowed select-none"
-                        title="Proposal submissions are disabled on Demo / Sample listings"
+                        title="You can't send proposals on sample projects"
                       >
                         <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
                         <span>Demo (Bidding Disabled)</span>
@@ -1324,7 +1324,7 @@ export default function FreelancerDashboard() {
               </div>
               <h3 className="text-base font-extrabold text-[#030B3D]">No gigs currently in this category</h3>
               <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-                Check back shortly! New client projects are posted regularly across Mumbai and India.
+                Check back soon. New projects are posted often.
               </p>
             </div>
           )}
@@ -1414,7 +1414,7 @@ export default function FreelancerDashboard() {
               ) : (
                 <div className="bg-white rounded-3xl border border-slate-200/80 p-8 text-center">
                   <p className="text-xs text-slate-500 font-medium">
-                    You haven't sent any proposals yet. Check the recommended gigs above to place your first bid.
+                    You haven't sent any proposals yet. Pick a project above to send your first one.
                   </p>
                 </div>
               )
@@ -1505,7 +1505,7 @@ export default function FreelancerDashboard() {
 
                           {milestones.length === 0 ? (
                             <div className="bg-slate-50 rounded-2xl p-4 text-center text-xs text-slate-500">
-                              No specific milestones configured for this contract.
+                              No milestones set for this contract yet.
                             </div>
                           ) : (
                             <div className="space-y-2.5">
@@ -1610,7 +1610,7 @@ export default function FreelancerDashboard() {
                                         </div>
                                         <p className="italic">"{m.revisionNotes}"</p>
                                         <span className="text-[10px] text-amber-800 block pt-0.5">
-                                          Please update your deliverable URL or notes and click "Resubmit Work" above.
+                                          Update your link or notes, then click "Resubmit Work" above.
                                         </span>
                                       </div>
                                     )}
@@ -1668,7 +1668,7 @@ export default function FreelancerDashboard() {
                   </div>
                   <h4 className="font-bold text-sm text-[#030B3D]">No Active Contracts</h4>
                   <p className="text-xs text-slate-500 font-medium max-w-sm mx-auto">
-                    When a client accepts your proposal and initiates a contract, milestone deliverables and work tracking will appear here.
+                    Once a client accepts your proposal, your milestones and progress will show up here.
                   </p>
                   <div className="pt-2">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-50 border border-amber-200/80 text-[11px] font-bold text-amber-800">
@@ -1739,7 +1739,7 @@ export default function FreelancerDashboard() {
                 <div>
                   <h4 className="text-xs font-extrabold text-[#030B3D]">No projects added yet</h4>
                   <p className="text-[11px] text-slate-500 mt-1">
-                    Showcase GitHub repos or live project URLs to win client trust.
+                    Add GitHub repos or live links so clients can see your work.
                   </p>
                 </div>
                 <button
@@ -1966,7 +1966,7 @@ export default function FreelancerDashboard() {
                 <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">Description</label>
                 <textarea
                   rows="2"
-                  placeholder="What was built, key features, and your contribution."
+                  placeholder="What you built, the main features, and your part in it."
                   value={portfolioForm.description}
                   onChange={(e) => setPortfolioForm(p => ({ ...p, description: e.target.value }))}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
@@ -2060,8 +2060,8 @@ export default function FreelancerDashboard() {
               <div className="mb-4 p-3 rounded-xl bg-amber-50 border border-amber-200/90 text-amber-900 text-xs font-medium flex items-start gap-2">
                 <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
                 <div>
-                  <span className="font-bold block">Email Verification Required to Bid</span>
-                  <span>You can review details and draft your pitch, but submitting requires a verified email address.</span>
+                  <span className="font-bold block">Verify your email to bid</span>
+                  <span>You can read the details and write your pitch now, but you need a verified email to send it.</span>
                 </div>
               </div>
             )}
@@ -2097,12 +2097,12 @@ export default function FreelancerDashboard() {
 
               <div>
                 <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">
-                  Cover Letter & Pitch
+                  Your pitch
                 </label>
                 <textarea
                   rows="4"
                   required
-                  placeholder="Explain why you are the best fit for this gig and your proposed approach."
+                  placeholder="Say why you're a good fit and how you'd approach the project."
                   value={proposalForm.coverLetter}
                   onChange={(e) => setProposalForm(p => ({ ...p, coverLetter: e.target.value }))}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
@@ -2114,7 +2114,7 @@ export default function FreelancerDashboard() {
                   <ShieldCheck className="w-3.5 h-3.5 text-amber-600" />
                   <span>Demo Escrow Simulation</span>
                 </div>
-                <p className="text-amber-800/90">Sandbox testing mode — No real banking transactions or payment deductions apply.</p>
+                <p className="text-amber-800/90">Demo mode: no real money moves.</p>
               </div>
 
               <div className="pt-2 flex justify-end gap-2">
@@ -2199,17 +2199,17 @@ export default function FreelancerDashboard() {
                     className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
                   />
                   <span className="text-[10px] text-slate-400 mt-0.5 block">
-                    Add link to your codebase, deployed app, design file, or assets.
+                    Add a link to your code, live app, design file or assets.
                   </span>
                 </div>
 
                 <div>
                   <label className="block font-bold text-slate-700 uppercase tracking-wider mb-1">
-                    Submission Notes & Work Summary
+                    Notes on your work
                   </label>
                   <textarea
                     rows="4"
-                    placeholder="Describe the tasks completed, test results, instructions for the client to run or inspect your work..."
+                    placeholder="Say what you finished and how the client can run or check it..."
                     value={deliverableForm.deliverableNotes}
                     onChange={(e) => setDeliverableForm(prev => ({ ...prev, deliverableNotes: e.target.value }))}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
@@ -2221,7 +2221,7 @@ export default function FreelancerDashboard() {
                     <ShieldCheck className="w-3.5 h-3.5 text-[#0F766E]" />
                     <span>Demo Escrow Protection</span>
                   </div>
-                  <p>Client will review your submitted deliverable. They can either accept and release demo escrow funds, or request revisions with specific comments.</p>
+                  <p>The client will review your work. They can approve it and release the demo payment, or ask for changes.</p>
                 </div>
 
                 <div className="pt-2 flex justify-end gap-2">
@@ -2265,7 +2265,7 @@ export default function FreelancerDashboard() {
 
             <div>
               <h3 className="text-lg font-black text-[#030B3D]">
-                Complete Your Profile Before Bidding
+                Finish your profile to bid
               </h3>
               <p className="text-xs text-slate-500 mt-1 leading-relaxed">
                 Clients need to review your verified skills and bio before accepting proposals. Please complete the following required fields:

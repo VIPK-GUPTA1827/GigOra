@@ -85,13 +85,13 @@ export default function ForgotPassword() {
                   <KeyRound className="w-7 h-7" />
                 </div>
                 <span className="text-[11px] font-bold uppercase tracking-widest text-stone-400 block mb-1">
-                  PASSWORD RECOVERY
+                  RESET PASSWORD
                 </span>
                 <h1 className="text-2xl sm:text-3xl font-extrabold text-[#030B3D] tracking-tight">
                   Forgot your password?
                 </h1>
                 <p className="text-xs sm:text-sm text-stone-500 mt-1.5 font-medium max-w-sm mx-auto">
-                  Enter your email address and we'll send you a secure link to reset your password.
+                  Enter your email and we'll send you a link to reset your password.
                 </p>
               </div>
 
@@ -158,19 +158,19 @@ export default function ForgotPassword() {
 
               <p className="text-xs sm:text-sm text-stone-600 mt-2 font-medium leading-relaxed max-w-sm mx-auto">
                 {mailMode === 'ethereal' ? (
-                  <>This app is using Ethereal test mode, so the reset email will <strong>not</strong> arrive in Gmail. Use the test preview below instead.</>
+                  <>Emails are in test mode, so this one won't reach Gmail. Use the preview below.</>
                 ) : (
-                  <>If an account exists for{' '}
-                    <span className="font-bold text-[#030B3D]">{email}</span>, you will receive a secure password reset link.</>
+                  <>If there's an account for{' '}
+                    <span className="font-bold text-[#030B3D]">{email}</span>, a reset link is on its way.</>
                 )}
               </p>
 
               {mailMode !== 'ethereal' && (
                 <div className="my-6 p-4 rounded-2xl bg-stone-50 border border-stone-200/80 text-xs text-stone-500 leading-relaxed text-left">
-                  <p className="font-semibold text-stone-700 mb-1">Important details:</p>
+                  <p className="font-semibold text-stone-700 mb-1">Good to know:</p>
                   <ul className="list-disc list-inside space-y-1">
                     <li>The reset link will expire in <strong>30 minutes</strong>.</li>
-                    <li>Each link is strictly single-use for your security.</li>
+                    <li>Each link works only once.</li>
                     <li>Check your spam folder if you don't see it within 2 minutes.</li>
                   </ul>
                 </div>
@@ -227,7 +227,7 @@ export default function ForgotPassword() {
 
       {/* Footer */}
       <footer className="max-w-[540px] w-full mx-auto text-center py-4 text-xs text-stone-400 relative z-10">
-        GigOra © {new Date().getFullYear()} • Secure Authentication
+        GigOra © {new Date().getFullYear()}
       </footer>
     </div>
   );

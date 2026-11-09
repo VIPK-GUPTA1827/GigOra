@@ -247,8 +247,8 @@ export default function Marketplace() {
             <h3 className="text-slate-800 font-bold text-lg">No open projects found</h3>
             <p className="text-sm text-slate-500 mt-1.5 max-w-md mx-auto">
               {hasActiveFilters
-                ? 'We could not find any projects matching your current filters. Try relaxing your search criteria or clearing filters.'
-                : 'There are currently no open projects available. Check back soon or post a new gig.'}
+                ? 'No projects match those filters. Try fewer filters or clear them.'
+                : 'No open projects right now. Check back soon, or post one yourself.'}
             </p>
             {hasActiveFilters && (
               <button

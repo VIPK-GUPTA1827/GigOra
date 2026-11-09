@@ -102,13 +102,13 @@ export default function ResetPassword() {
                   <Lock className="w-7 h-7" />
                 </div>
                 <span className="text-[11px] font-bold uppercase tracking-widest text-stone-400 block mb-1">
-                  NEW CREDENTIALS
+                  NEW PASSWORD
                 </span>
                 <h1 className="text-2xl sm:text-3xl font-extrabold text-[#030B3D] tracking-tight">
                   Set new password
                 </h1>
                 <p className="text-xs sm:text-sm text-stone-500 mt-1.5 font-medium max-w-sm mx-auto">
-                  Choose a secure password for your GigOra account.
+                  Pick a new password for your GigOra account.
                 </p>
               </div>
 
@@ -215,7 +215,7 @@ export default function ResetPassword() {
               </h2>
 
               <p className="text-xs sm:text-sm text-stone-600 mt-2 font-medium leading-relaxed max-w-sm mx-auto">
-                Your password has been reset successfully. You can now log into your account using your new credentials.
+                Your password is updated. You can log in with it now.
               </p>
 
               <div className="pt-6">
@@ -234,7 +234,7 @@ export default function ResetPassword() {
 
       {/* Footer */}
       <footer className="max-w-[540px] w-full mx-auto text-center py-4 text-xs text-stone-400 relative z-10">
-        GigOra © {new Date().getFullYear()} • Secure Authentication
+        GigOra © {new Date().getFullYear()}
       </footer>
     </div>
   );

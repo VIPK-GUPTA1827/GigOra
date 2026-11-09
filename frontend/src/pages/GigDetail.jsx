@@ -200,7 +200,7 @@ export default function GigDetail() {
 
               {user && !isFreelancer && !isOwner && (
                 <p className="mt-4 text-xs text-slate-500 bg-slate-50 rounded-xl px-3 py-2.5">
-                  Only freelancer accounts can submit proposals. Switch to your freelancer workspace to apply.
+                  Only freelancer accounts can send proposals. Switch to your freelancer account to apply.
                 </p>
               )}
             </div>

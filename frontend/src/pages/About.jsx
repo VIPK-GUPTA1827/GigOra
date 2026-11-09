@@ -24,13 +24,13 @@ export default function About() {
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <div className="mb-8 text-left">
           <span className="text-xs font-mono font-bold text-accent-text bg-accent-text/10 px-3 py-1 rounded-full uppercase tracking-wider">
-            Our Story & Vision
+            Our story
           </span>
           <h1 className="text-3xl sm:text-5xl font-display font-black text-[#030B3D] tracking-tight mt-3 mb-3">
-            Building a better way to work together
+            A simpler way to hire and work together
           </h1>
           <p className="text-stone-600 text-base sm:text-lg max-w-2xl leading-relaxed">
-            GigOra is a milestone-based freelance marketplace for technical talent in India. It helps founders discover developers, agree on scope, and manage delivery milestone by milestone.
+            GigOra is a freelance marketplace for tech talent in India. Founders find developers, agree on the scope, and pay as each milestone is delivered.
           </p>
         </div>
 
@@ -50,16 +50,16 @@ export default function About() {
           
           <section className="space-y-4">
             <h2 className="text-2xl font-display font-bold text-[#030B3D]">
-              Why We Are Building GigOra
+              Why we're building GigOra
             </h2>
             <p>
-              In India, technical hiring and freelancing often run into the same friction: vague requirements, misaligned expectations, and communication gaps between founders and developers.
+              We think hiring and freelancing in tech keeps running into the same problems: unclear requirements, mismatched expectations, and messages that go unanswered.
             </p>
             <p>
-              Founders frequently struggle to find developers whose technical capabilities can be evaluated through real code rather than polished resumes. At the same time, software engineers often take on projects where scope creep and unclear milestones create frustration.
+              We think it's hard to judge a developer from a resume alone. Developers, in turn, often end up on projects where the scope keeps growing and nobody is sure what "done" means.
             </p>
             <p className="font-medium text-[#030B3D]">
-              We believe a freelance platform for developers should be built around technical clarity and transparent milestones:
+              We think a good freelance platform comes down to three things:
             </p>
           </section>
 
@@ -69,9 +69,9 @@ export default function About() {
               <div className="h-10 w-10 rounded-xl bg-white border border-stone-200 text-accent-text flex items-center justify-center font-bold">
                 <Code2 className="h-5 w-5" />
               </div>
-              <h3 className="font-bold text-[#030B3D] text-base">Proof Over Resumes</h3>
+              <h3 className="font-bold text-[#030B3D] text-base">Real work, not just resumes</h3>
               <p className="text-xs text-stone-600 leading-relaxed">
-                Evaluating engineers through real work — GitHub repositories, live demo projects, and concrete code architecture.
+                Developers can add GitHub and live links to their profile so you judge them by what they've built: real code and live projects.
               </p>
             </div>
 
@@ -79,9 +79,9 @@ export default function About() {
               <div className="h-10 w-10 rounded-xl bg-white border border-stone-200 text-accent-text flex items-center justify-center font-bold">
                 <ShieldCheck className="h-5 w-5" />
               </div>
-              <h3 className="font-bold text-[#030B3D] text-base">Milestone Clarity</h3>
+              <h3 className="font-bold text-[#030B3D] text-base">Clear milestones</h3>
               <p className="text-xs text-stone-600 leading-relaxed">
-                Clear sprint scopes and measurable acceptance criteria agreed upon upfront before work begins.
+                Agree on what each stage includes, and how you'll know it's done, before work begins.
               </p>
             </div>
 
@@ -89,9 +89,9 @@ export default function About() {
               <div className="h-10 w-10 rounded-xl bg-white border border-stone-200 text-emerald-600 flex items-center justify-center font-bold">
                 <Compass className="h-5 w-5" />
               </div>
-              <h3 className="font-bold text-[#030B3D] text-base">Simple Collaboration</h3>
+              <h3 className="font-bold text-[#030B3D] text-base">Easy to work together</h3>
               <p className="text-xs text-stone-600 leading-relaxed">
-                A straightforward way for Indian startups and tech professionals to communicate and deliver together.
+                One place for startups and tech professionals to talk, share files and deliver work.
               </p>
             </div>
           </div>
@@ -99,13 +99,13 @@ export default function About() {
           {/* Technical Focus Note */}
           <section className="space-y-3 pt-4 border-t border-stone-100">
             <h2 className="text-xl font-display font-bold text-[#030B3D]">
-              Focused Start & Future Direction
+              Where we're starting
             </h2>
             <p>
-              We are starting with a dedicated focus on <strong>Software Engineering, Web & Mobile Development, AI/ML, Cloud DevOps, and Product UI/UX</strong>. Focusing on technology disciplines first allows us to refine our review processes and understand what both sides need most.
+              We're starting with software engineering, web and mobile development, AI/ML, cloud/DevOps and UI/UX. Staying focused lets us fix what isn't working and learn what both sides actually need.
             </p>
             <p>
-              As GigOra grows and our core platform features are tested with real users, we plan to expand our tools and explore additional creative and technical disciplines.
+              As more people use GigOra and we learn from them, we'll add more tools and more kinds of work.
             </p>
           </section>
 
@@ -132,7 +132,7 @@ export default function About() {
 
           <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-stone-100 text-xs text-stone-400">
             <span>GigOra · Live Preview</span>
-            <span className="font-medium text-stone-500">Building for India's tech ecosystem</span>
+            <span className="font-medium text-stone-500">Built for India's tech community</span>
           </div>
 
         </div>

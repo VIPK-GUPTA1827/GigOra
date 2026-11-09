@@ -212,7 +212,7 @@ export default function NotificationBell({ userRole = 'freelancer', onNavigateTo
                   <Bell className="w-5 h-5 opacity-40" />
                 </div>
                 <p className="text-xs font-bold text-slate-700">No notifications yet</p>
-                <p className="text-[11px] text-slate-400">Updates on proposals, deliverables, and milestone releases will appear here.</p>
+                <p className="text-[11px] text-slate-400">You'll see updates on proposals, deliveries and payments here.</p>
               </div>
             ) : (
               notifications.map((notif) => (
@@ -253,7 +253,7 @@ export default function NotificationBell({ userRole = 'freelancer', onNavigateTo
           {/* Footer */}
           <div className="p-2.5 bg-slate-50/80 border-t border-slate-100 text-center">
             <span className="text-[10px] font-medium text-slate-400">
-              Real-time in-app notifications
+              Live notifications
             </span>
           </div>
         </div>

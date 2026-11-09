@@ -217,7 +217,7 @@ export default function Home() {
                       : 'text-[#030B3D] hover:bg-[#030B3D]/[0.08]'
                   }`}
                 >
-                  Hire Indian Tech Talent
+                  Hire Tech Talent
                 </button>
                 <button
                   onClick={() => setActiveTab('freelancer')}
@@ -232,8 +232,8 @@ export default function Home() {
               </div>
               <p className="text-xs md:text-sm text-[#030B3D] opacity-75 mt-2 leading-[1.45]">
                 {activeTab === 'client' 
-                  ? "Work with Indian tech freelancers through clear milestones, agreed scope, and simple reviews."
-                  : "Show your portfolio and find serious projects with clear milestones."
+                  ? "Hire developers and designers. Agree on the work first, pay in milestones, review as you go."
+                  : "Show your work and find projects where the scope is clear from day one."
                 }
               </p>
             </motion.div>
@@ -257,10 +257,10 @@ export default function Home() {
                   style={{ fontSize: 'clamp(2.1rem, 3.4vw + 0.3rem, 3.3rem)', lineHeight: '1.1' }}
                 >
                   <span className="block">
-                    Hire India's tech talent,
+                    Hire Indian developers and designers,
                   </span>
                   <span className="block text-accent-text">
-                    milestone by milestone.
+                    one milestone at a time.
                   </span>
                 </h1>
 
@@ -272,7 +272,7 @@ export default function Home() {
                   className="text-[#030B3D] leading-[1.55] max-w-[32em] font-medium mb-3.5 md:mb-4"
                   style={{ fontSize: 'clamp(0.95rem, 1.05vw + 0.15rem, 1.15rem)' }}
                 >
-                  Discover Indian tech talent, agree on project expectations, and see how milestone workflows run.
+                  Find developers and designers, agree on what you expect, and track the work milestone by milestone.
                 </motion.p>
 
                 {/* Offer Line */}
@@ -324,10 +324,10 @@ export default function Home() {
                   style={{ fontSize: 'clamp(2.1rem, 3.4vw + 0.3rem, 3.3rem)', lineHeight: '1.1' }}
                 >
                   <span className="block">
-                    Show your work and
+                    Show your work.
                   </span>
                   <span className="block text-accent-text">
-                    find projects with clear milestones.
+                    Find projects with a clear scope.
                   </span>
                 </h1>
 
@@ -339,7 +339,7 @@ export default function Home() {
                   className="text-[#030B3D] leading-[1.55] max-w-[32em] font-medium mb-3.5 md:mb-4"
                   style={{ fontSize: 'clamp(0.95rem, 1.05vw + 0.15rem, 1.15rem)' }}
                 >
-                  Showcase your work and explore milestone-based freelance collaboration.
+                  Put your work in front of clients and take on projects with agreed milestones.
                 </motion.p>
 
                 {/* Offer Line */}
@@ -363,7 +363,7 @@ export default function Home() {
                     href="#choose-path"
                     className="text-xs sm:text-sm font-bold text-[#030B3D] underline underline-offset-4 hover:no-underline text-center sm:text-left py-2 flex items-center justify-center sm:justify-start cursor-pointer"
                   >
-                    See developer perks →
+                    See what you get →
                   </a>
                 </div>
               </div>
@@ -470,7 +470,7 @@ export default function Home() {
                 <Code2 className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="min-w-0">
-                <h4 className="font-bold text-xs sm:text-sm text-[#030B3D] leading-tight">Developer Showcase</h4>
+                <h4 className="font-bold text-xs sm:text-sm text-[#030B3D] leading-tight">Developer profiles</h4>
                 <p className="text-[10px] sm:text-xs text-stone-500 leading-tight mt-0.5 truncate sm:overflow-visible">Web, Mobile, AI &amp; Cloud prototypes</p>
               </div>
             </div>
@@ -483,7 +483,7 @@ export default function Home() {
                 <h4 className="font-bold text-xs sm:text-sm text-[#030B3D] leading-tight">
                   Milestone Tracking
                 </h4>
-                <p className="text-[10px] sm:text-xs text-stone-500 leading-tight mt-0.5 truncate sm:overflow-visible">Live tracking • Demo payments</p>
+                <p className="text-[10px] sm:text-xs text-stone-500 leading-tight mt-0.5 truncate sm:overflow-visible">Track progress • Demo payments</p>
               </div>
             </div>
 
@@ -493,7 +493,7 @@ export default function Home() {
               </div>
               <div className="min-w-0">
                 <h4 className="font-bold text-xs sm:text-sm text-[#030B3D] leading-tight">
-                  Proof Portfolios
+                  Portfolios with real work
                 </h4>
                 <p className="text-[10px] sm:text-xs text-stone-500 leading-tight mt-0.5 truncate sm:overflow-visible">GitHub repos &amp; live prototypes</p>
               </div>
@@ -608,7 +608,7 @@ export default function Home() {
               How GigOra Works
             </h2>
             <p className="text-stone-600 text-sm sm:text-base">
-              A transparent milestone-based collaboration model, designed for clear project delivery.
+              Three steps from idea to delivered work.
             </p>
           </div>
 
@@ -632,11 +632,11 @@ export default function Home() {
                   1. Share your project
                 </h3>
                 <p className="text-sm text-stone-600 leading-relaxed">
-                  Tell us what you're building, which skills you need, and what you expect to receive. Then connect with freelancers who match your project.
+                  Tell us what you're building, what skills you need and what you expect to get. Freelancers who fit will send you proposals.
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-stone-100 flex items-center text-xs font-semibold text-accent-text">
-                Clear Scope · No Spam Pitches
+                Clear scope, no spam
               </div>
             </div>
 
@@ -657,11 +657,11 @@ export default function Home() {
                   2. Agree on milestones
                 </h3>
                 <p className="text-sm text-stone-600 leading-relaxed">
-                  Agree on the deliverables, timeline, and budget before work begins. Clear milestones help everyone stay on the same page.
+                  Agree on what gets delivered, by when and for how much, before work starts. Milestones keep everyone on the same page.
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-stone-100 flex items-center text-xs font-semibold text-accent-text">
-                Phased Sprints · Clear Milestones
+                Work in stages
               </div>
             </div>
 
@@ -682,11 +682,11 @@ export default function Home() {
                   3. Review the work
                 </h3>
                 <p className="text-sm text-stone-600 leading-relaxed">
-                  Review deliverables through a demo walkthrough or GitHub pull request before confirming sprint completion.
+                  Check the work through a demo or a GitHub pull request, then mark the milestone as done.
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-stone-100 flex items-center text-xs font-semibold text-emerald-600">
-                Review · Sprint Confirmation
+                Review and sign off
               </div>
             </div>
 
@@ -695,7 +695,7 @@ export default function Home() {
           {/* Live Workflow Note */}
           <div className="mt-10 p-4 sm:p-5 rounded-2xl bg-accent-tint0/10 border border-indigo-500/20 max-w-3xl mx-auto text-center" data-aos="fade-up">
             <p className="text-xs sm:text-sm font-medium text-indigo-950">
-              <strong>Notice:</strong> Proposals, milestones, reviews and delivery tracking are live. Payments are demo-only for now.
+              <strong>Notice:</strong> Proposals, milestones, reviews and tracking all work today. Payments are demo-only for now.
             </p>
           </div>
 
@@ -708,13 +708,13 @@ export default function Home() {
           
           <div className="text-center max-w-2xl mx-auto mb-14" data-aos="fade-up">
             <span className="text-xs font-black uppercase tracking-[0.12em] text-accent-text bg-accent-text/10 px-4 py-1.5 rounded-full border border-accent/20">
-              CHOOSE YOUR PATH
+              ARE YOU HIRING OR FREELANCING?
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-[#030B3D] tracking-tight mt-3 mb-3">
-              Built for both sides of the contract
+              Made for clients and freelancers
             </h2>
             <p className="text-stone-600 text-sm sm:text-base">
-              Whether you're hiring for your startup or looking for your next freelance project, GigOra helps both sides work with clearer expectations.
+              Hiring for your startup or looking for your next project? GigOra keeps both sides clear on what's expected.
             </p>
           </div>
 
@@ -731,17 +731,17 @@ export default function Home() {
                   <Users className="w-3.5 h-3.5" /> For Founders &amp; Clients
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-display font-black text-[#030B3D] mb-3">
-                  Build your product with clear milestones
+                  Build your product in clear stages
                 </h3>
                 <p className="text-sm text-stone-600 mb-6 leading-relaxed">
-                  Discuss project requirements and agree on deliverables before work starts. Deliverables and acceptance criteria are agreed upfront.
+                  Talk through what you need and agree on the deliverables before work starts.
                 </p>
                 <ul className="space-y-3 mb-8">
                   {[
-                    'Milestone deliverables, sprint dates & budgets upfront',
-                    'GitHub PR & live staging inspection workflow',
-                    'Milestone review and confirmation workflow',
-                    'Active workspace for founders and technical talent'
+                    'Deliverables, dates and budget fixed upfront',
+                    'Review work on GitHub or a live staging site',
+                    "Approve each milestone when you're happy with it",
+                    'A shared workspace for you and your freelancer'
                   ].map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-stone-700">
                       <Check className="w-4 h-4 text-accent-text shrink-0 mt-0.5" />
@@ -769,17 +769,17 @@ export default function Home() {
                   <Code2 className="w-3.5 h-3.5" /> For Tech Freelancers &amp; Devs
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-display font-black text-[#030B3D] mb-3">
-                  Show your work. Find projects with clear milestones.
+                  Show your work. Find projects with a clear scope.
                 </h3>
                 <p className="text-sm text-stone-600 mb-6 leading-relaxed">
-                  Know the scope, timeline, and terms before you start work. Milestone criteria are agreed upfront, so you code with full confidence.
+                  You'll know the scope, timeline and terms before you start, so there are no surprises halfway through.
                 </p>
                 <ul className="space-y-3 mb-8">
                   {[
-                    'Showcase GitHub repos, commits, and live prototypes',
-                    'Milestone scopes agreed and locked before kickoff',
-                    'Direct rupee milestone agreements (demo mode)',
-                    'Verified talent onboarding & instant proposal submissions'
+                    'Share your GitHub repos and live projects',
+                    'Scope agreed before you start',
+                    'Milestone amounts in rupees (demo mode)',
+                    'Quick signup and easy proposals'
                   ].map((item, idx) => (
                     <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-stone-700">
                       <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
@@ -807,24 +807,24 @@ export default function Home() {
           
           <div className="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
             <span className="text-xs font-black uppercase tracking-[0.12em] text-accent-text bg-accent-text/10 px-4 py-1.5 rounded-full border border-accent/20">
-              ENGINEERED FOR TRUST
+              WHAT YOU GET
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-[#030B3D] tracking-tight mt-4 mb-4">
-              Designed for serious technical projects
+              Everything a project needs
             </h2>
             <p className="text-base sm:text-lg text-stone-600 max-w-2xl mx-auto">
-              Everything you need to run a project, built into one workspace.
+              Proposals, messages, files and milestones in one place.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[
-              { title: 'Proposals & Bidding', desc: 'Clients post projects, freelancers send bids, clients compare and accept.', icon: Users, border: 'hover:border-purple-300' },
-              { title: 'Milestone Tracking', desc: 'Split projects into milestones and approve each deliverable step by step.', icon: ShieldCheck, border: 'hover:border-emerald-300' },
-              { title: 'Real-time Chat', desc: 'Message your client or freelancer instantly, with read receipts.', icon: Zap, border: 'hover:border-blue-300' },
-              { title: 'Reviews & Ratings', desc: 'Clients and freelancers build trust with reviews after completion.', icon: CheckCircle2, border: 'hover:border-amber-300' },
-              { title: 'Document Uploads', desc: 'Share briefs, designs and PDFs securely with file validation.', icon: Layers, border: 'hover:border-violet-300' },
-              { title: 'Smart Notifications', desc: 'Get updates for proposals, milestones and messages in real time.', icon: Wallet, border: 'hover:border-rose-300' }
+              { title: 'Proposals & Bidding', desc: 'Clients post projects, freelancers send proposals, and clients pick the best fit.', icon: Users, border: 'hover:border-purple-300' },
+              { title: 'Milestone Tracking', desc: "Break a project into milestones and approve each one as it's delivered.", icon: ShieldCheck, border: 'hover:border-emerald-300' },
+              { title: 'Real-time Chat', desc: 'Message your client or freelancer directly in your workspace.', icon: Zap, border: 'hover:border-blue-300' },
+              { title: 'Reviews & Ratings', desc: 'Leave reviews after a project ends.', icon: CheckCircle2, border: 'hover:border-amber-300' },
+              { title: 'Document Uploads', desc: 'Share briefs, designs and PDFs directly in your project workspace.', icon: Layers, border: 'hover:border-violet-300' },
+              { title: 'Smart Notifications', desc: 'Get notified when proposals, milestones or messages come in.', icon: Wallet, border: 'hover:border-rose-300' }
             ].map((feature, idx) => (
               <div 
                 key={idx} 
@@ -856,13 +856,13 @@ export default function Home() {
           
           <div className="text-center max-w-2xl mx-auto mb-14" data-aos="fade-up">
             <span className="text-xs font-black uppercase tracking-[0.12em] text-accent-text bg-accent-text/10 px-4 py-1.5 rounded-full border border-accent/20">
-              TRANSPARENCY FIRST
+              STRAIGHT ANSWERS
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-[#030B3D] tracking-tight mt-4 mb-3">
               Frequently Asked Questions
             </h2>
             <p className="text-stone-600 text-sm sm:text-base">
-              Clear answers about how GigOra works today.
+              Honest answers about how GigOra works right now.
             </p>
           </div>
 
@@ -870,7 +870,7 @@ export default function Home() {
             {[
               { q: 'Is GigOra free right now?', a: 'Yes. Browsing projects, posting them and sending proposals are free during preview. Payments run in demo mode, so no real money moves.' },
               { q: 'How do milestones work?', a: 'Clients split a project into milestones. Freelancers submit work for each milestone, and clients review and approve it before it is marked complete.' },
-              { q: 'How are freelancer profiles reviewed?', a: 'Profiles are self-serve right now. You can view skills, bio and reviews on each public profile. Formal verification is not live yet.' },
+              { q: 'How are freelancer profiles reviewed?', a: "Anyone can create a profile for now. You can see skills, bio and reviews on each one. We don't verify profiles yet." },
               { q: 'What are the platform fees?', a: 'No fees during preview. Fee details will be published before real payments go live.' }
             ].map((faq, idx) => (
               <div 
@@ -945,7 +945,7 @@ export default function Home() {
                 India's milestone-based marketplace for technical talent.
               </p>
               <div className="pt-1 text-[11px] text-slate-500 font-medium">
-                Milestone Workflow · Clear Criteria · Portfolio Showcase
+                Milestones · Clear scope · Portfolios
               </div>
             </div>
             
@@ -992,7 +992,7 @@ export default function Home() {
               <Link to="/privacy" className="hover:text-slate-300 transition-colors">Privacy</Link>
               <Link to="/about" className="hover:text-slate-300 transition-colors">About</Link>
             </div>
-            <p className="font-medium text-slate-400">Built for focused engineering. Zero noise.</p>
+            <p className="font-medium text-slate-400">Built for people who build software.</p>
           </div>
         </div>
       </footer>

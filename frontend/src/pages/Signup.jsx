@@ -146,7 +146,7 @@ export default function Signup() {
               Join GigOra
             </h1>
             <p className="text-xs sm:text-sm text-slate-500 mt-1.5">
-              Secure escrow, zero fake emails, verified Indian freelancers & clients.
+              Sign up to post projects or send proposals. Payments are in demo mode while we test.
             </p>
           </div>
 
@@ -380,15 +380,11 @@ export default function Signup() {
       <footer className="w-full max-w-[460px] mx-auto text-center relative z-10 pt-2">
         <div className="flex items-center justify-center gap-4 text-[11px] text-slate-400 font-medium">
           <span className="flex items-center gap-1">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Safe Escrow
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> Demo escrow
           </span>
           <span>•</span>
           <span className="flex items-center gap-1">
-            <Zap className="w-3.5 h-3.5 text-amber-500" /> Fast Payouts
-          </span>
-          <span>•</span>
-          <span className="flex items-center gap-1">
-            <Lock className="w-3.5 h-3.5 text-blue-500" /> 256-bit Encrypted
+            <Lock className="w-3.5 h-3.5 text-blue-500" /> Secure connection (HTTPS)
           </span>
         </div>
       </footer>

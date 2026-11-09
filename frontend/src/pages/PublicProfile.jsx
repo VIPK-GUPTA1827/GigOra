@@ -119,8 +119,8 @@ export default function PublicProfile() {
           <div className="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center mx-auto mb-4">
             <AlertCircle className="w-7 h-7" />
           </div>
-          <h2 className="text-xl font-bold text-slate-900 mb-2">Profile Not Available</h2>
-          <p className="text-sm text-slate-500 mb-6">{error || "The requested profile could not be found or is private."}</p>
+          <h2 className="text-xl font-bold text-slate-900 mb-2">Profile not found</h2>
+          <p className="text-sm text-slate-500 mb-6">{error || "We couldn't find this profile. It may be private or removed."}</p>
           <div className="flex items-center justify-center gap-3">
             <button
               onClick={() => navigate(-1)}
@@ -381,7 +381,7 @@ export default function PublicProfile() {
                   {profileData.bio ? (
                     profileData.bio
                   ) : (
-                    <p className="text-slate-400 italic">No detailed bio provided yet.</p>
+                    <p className="text-slate-400 italic">No bio yet.</p>
                   )}
                 </div>
               </div>
@@ -449,13 +449,13 @@ export default function PublicProfile() {
                   </div>
                 ) : (
                   <div className="p-8 rounded-2xl bg-slate-50 border border-slate-200 text-center space-y-2">
-                    <p className="text-xs text-slate-500 font-medium">No portfolio projects showcased yet.</p>
+                    <p className="text-xs text-slate-500 font-medium">No portfolio projects yet.</p>
                     {isOwnProfile && (
                       <Link
                         to="/freelancer/setup"
                         className="text-xs font-bold text-accent-text hover:underline inline-block"
                       >
-                        Add your top projects to boost hiring chances →
+                        Add your best projects to get hired faster →
                       </Link>
                     )}
                   </div>
@@ -585,7 +585,7 @@ export default function PublicProfile() {
                     </strong>
                   </div>
                   <div className="flex items-center justify-between text-xs">
-                    <span className="text-slate-500 font-medium">Demo Escrow Protected</span>
+                    <span className="text-slate-500 font-medium">Demo escrow</span>
                     <strong className="text-accent-text font-black flex items-center gap-1">
                       <ShieldCheck className="w-3.5 h-3.5" /> Test Mode
                     </strong>
@@ -613,7 +613,7 @@ export default function PublicProfile() {
                   {profileData.companyDescription ? (
                     profileData.companyDescription
                   ) : (
-                    <p className="text-slate-400 italic">No company description provided yet.</p>
+                    <p className="text-slate-400 italic">No company description yet.</p>
                   )}
                 </div>
               </div>
@@ -622,14 +622,14 @@ export default function PublicProfile() {
               <div className="bg-white p-6 sm:p-7 rounded-3xl border border-slate-200/90 shadow-xs space-y-4">
                 <h2 className="text-base font-black text-slate-900 flex items-center gap-2">
                   <Briefcase className="w-4 h-4 text-accent-text" />
-                  Organization Details
+                  Company details
                 </h2>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                   <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-1">
                     <span className="text-slate-400 font-semibold uppercase tracking-wider">Company Name</span>
                     <p className="text-sm font-bold text-slate-900">
-                      {profileData.companyName ? profileData.companyName : 'Independent Client (No company specified)'}
+                      {profileData.companyName ? profileData.companyName : 'Independent client'}
                     </p>
                   </div>
 
@@ -657,7 +657,7 @@ export default function PublicProfile() {
               
               <div className="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-xs space-y-4">
                 <h2 className="text-sm font-black text-slate-900 uppercase tracking-wider text-slate-500">
-                  Hiring Track Record
+                  Hiring history
                 </h2>
 
                 <div className="space-y-3">
@@ -676,7 +676,7 @@ export default function PublicProfile() {
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-slate-500 font-medium">Escrow Mode</span>
                     <strong className="text-accent-text font-black flex items-center gap-1">
-                      <ShieldCheck className="w-3.5 h-3.5 text-accent-text" /> Simulated Sandbox Escrow
+                      <ShieldCheck className="w-3.5 h-3.5 text-accent-text" /> Demo escrow (no real money)
                     </strong>
                   </div>
                 </div>
@@ -687,7 +687,7 @@ export default function PublicProfile() {
                 <div className="bg-gradient-to-br from-accent/10 to-indigo-100/50 p-6 rounded-3xl border border-accent/20 space-y-3">
                   <h3 className="text-sm font-black text-slate-900">Manage Client Workspace</h3>
                   <p className="text-xs text-slate-600">
-                    Post new projects, manage proposals, and hire top freelancers in India.
+                    Post projects, manage proposals and hire freelancers.
                   </p>
                   <Link
                     to="/client/dashboard"

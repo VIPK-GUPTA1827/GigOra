@@ -49,9 +49,9 @@ export function evaluatePassword(password = '') {
   if (!hasMinLength) {
     message = 'Password must be at least 12 characters long';
   } else if (isCommon) {
-    message = 'This password is too common and easily guessed. Please choose a more secure passphrase.';
+    message = 'That password is too common. Pick a different one.';
   } else if (score < 2) {
-    message = 'Password is too weak. Please include a mix of uppercase, lowercase, numbers, or symbols.';
+    message = 'Password is too weak. Mix upper and lower case letters, numbers or symbols.';
   }
 
   return {
@@ -89,7 +89,7 @@ export default function PasswordStrengthMeter({ password = '', showCriteria = tr
 
       {/* Label Indicator */}
       <div className="flex items-center justify-between text-xs font-semibold">
-        <span className="text-stone-500">Security strength:</span>
+        <span className="text-stone-500">Password strength:</span>
         <span className={level.text}>{level.label}</span>
       </div>
 
@@ -120,7 +120,7 @@ export default function PasswordStrengthMeter({ password = '', showCriteria = tr
 
       {isCommon && (
         <p className="text-[11px] text-rose-500 font-medium">
-          ⚠️ This password is too easy to guess. Choose a longer, unique passphrase.
+          This password is too easy to guess. Try something longer and less common.
         </p>
       )}
     </div>
