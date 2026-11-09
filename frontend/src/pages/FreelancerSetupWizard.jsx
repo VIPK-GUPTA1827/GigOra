@@ -484,7 +484,7 @@ const FreelancerSetupWizard = () => {
                       onClick={() => setFormData(p => ({ ...p, experienceLevel: item.level }))}
                       className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
                         formData.experienceLevel === item.level
-                          ? 'border-accent bg-accent-text/5 ring-2 ring-[#593CFF]/20'
+                          ? 'border-accent bg-accent-text/5 ring-2 ring-accent/20'
                           : 'border-slate-200 bg-slate-50/50 hover:bg-slate-100'
                       }`}
                     >
@@ -628,7 +628,7 @@ const FreelancerSetupWizard = () => {
                         onClick={() => setFormData(p => ({ ...p, workPreference: pref.id }))}
                         className={`p-3.5 rounded-2xl border text-left transition-all cursor-pointer ${
                           formData.workPreference === pref.id
-                            ? 'border-accent bg-accent-text/5 ring-2 ring-[#593CFF]/20'
+                            ? 'border-accent bg-accent-text/5 ring-2 ring-accent/20'
                             : 'border-slate-200 bg-slate-50/50 hover:bg-slate-100'
                         }`}
                       >

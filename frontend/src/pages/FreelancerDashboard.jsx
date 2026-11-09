@@ -658,7 +658,7 @@ export default function FreelancerDashboard() {
               </h1>
 
               <p className="text-sm text-slate-500 font-medium leading-relaxed">
-                {user.bio ? user.bio : "Welcome to your Freelancer Studio. Explore open client requirements, manage bids, and deliver high-impact work with zero commission."}
+                {user.bio ? user.bio : "Explore open projects and deliver your work."}
               </p>
 
               {/* Skills Tags */}

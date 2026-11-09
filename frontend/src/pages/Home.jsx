@@ -958,7 +958,7 @@ export default function Home() {
                   <li><a href="#choose-path" className="hover:text-white transition-colors">Clients &amp; Devs</a></li>
                   <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
                   <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
-                  <li><Link to="/about" className="text-indigo-400 hover:text-white transition-colors font-bold">About GigOra</Link></li>
+                  <li><Link to="/about" className="text-teal-300 hover:text-white transition-colors font-bold">About GigOra</Link></li>
                 </ul>
               </div>
 
