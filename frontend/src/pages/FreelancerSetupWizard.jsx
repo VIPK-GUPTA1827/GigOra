@@ -785,7 +785,7 @@ const FreelancerSetupWizard = () => {
                     type="button"
                     onClick={() => handleSaveProfile(false)}
                     disabled={submitting}
-                    className="px-6 py-2.5 rounded-xl bg-accent-text hover:bg-[#472fe0] text-white font-bold text-xs shadow-xs active:scale-95 transition cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+                    className="px-6 py-2.5 rounded-xl bg-accent-text hover:bg-accent-deep text-white font-bold text-xs shadow-xs active:scale-95 transition cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
                   >
                     {submitting && <Loader2 className="w-3.5 h-3.5 animate-spin" />}
                     <span>Save & Go to Dashboard</span>
@@ -796,7 +796,7 @@ const FreelancerSetupWizard = () => {
                 <button
                   type="button"
                   onClick={handleNextStep}
-                  className="px-6 py-2.5 rounded-xl bg-accent-text hover:bg-[#472fe0] text-white font-bold text-xs shadow-xs active:scale-95 transition cursor-pointer flex items-center gap-1.5"
+                  className="px-6 py-2.5 rounded-xl bg-accent-text hover:bg-accent-deep text-white font-bold text-xs shadow-xs active:scale-95 transition cursor-pointer flex items-center gap-1.5"
                 >
                   <span>Continue</span>
                   <ChevronRight className="w-4 h-4" />

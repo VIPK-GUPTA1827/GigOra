@@ -192,7 +192,7 @@ export default function NotificationBell({ userRole = 'freelancer', onNavigateTo
             {unreadCount > 0 && (
               <button
                 onClick={handleMarkAllRead}
-                className="text-[11px] font-bold text-accent-text hover:text-[#472fe0] inline-flex items-center gap-1 cursor-pointer transition hover:underline"
+                className="text-[11px] font-bold text-accent-text hover:text-accent-deep inline-flex items-center gap-1 cursor-pointer transition hover:underline"
               >
                 <CheckCheck className="w-3.5 h-3.5" />
                 <span>Mark all read</span>

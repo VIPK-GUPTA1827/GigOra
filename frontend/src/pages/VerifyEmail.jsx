@@ -126,7 +126,7 @@ export default function VerifyEmail() {
                 <button
                   type="button"
                   onClick={handleContinue}
-                  className="py-3 px-8 rounded-xl bg-accent-text hover:bg-[#472fe0] text-white font-bold text-sm shadow-sm transition-all cursor-pointer inline-flex items-center gap-2"
+                  className="py-3 px-8 rounded-xl bg-accent-text hover:bg-accent-deep text-white font-bold text-sm shadow-sm transition-all cursor-pointer inline-flex items-center gap-2"
                 >
                   <span>Continue to Dashboard</span>
                   <ArrowRight className="w-4 h-4" />

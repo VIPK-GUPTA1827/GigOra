@@ -176,7 +176,7 @@ export default function Home() {
                 <Link
                   to="/signup"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex-1 text-center py-2.5 rounded-xl bg-accent-text text-white text-xs font-bold shadow-xs hover:bg-[#472fe0]"
+                  className="flex-1 text-center py-2.5 rounded-xl bg-accent-text text-white text-xs font-bold shadow-xs hover:bg-accent-deep"
                 >
                   Sign Up
                 </Link>
@@ -288,7 +288,7 @@ export default function Home() {
                 <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full">
                   <Link
                     to="/marketplace"
-                    className="rounded-full bg-accent-text hover:bg-[#472fe0] px-7 py-3.5 text-sm md:text-base font-bold text-white shadow-[0_16px_32px_-16px_rgba(89,60,255,0.7)] active:scale-95 transition-all text-center min-h-[48px] flex items-center justify-center cursor-pointer"
+                    className="rounded-full bg-accent-text hover:bg-accent-deep px-7 py-3.5 text-sm md:text-base font-bold text-white shadow-sm active:scale-95 transition-all text-center min-h-[48px] flex items-center justify-center cursor-pointer"
                   >
                     Browse open projects
                   </Link>
@@ -790,7 +790,7 @@ export default function Home() {
               </div>
               <Link 
                 to="/signup" 
-                className="rounded-full bg-accent-text hover:bg-[#472fe0] text-white text-center py-3.5 px-6 font-bold text-sm shadow-sm hover:shadow-md transition-all block cursor-pointer"
+                className="rounded-full bg-accent-text hover:bg-accent-deep text-white text-center py-3.5 px-6 font-bold text-sm shadow-sm hover:shadow-md transition-all block cursor-pointer"
               >
                 Join as Freelancer
               </Link>
@@ -917,7 +917,7 @@ export default function Home() {
             Post a project or find work with clear milestones. Free during preview, payments in demo mode.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link to="/signup" className="rounded-full bg-accent-text hover:bg-[#472fe0] px-8 py-4 font-bold text-sm active:scale-95 transition-all text-center">
+            <Link to="/signup" className="rounded-full bg-accent-text hover:bg-accent-deep px-8 py-4 font-bold text-sm active:scale-95 transition-all text-center">
               Post a project
             </Link>
             <Link to="/marketplace" className="rounded-full bg-white/10 border border-white/20 hover:bg-white/15 px-8 py-4 font-bold text-sm active:scale-95 transition-all text-center">

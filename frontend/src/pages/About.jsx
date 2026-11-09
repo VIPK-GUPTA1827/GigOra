@@ -111,7 +111,7 @@ export default function About() {
 
           {/* Action CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 pt-2">
-            <Link to="/marketplace" className="rounded-full bg-accent-text hover:bg-[#472fe0] text-white text-center py-3 px-6 font-bold text-sm active:scale-95 transition-all">
+            <Link to="/marketplace" className="rounded-full bg-accent-text hover:bg-accent-deep text-white text-center py-3 px-6 font-bold text-sm active:scale-95 transition-all">
               Browse projects
             </Link>
             <Link to="/signup" className="rounded-full border border-[#030B3D]/20 text-[#030B3D] text-center py-3 px-6 font-bold text-sm hover:bg-stone-50 active:scale-95 transition-all">

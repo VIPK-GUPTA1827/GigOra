@@ -130,7 +130,7 @@ export default function PublicProfile() {
             </button>
             <Link
               to="/"
-              className="px-4 py-2 text-xs font-bold text-white bg-accent-text hover:bg-[#472fe0] rounded-xl transition shadow-xs"
+              className="px-4 py-2 text-xs font-bold text-white bg-accent-text hover:bg-accent-deep rounded-xl transition shadow-xs"
             >
               Browse Marketplace
             </Link>
@@ -191,7 +191,7 @@ export default function PublicProfile() {
             {isOwnProfile && (
               <Link
                 to={isFreelancer ? '/freelancer/setup' : '/client/dashboard'}
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-accent-text hover:bg-[#472fe0] px-3.5 py-2 rounded-xl transition shadow-xs"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-white bg-accent-text hover:bg-accent-deep px-3.5 py-2 rounded-xl transition shadow-xs"
               >
                 <Edit3 className="w-3.5 h-3.5" />
                 <span>Edit Profile</span>
@@ -339,7 +339,7 @@ export default function PublicProfile() {
                       : `https://${profileData.socialLinks?.website || profileData.companyWebsite}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-accent-text hover:text-[#472fe0] bg-accent-tint/60 hover:bg-indigo-100/60 border border-accent-soft px-3 py-1.5 rounded-xl transition"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-accent-text hover:text-accent-deep bg-accent-tint/60 hover:bg-emerald-100/60 border border-accent-soft px-3 py-1.5 rounded-xl transition"
                   >
                     <Globe className="w-4 h-4" />
                     <span>{isFreelancer ? 'Portfolio Website' : 'Company Website'}</span>
@@ -437,7 +437,7 @@ export default function PublicProfile() {
                               href={projectLink.startsWith('http') ? projectLink : `https://${projectLink}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 text-xs font-bold text-accent-text hover:text-[#472fe0] mt-auto"
+                              className="inline-flex items-center gap-1.5 text-xs font-bold text-accent-text hover:text-accent-deep mt-auto"
                             >
                               <span>View Repository / Live App</span>
                               <ExternalLink className="w-3.5 h-3.5" />
@@ -691,7 +691,7 @@ export default function PublicProfile() {
                   </p>
                   <Link
                     to="/client/dashboard"
-                    className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-accent-text hover:bg-[#472fe0] text-white text-xs font-bold transition shadow-xs"
+                    className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-accent-text hover:bg-accent-deep text-white text-xs font-bold transition shadow-xs"
                   >
                     Go to Client Dashboard →
                   </Link>

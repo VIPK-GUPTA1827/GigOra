@@ -227,7 +227,7 @@ export default function Login() {
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3.5 px-6 rounded-xl bg-accent-text hover:bg-[#472fe0] text-white font-bold text-sm shadow-md shadow-accent/20 transition-all active:scale-[0.99] cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
+                className="w-full py-3.5 px-6 rounded-xl bg-accent-text hover:bg-accent-deep text-white font-bold text-sm shadow-md shadow-accent/20 transition-all active:scale-[0.99] cursor-pointer disabled:opacity-50 flex items-center justify-center gap-2"
               >
                 {submitting ? (
                   <>
