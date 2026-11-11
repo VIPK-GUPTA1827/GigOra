@@ -384,7 +384,7 @@ export default function Home() {
                 </div>
                 <div className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-white border border-slate-200 text-[11px] text-slate-500 font-mono">
                   <Lock className="w-3 h-3 text-emerald-600" />
-                  <span>gigora.in/marketplace</span>
+                  <span>gig-ora.vercel.app/marketplace</span>
                 </div>
                 <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
@@ -401,38 +401,49 @@ export default function Home() {
                   </Link>
                 </div>
 
-                {/* Dynamic Gigs from Database or Empty State */}
-                {featuredGigs.length === 0 ? (
-                  <p className="text-[11px] text-slate-500 text-center py-6">
-                    No open projects right now. Check back soon.
-                  </p>
-                ) : (
-                  featuredGigs.map((gig) => (
-                    <Link
-                      key={gig._id}
-                      to={`/gigs/${gig._id}`}
-                      className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-indigo-300 hover:shadow-xs transition"
-                    >
-                      <div className="flex items-center justify-between">
-                        <span className="text-[10px] font-semibold uppercase tracking-wider text-accent-text bg-accent-tint px-2 py-0.5 rounded-full">
-                          {gig.category}
+                {/* Dynamic Gigs from Database or Real Featured Samples */}
+                {(featuredGigs.length > 0 ? featuredGigs.slice(0, 2) : [
+                  {
+                    _id: 'sample-1',
+                    category: 'WEB DEVELOPMENT',
+                    budget: 38000,
+                    title: 'React & Tailwind Real-Time Analytics Dashboard',
+                    description: 'Build an interactive, modular web dashboard for monitoring live fleet metrics and performance.',
+                    skillsRequired: ['React', 'Tailwind CSS']
+                  },
+                  {
+                    _id: 'sample-2',
+                    category: 'GRAPHIC DESIGN',
+                    budget: 22000,
+                    title: 'Modern Tech Brand Identity, Logo & Social Collateral Kit',
+                    description: 'Create a distinctive, futuristic brand identity for an AI-powered SaaS product launch.',
+                    skillsRequired: ['Adobe Illustrator', 'Photoshop']
+                  }
+                ]).map((gig) => (
+                  <Link
+                    key={gig._id}
+                    to={gig._id.startsWith('sample') ? '/marketplace' : `/gigs/${gig._id}`}
+                    className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-teal-300 hover:shadow-xs transition"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-accent-text bg-accent-tint px-2 py-0.5 rounded-full">
+                        {gig.category}
+                      </span>
+                      <span className="text-[11px] font-bold text-slate-900">
+                        ₹{Number(gig.budget || 0).toLocaleString('en-IN')}
+                      </span>
+                    </div>
+                    <h4 className="mt-2 text-xs font-bold text-slate-900 line-clamp-1">{gig.title}</h4>
+                    <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">{gig.description}</p>
+                    <div className="mt-2.5 flex gap-1 border-t border-slate-100 pt-2">
+                      {(gig.skillsRequired || []).slice(0, 2).map((s) => (
+                        <span key={s} className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium text-[10px]">
+                          {s}
                         </span>
-                        <span className="text-[11px] font-bold text-slate-900">
-                          ₹{Number(gig.budget || 0).toLocaleString('en-IN')}
-                        </span>
-                      </div>
-                      <h4 className="mt-2 text-xs font-bold text-slate-900 line-clamp-1">{gig.title}</h4>
-                      <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">{gig.description}</p>
-                      <div className="mt-2.5 flex gap-1 border-t border-slate-100 pt-2">
-                        {(gig.skillsRequired || []).slice(0, 2).map((s) => (
-                          <span key={s} className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium text-[10px]">
-                            {s}
-                          </span>
-                        ))}
-                      </div>
-                    </Link>
-                  ))
-                )}
+                      ))}
+                    </div>
+                  </Link>
+                ))}
               </div>
 
               {/* Bottom Quick Bar */}
@@ -440,7 +451,7 @@ export default function Home() {
                 <span className="text-slate-500 text-[11px]">Demo data · No real payments</span>
                 <Link
                   to="/marketplace"
-                  className="inline-flex items-center gap-1 font-bold text-[11px] text-accent-text hover:text-indigo-700"
+                  className="inline-flex items-center gap-1 font-bold text-[11px] text-accent-text hover:text-accent-deep"
                 >
                   Explore marketplace →
                 </Link>
@@ -460,8 +471,8 @@ export default function Home() {
                 <Globe className="w-4 h-4 sm:w-5 sm:h-5" />
               </div>
               <div className="min-w-0">
-                <h4 className="font-bold text-xs sm:text-sm text-[#030B3D] leading-tight">100% India-Focused</h4>
-                <p className="text-[10px] sm:text-xs text-stone-500 leading-tight mt-0.5 truncate sm:overflow-visible">Built for Indian founders &amp; devs</p>
+                <h4 className="font-bold text-xs sm:text-sm text-[#030B3D] leading-tight">Built for Indian founders and developers</h4>
+                <p className="text-[10px] sm:text-xs text-stone-500 leading-tight mt-0.5 truncate sm:overflow-visible">Tech startups &amp; engineering talent</p>
               </div>
             </div>
 
@@ -513,12 +524,12 @@ export default function Home() {
               onClick={() => navigate('/marketplace?category=Data%20Science%20%26%20AI')}
               data-aos="fade-up" 
               data-aos-delay="0"
-              className="text-left group p-3.5 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-purple-400 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
+              className="text-left group p-3.5 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-teal-400 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
             >
-              <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-accent-tint text-purple-600 flex items-center justify-center mb-2.5 sm:mb-3 group-hover:bg-purple-600 group-hover:text-white group-hover:scale-110 transition-all shadow-sm">
+              <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-accent-tint text-accent-text flex items-center justify-center mb-2.5 sm:mb-3 group-hover:bg-accent-text group-hover:text-white group-hover:scale-110 transition-all shadow-sm">
                 <Cpu className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
               </div>
-              <p className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-purple-600 transition-colors truncate sm:overflow-visible">AI &amp; ML Services</p>
+              <p className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-accent-text transition-colors truncate sm:overflow-visible">AI &amp; ML Services</p>
               <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 truncate sm:overflow-visible">LLMs &amp; Neural Nets</p>
             </button>
 
@@ -693,8 +704,8 @@ export default function Home() {
           </div>
 
           {/* Live Workflow Note */}
-          <div className="mt-10 p-4 sm:p-5 rounded-2xl bg-accent-tint0/10 border border-indigo-500/20 max-w-3xl mx-auto text-center" data-aos="fade-up">
-            <p className="text-xs sm:text-sm font-medium text-indigo-950">
+          <div className="mt-10 p-4 sm:p-5 rounded-2xl bg-accent-tint border border-accent/20 max-w-3xl mx-auto text-center" data-aos="fade-up">
+            <p className="text-xs sm:text-sm font-medium text-slate-800">
               <strong>Notice:</strong> Proposals, milestones, reviews and tracking all work today. Payments are demo-only for now.
             </p>
           </div>
@@ -727,7 +738,7 @@ export default function Home() {
               className="rounded-3xl p-8 sm:p-10 bg-[#FAF8F5] border border-stone-200 hover:border-accent/50 hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
             >
               <div>
-                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-purple-100 text-accent-text text-xs font-bold mb-5">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-accent-tint text-accent-text border border-accent/20 text-xs font-bold mb-5">
                   <Users className="w-3.5 h-3.5" /> For Founders &amp; Clients
                 </div>
                 <h3 className="text-2xl sm:text-3xl font-display font-black text-[#030B3D] mb-3">
@@ -819,11 +830,11 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {[
-              { title: 'Proposals & Bidding', desc: 'Clients post projects, freelancers send proposals, and clients pick the best fit.', icon: Users, border: 'hover:border-purple-300' },
+              { title: 'Proposals & Bidding', desc: 'Clients post projects, freelancers send proposals, and clients pick the best fit.', icon: Users, border: 'hover:border-teal-300' },
               { title: 'Milestone Tracking', desc: "Break a project into milestones and approve each one as it's delivered.", icon: ShieldCheck, border: 'hover:border-emerald-300' },
               { title: 'Real-time Chat', desc: 'Message your client or freelancer directly in your workspace.', icon: Zap, border: 'hover:border-blue-300' },
               { title: 'Reviews & Ratings', desc: 'Leave reviews after a project ends.', icon: CheckCircle2, border: 'hover:border-amber-300' },
-              { title: 'Document Uploads', desc: 'Share briefs, designs and PDFs directly in your project workspace.', icon: Layers, border: 'hover:border-violet-300' },
+              { title: 'Document Uploads', desc: 'Share briefs, designs and PDFs directly in your project workspace.', icon: Layers, border: 'hover:border-cyan-300' },
               { title: 'Smart Notifications', desc: 'Get notified when proposals, milestones or messages come in.', icon: Wallet, border: 'hover:border-rose-300' }
             ].map((feature, idx) => (
               <div 
@@ -938,7 +949,7 @@ export default function Home() {
                 <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent-text text-white font-bold text-sm">G</div>
                 <span className="text-lg font-bold text-white tracking-tight flex items-center gap-1.5">
                   GigOra
-                  <span className="text-[9px] bg-indigo-950 text-indigo-300 font-bold px-1.5 py-0.5 rounded border border-indigo-700/60">IN</span>
+                  <span className="text-[9px] bg-white/10 text-teal-300 font-bold px-1.5 py-0.5 rounded border border-teal-400/30">IN</span>
                 </span>
               </div>
               <p className="text-slate-400 max-w-sm leading-relaxed text-xs">
