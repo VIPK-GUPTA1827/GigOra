@@ -644,12 +644,12 @@ export default function ClientDashboard() {
         )}
 
         {successMsg && (
-          <div className="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm flex items-center justify-between">
+          <div className="p-3.5 rounded-xl bg-[#EAF1F7] border border-[#DDE5ED] text-[#243040] text-xs sm:text-sm flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+              <CheckCircle2 className="w-4 h-4 text-[#2F6FAB] shrink-0" />
               <span>{successMsg}</span>
             </div>
-            <button onClick={() => setSuccessMsg('')} className="text-emerald-500 hover:text-emerald-700 font-bold ml-2">×</button>
+            <button onClick={() => setSuccessMsg('')} className="text-emerald-500 hover:text-[#2F6FAB] font-bold ml-2">×</button>
           </div>
         )}
 
@@ -687,7 +687,7 @@ export default function ClientDashboard() {
               onClick={() => setActiveTab('projects')}
               className={`pb-3 text-sm font-bold flex items-center gap-2 border-b-2 transition cursor-pointer ${
                 activeTab === 'projects'
-                  ? 'border-[#0F766E] text-[#0F766E]'
+                  ? 'border-[#2F6FAB] text-[#2F6FAB]'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
               }`}
             >
@@ -699,7 +699,7 @@ export default function ClientDashboard() {
               onClick={() => setActiveTab('proposals')}
               className={`pb-3 text-sm font-bold flex items-center gap-2 border-b-2 transition cursor-pointer ${
                 activeTab === 'proposals'
-                  ? 'border-[#0F766E] text-[#0F766E]'
+                  ? 'border-[#2F6FAB] text-[#2F6FAB]'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
               }`}
             >
@@ -711,7 +711,7 @@ export default function ClientDashboard() {
               onClick={() => setActiveTab('profile')}
               className={`pb-3 text-sm font-bold flex items-center gap-2 border-b-2 transition cursor-pointer ${
                 activeTab === 'profile'
-                  ? 'border-[#0F766E] text-[#0F766E]'
+                  ? 'border-[#2F6FAB] text-[#2F6FAB]'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
               }`}
             >
@@ -726,7 +726,7 @@ export default function ClientDashboard() {
               <select
                 value={selectedGigFilter}
                 onChange={(e) => setSelectedGigFilter(e.target.value)}
-                className="text-xs bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 font-medium text-slate-700 outline-none focus:border-[#0F766E]"
+                className="text-xs bg-white border border-slate-200 rounded-lg px-2.5 py-1.5 font-medium text-slate-700 outline-none focus:border-[#2F6FAB]"
               >
                 <option value="all">All Projects ({proposals.length})</option>
                 {myGigs.map(g => (
@@ -757,7 +757,7 @@ export default function ClientDashboard() {
                     onClick={() => setProjectStatusFilter(tab.id)}
                     className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer ${
                       projectStatusFilter === tab.id
-                        ? 'bg-[#0F766E] text-white shadow-xs'
+                        ? 'bg-[#2F6FAB] text-white shadow-xs'
                         : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
                     }`}
                   >
@@ -775,7 +775,7 @@ export default function ClientDashboard() {
               </div>
             ) : realMyGigs.length === 0 ? (
               <div className="bg-white rounded-3xl border border-slate-200 p-12 text-center space-y-4">
-                <div className="w-16 h-16 rounded-2xl bg-accent-tint text-[#0F766E] flex items-center justify-center mx-auto">
+                <div className="w-16 h-16 rounded-2xl bg-accent-tint text-[#2F6FAB] flex items-center justify-center mx-auto">
                   <Briefcase className="w-8 h-8" />
                 </div>
                 <div className="space-y-1 max-w-md mx-auto">
@@ -786,7 +786,7 @@ export default function ClientDashboard() {
                 </div>
                 <button
                   onClick={handleOpenCreateModal}
-                  className="inline-flex items-center gap-2 bg-[#0F766E] hover:bg-[#115E59] text-white font-bold text-xs px-5 py-2.5 rounded-xl transition cursor-pointer"
+                  className="inline-flex items-center gap-2 bg-[#2F6FAB] hover:bg-[#255889] text-white font-bold text-xs px-5 py-2.5 rounded-xl transition cursor-pointer"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Post First Project</span>
@@ -801,7 +801,7 @@ export default function ClientDashboard() {
                 <p className="text-xs text-slate-500">Try the 'All' filter, or post a new project.</p>
                 <button
                   onClick={() => setProjectStatusFilter('all')}
-                  className="text-xs font-bold text-[#0F766E] hover:underline pt-1 cursor-pointer"
+                  className="text-xs font-bold text-[#2F6FAB] hover:underline pt-1 cursor-pointer"
                 >
                   View all projects
                 </button>
@@ -819,14 +819,14 @@ export default function ClientDashboard() {
                           <div className="flex flex-wrap items-center gap-2">
                             <span className={`text-[11px] font-bold px-2.5 py-0.5 rounded-full border uppercase tracking-wider flex items-center gap-1 ${
                               gig.status === 'draft' ? 'bg-amber-50 text-amber-800 border-amber-300' :
-                              gig.status === 'open' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                              gig.status === 'open' ? 'bg-[#EAF1F7] text-[#2F6FAB] border-[#DDE5ED]' :
                               gig.status === 'paused' ? 'bg-amber-100 text-amber-900 border-amber-300' :
                               gig.status === 'closed' ? 'bg-slate-100 text-slate-700 border-slate-300' :
                               gig.status === 'in-progress' ? 'bg-blue-50 text-blue-700 border-blue-200' :
                               'bg-accent-tint text-purple-700 border-accent-soft'
                             }`}>
                               {gig.status === 'draft' && <FileText className="w-3 h-3 text-amber-700" />}
-                              {gig.status === 'open' && <CheckCircle2 className="w-3 h-3 text-emerald-600" />}
+                              {gig.status === 'open' && <CheckCircle2 className="w-3 h-3 text-[#2F6FAB]" />}
                               {gig.status === 'paused' && <Pause className="w-3 h-3 fill-amber-700" />}
                               {gig.status === 'closed' && <X className="w-3 h-3 text-slate-500" />}
                               <span>
@@ -852,7 +852,7 @@ export default function ClientDashboard() {
                               </span>
                             )}
                           </div>
-                          <h2 className="text-lg font-bold text-slate-900 hover:text-[#0F766E] transition">
+                          <h2 className="text-lg font-bold text-slate-900 hover:text-[#2F6FAB] transition">
                             {gig.title}
                           </h2>
                         </div>
@@ -889,13 +889,13 @@ export default function ClientDashboard() {
                         <div className="bg-slate-50/90 rounded-2xl p-4 sm:p-5 border border-slate-200/90 space-y-3.5">
                           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/60 pb-3">
                             <div className="flex items-center gap-2">
-                              <div className="w-8 h-8 rounded-xl bg-accent-tint text-[#0F766E] flex items-center justify-center">
+                              <div className="w-8 h-8 rounded-xl bg-accent-tint text-[#2F6FAB] flex items-center justify-center">
                                 <Layers className="w-4 h-4" />
                               </div>
                               <div>
                                 <h4 className="text-xs font-bold text-[#030B3D] flex items-center gap-1.5">
                                   <span>Work and milestones</span>
-                                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
+                                  <span className="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-[#EAF1F7] text-[#243040] border border-[#DDE5ED]">
                                     Demo Escrow Funded
                                   </span>
                                 </h4>
@@ -906,7 +906,7 @@ export default function ClientDashboard() {
                             </div>
 
                             <div className="text-xs text-slate-500 font-medium">
-                              Progress: <strong className="text-[#0F766E] font-bold">
+                              Progress: <strong className="text-[#2F6FAB] font-bold">
                                 {(gig.milestones || []).filter(m => m.status === 'completed').length} / {(gig.milestones || []).length} Milestones Completed
                               </strong>
                             </div>
@@ -929,7 +929,7 @@ export default function ClientDashboard() {
                                       : isRevision 
                                         ? 'bg-amber-50/70 border-amber-300' 
                                         : isCompleted 
-                                          ? 'bg-emerald-50/50 border-emerald-200' 
+                                          ? 'bg-[#EAF1F7]/50 border-[#DDE5ED]' 
                                           : 'bg-white border-slate-200'
                                   }`}
                                 >
@@ -972,7 +972,7 @@ export default function ClientDashboard() {
                                       )}
 
                                       {isCompleted && (
-                                        <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1">
+                                        <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[#EAF1F7] text-[#243040] border border-[#DDE5ED] flex items-center gap-1">
                                           <Check className="w-3 h-3 stroke-[3]" />
                                           Accepted & Paid
                                         </span>
@@ -1000,9 +1000,9 @@ export default function ClientDashboard() {
                                             href={m.deliverableUrl.startsWith('http') ? m.deliverableUrl : `https://${m.deliverableUrl}`} 
                                             target="_blank" 
                                             rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0F766E] hover:underline bg-accent-tint/70 border border-indigo-100 px-3 py-1.5 rounded-lg"
+                                            className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2F6FAB] hover:underline bg-accent-tint/70 border border-indigo-100 px-3 py-1.5 rounded-lg"
                                           >
-                                            <ExternalLink className="w-3.5 h-3.5 text-[#0F766E]" />
+                                            <ExternalLink className="w-3.5 h-3.5 text-[#2F6FAB]" />
                                             <span>Open Deliverable URL</span>
                                           </a>
                                         </div>
@@ -1052,7 +1052,7 @@ export default function ClientDashboard() {
                                           type="button"
                                           disabled={milestoneActionLoading}
                                           onClick={() => handleApproveMilestone(gig._id, m._id)}
-                                          className="inline-flex items-center gap-1 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-3.5 py-1.5 rounded-lg shadow-sm transition cursor-pointer disabled:opacity-50"
+                                          className="inline-flex items-center gap-1 text-xs font-bold text-white bg-[#2F6FAB] hover:bg-[#255889] px-3.5 py-1.5 rounded-lg shadow-sm transition cursor-pointer disabled:opacity-50"
                                         >
                                           <Check className="w-3.5 h-3.5 stroke-[3]" />
                                           <span>Accept Deliverable</span>
@@ -1075,7 +1075,7 @@ export default function ClientDashboard() {
                             {new Date(gig.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
                           </span>
                           {gig.status !== 'draft' && (
-                            <span className="flex items-center gap-1 font-semibold text-[#0F766E]">
+                            <span className="flex items-center gap-1 font-semibold text-[#2F6FAB]">
                               <Users className="w-3.5 h-3.5" />
                               {gig.proposalCount || 0} candidate {gig.proposalCount === 1 ? 'proposal' : 'proposals'}
                             </span>
@@ -1094,7 +1094,7 @@ export default function ClientDashboard() {
                               <button
                                 onClick={() => handleQuickPublish(gig._id)}
                                 disabled={actionLoadingId === gig._id}
-                                className="inline-flex items-center gap-1 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-3.5 py-1.5 rounded-lg transition cursor-pointer shadow-xs disabled:opacity-50"
+                                className="inline-flex items-center gap-1 text-xs font-bold text-white bg-[#2F6FAB] hover:bg-[#255889] px-3.5 py-1.5 rounded-lg transition cursor-pointer shadow-xs disabled:opacity-50"
                               >
                                 <UploadCloud className="w-3.5 h-3.5" />
                                 <span>Publish</span>
@@ -1146,10 +1146,10 @@ export default function ClientDashboard() {
                                   <button
                                     onClick={() => handleSetStatus(gig._id, 'open')}
                                     disabled={actionLoadingId === gig._id}
-                                    className="inline-flex items-center gap-1 text-xs font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 border border-emerald-300 px-3 py-1.5 rounded-lg transition cursor-pointer disabled:opacity-50"
+                                    className="inline-flex items-center gap-1 text-xs font-bold text-[#243040] bg-[#EAF1F7] hover:bg-[#EAF1F7] border border-[#2F6FAB]/30 px-3 py-1.5 rounded-lg transition cursor-pointer disabled:opacity-50"
                                     title="Resume accepting proposals"
                                   >
-                                    <Play className="w-3.5 h-3.5 fill-emerald-700 text-emerald-700" />
+                                    <Play className="w-3.5 h-3.5 fill-emerald-700 text-[#2F6FAB]" />
                                     <span>Resume</span>
                                   </button>
                                   <button
@@ -1168,7 +1168,7 @@ export default function ClientDashboard() {
                                 <button
                                   onClick={() => handleSetStatus(gig._id, 'open')}
                                   disabled={actionLoadingId === gig._id}
-                                  className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3 py-1.5 rounded-lg transition cursor-pointer disabled:opacity-50"
+                                  className="inline-flex items-center gap-1 text-xs font-bold text-[#2F6FAB] bg-[#EAF1F7] hover:bg-[#EAF1F7] border border-[#DDE5ED] px-3 py-1.5 rounded-lg transition cursor-pointer disabled:opacity-50"
                                 >
                                   <RotateCcw className="w-3.5 h-3.5" />
                                   <span>Reopen</span>
@@ -1177,7 +1177,7 @@ export default function ClientDashboard() {
 
                               <button
                                 onClick={() => handleOpenEditModal(gig)}
-                                className="inline-flex items-center gap-1 text-xs font-bold text-slate-700 hover:text-[#0F766E] bg-slate-100 hover:bg-accent-tint px-3 py-1.5 rounded-lg transition cursor-pointer"
+                                className="inline-flex items-center gap-1 text-xs font-bold text-slate-700 hover:text-[#2F6FAB] bg-slate-100 hover:bg-accent-tint px-3 py-1.5 rounded-lg transition cursor-pointer"
                               >
                                 <Edit2 className="w-3.5 h-3.5" />
                                 <span>Edit</span>
@@ -1187,7 +1187,7 @@ export default function ClientDashboard() {
                                   setSelectedGigFilter(gig._id);
                                   setActiveTab('proposals');
                                 }}
-                                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0F766E] hover:text-[#115E59] bg-[#0F766E]/10 hover:bg-[#0F766E]/15 border border-[#0F766E]/20 px-3.5 py-1.5 rounded-lg transition cursor-pointer"
+                                className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2F6FAB] hover:text-[#255889] bg-[#2F6FAB]/10 hover:bg-[#2F6FAB]/15 border border-[#2F6FAB]/20 px-3.5 py-1.5 rounded-lg transition cursor-pointer"
                               >
                                 <span>Proposals ({gig.proposalCount || 0})</span>
                                 <ChevronRight className="w-3.5 h-3.5" />
@@ -1223,7 +1223,7 @@ export default function ClientDashboard() {
                 {selectedGigFilter !== 'all' && (
                   <button
                     onClick={() => setSelectedGigFilter('all')}
-                    className="text-xs font-bold text-[#0F766E] underline"
+                    className="text-xs font-bold text-[#2F6FAB] underline"
                   >
                     View proposals across all projects
                   </button>
@@ -1242,7 +1242,7 @@ export default function ClientDashboard() {
                       key={prop._id}
                       className={`bg-white rounded-2xl border p-6 transition space-y-4 ${
                         isAccepted 
-                          ? 'border-emerald-300 ring-2 ring-emerald-100' 
+                          ? 'border-[#2F6FAB]/30 ring-2 ring-emerald-100' 
                           : isRejected 
                             ? 'border-slate-200 opacity-60' 
                             : 'border-slate-200 hover:shadow-md'
@@ -1252,7 +1252,7 @@ export default function ClientDashboard() {
                       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
                         <div className="flex items-start gap-3.5">
                           {/* Freelancer Avatar */}
-                          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#0F766E] to-blue-500 text-white font-black text-lg flex items-center justify-center shrink-0 shadow-sm">
+                          <div className="w-12 h-12 rounded-2xl bg-gradient-to-tr from-[#2F6FAB] to-blue-500 text-white font-black text-lg flex items-center justify-center shrink-0 shadow-sm">
                             {freelancer.name ? freelancer.name.charAt(0).toUpperCase() : (freelancer.username ? freelancer.username.charAt(0).toUpperCase() : 'F')}
                           </div>
 
@@ -1262,7 +1262,7 @@ export default function ClientDashboard() {
                                 {freelancer.name || freelancer.username || 'Applicant'}
                               </h3>
                               {freelancer.experienceLevel && (
-                                <span className="text-[10px] font-bold bg-accent-tint text-[#0F766E] px-2 py-0.5 rounded-md border border-accent-soft/50">
+                                <span className="text-[10px] font-bold bg-accent-tint text-[#2F6FAB] px-2 py-0.5 rounded-md border border-accent-soft/50">
                                   {freelancer.experienceLevel}
                                 </span>
                               )}
@@ -1291,7 +1291,7 @@ export default function ClientDashboard() {
                           </div>
                           <div className="mt-1">
                             {isAccepted ? (
-                              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">
+                              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-[#2F6FAB] bg-[#EAF1F7] px-2 py-0.5 rounded-full">
                                 <Check className="w-3 h-3 stroke-[3]" /> Accepted & Escrowed
                               </span>
                             ) : isRejected ? (
@@ -1350,7 +1350,7 @@ export default function ClientDashboard() {
                             <button
                               onClick={() => handleProposalAction(prop._id, 'accepted')}
                               disabled={actionLoadingId === prop._id}
-                              className="inline-flex items-center gap-1 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 px-4 py-1.5 rounded-lg shadow-sm transition cursor-pointer disabled:opacity-50"
+                              className="inline-flex items-center gap-1 text-xs font-bold text-white bg-[#2F6FAB] hover:bg-[#255889] px-4 py-1.5 rounded-lg shadow-sm transition cursor-pointer disabled:opacity-50"
                             >
                               <Check className="w-3.5 h-3.5 stroke-[3]" />
                               <span>{actionLoadingId === prop._id ? 'Updating...' : 'Accept Proposal (Demo Mode)'}</span>
@@ -1374,7 +1374,7 @@ export default function ClientDashboard() {
               <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200/90 shadow-xs">
                 <div className="flex items-center justify-between pb-6 border-b border-slate-100 mb-6">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-accent-tint text-[#0F766E] flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-2xl bg-accent-tint text-[#2F6FAB] flex items-center justify-center">
                       <Building2 className="w-5 h-5" />
                     </div>
                     <div>
@@ -1384,7 +1384,7 @@ export default function ClientDashboard() {
                   </div>
                   <Link
                     to="/profile/me"
-                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#0F766E] hover:text-[#115E59] bg-accent-tint px-3 py-1.5 rounded-xl border border-accent-soft/60"
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#2F6FAB] hover:text-[#255889] bg-accent-tint px-3 py-1.5 rounded-xl border border-accent-soft/60"
                   >
                     <Eye className="w-3.5 h-3.5" />
                     <span>Live Preview</span>
@@ -1415,7 +1415,7 @@ export default function ClientDashboard() {
                           value={profileFormData.name}
                           onChange={(e) => setProfileFormData(p => ({ ...p, name: e.target.value }))}
                           placeholder="Enter your contact name"
-                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
+                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#2F6FAB] outline-none transition"
                         />
                       </div>
 
@@ -1429,7 +1429,7 @@ export default function ClientDashboard() {
                           value={profileFormData.companyName}
                           onChange={(e) => setProfileFormData(p => ({ ...p, companyName: e.target.value }))}
                           placeholder="e.g. Acme Tech Studio or Independent Hirer"
-                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
+                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#2F6FAB] outline-none transition"
                         />
                         <p className="text-[10px] text-slate-400">If hiring individually, you can use your name or 'Independent Hirer'</p>
                       </div>
@@ -1446,7 +1446,7 @@ export default function ClientDashboard() {
                           value={profileFormData.city}
                           onChange={(e) => setProfileFormData(p => ({ ...p, city: e.target.value }))}
                           placeholder="e.g. Mumbai"
-                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
+                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#2F6FAB] outline-none transition"
                         />
                       </div>
 
@@ -1460,7 +1460,7 @@ export default function ClientDashboard() {
                           value={profileFormData.state}
                           onChange={(e) => setProfileFormData(p => ({ ...p, state: e.target.value }))}
                           placeholder="e.g. Maharashtra"
-                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
+                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#2F6FAB] outline-none transition"
                         />
                       </div>
                     </div>
@@ -1470,7 +1470,7 @@ export default function ClientDashboard() {
                   <div className="space-y-4 pt-4 border-t border-slate-100">
                     <div className="flex items-center justify-between pb-1 border-b border-slate-100">
                       <span className="text-xs font-bold uppercase tracking-wider text-slate-800 flex items-center gap-1.5">
-                        <Sparkles className="w-3.5 h-3.5 text-[#0F766E]" />
+                        <Sparkles className="w-3.5 h-3.5 text-[#2F6FAB]" />
                         More about your company
                       </span>
                       <span className="text-[10px] font-bold text-accent-text bg-accent-tint px-2 py-0.5 rounded-full">
@@ -1489,7 +1489,7 @@ export default function ClientDashboard() {
                           value={profileFormData.companyWebsite}
                           onChange={(e) => setProfileFormData(p => ({ ...p, companyWebsite: e.target.value }))}
                           placeholder="https://yourcompany.com"
-                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
+                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#2F6FAB] outline-none transition"
                         />
                       </div>
 
@@ -1503,7 +1503,7 @@ export default function ClientDashboard() {
                           value={profileFormData.companyLogo}
                           onChange={(e) => setProfileFormData(p => ({ ...p, companyLogo: e.target.value }))}
                           placeholder="https://example.com/logo.png"
-                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
+                          className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#2F6FAB] outline-none transition"
                         />
                       </div>
                     </div>
@@ -1517,7 +1517,7 @@ export default function ClientDashboard() {
                         <select
                           value={profileFormData.industry}
                           onChange={(e) => setProfileFormData(p => ({ ...p, industry: e.target.value }))}
-                          className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none"
+                          className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#2F6FAB] outline-none"
                         >
                           <option value="Technology & Digital Services">Technology & Digital Services</option>
                           <option value="SaaS & Cloud Platforms">SaaS & Cloud Platforms</option>
@@ -1540,7 +1540,7 @@ export default function ClientDashboard() {
                         <select
                           value={profileFormData.companySize}
                           onChange={(e) => setProfileFormData(p => ({ ...p, companySize: e.target.value }))}
-                          className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none"
+                          className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#2F6FAB] outline-none"
                         >
                           <option value="1-10 employees">1-10 employees (Startup)</option>
                           <option value="11-50 employees">11-50 employees (Growing)</option>
@@ -1561,7 +1561,7 @@ export default function ClientDashboard() {
                         value={profileFormData.companyDescription}
                         onChange={(e) => setProfileFormData(p => ({ ...p, companyDescription: e.target.value }))}
                         placeholder="Tell developers about your company's mission, products, and culture..."
-                        className="w-full text-xs sm:text-sm p-3.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
+                        className="w-full text-xs sm:text-sm p-3.5 rounded-xl border border-slate-200 focus:border-[#2F6FAB] outline-none transition"
                       />
                     </div>
                   </div>
@@ -1571,7 +1571,7 @@ export default function ClientDashboard() {
                     <button
                       type="submit"
                       disabled={isSavingProfile}
-                      className="inline-flex items-center gap-2 bg-[#0F766E] hover:bg-[#115E59] text-white font-bold text-xs sm:text-sm px-6 py-2.5 rounded-xl shadow-md transition cursor-pointer disabled:opacity-50"
+                      className="inline-flex items-center gap-2 bg-[#2F6FAB] hover:bg-[#255889] text-white font-bold text-xs sm:text-sm px-6 py-2.5 rounded-xl shadow-md transition cursor-pointer disabled:opacity-50"
                     >
                       <CheckCircle2 className="w-4 h-4" />
                       <span>{isSavingProfile ? 'Saving Company Profile...' : 'Save Company Profile'}</span>
@@ -1586,7 +1586,7 @@ export default function ClientDashboard() {
               {/* Profile Card Summary */}
               <div className="bg-white p-6 rounded-3xl border border-slate-200/90 shadow-xs space-y-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#0F766E] to-accent-deep text-white flex items-center justify-center font-black text-lg">
+                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#2F6FAB] to-accent-deep text-white flex items-center justify-center font-black text-lg">
                     {(profileFormData.companyName || profileFormData.name || 'C').charAt(0).toUpperCase()}
                   </div>
                   <div>
@@ -1617,7 +1617,7 @@ export default function ClientDashboard() {
                 <div className="pt-2">
                   <Link
                     to="/profile/me"
-                    className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-accent-tint hover:bg-indigo-100 text-[#0F766E] text-xs font-bold transition border border-accent-soft/60"
+                    className="w-full inline-flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-accent-tint hover:bg-indigo-100 text-[#2F6FAB] text-xs font-bold transition border border-accent-soft/60"
                   >
                     <Eye className="w-4 h-4" />
                     <span>View Public Profile</span>
@@ -1627,7 +1627,7 @@ export default function ClientDashboard() {
 
               {/* Trust Badge Card */}
               <div className="bg-gradient-to-br from-indigo-50/70 to-blue-50/50 p-6 rounded-3xl border border-accent-soft/50 space-y-3">
-                <div className="flex items-center gap-2 text-[#0F766E]">
+                <div className="flex items-center gap-2 text-[#2F6FAB]">
                   <ShieldCheck className="w-5 h-5 shrink-0" />
                   <h4 className="text-xs font-black uppercase tracking-wider text-slate-800">Client Workspace Advantage</h4>
                 </div>
@@ -1645,7 +1645,7 @@ export default function ClientDashboard() {
             <div className="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 my-8 space-y-6">
               <div className="flex items-center justify-between border-b border-slate-100 pb-4">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-xl bg-accent-tint text-[#0F766E] flex items-center justify-center">
+                  <div className="w-9 h-9 rounded-xl bg-accent-tint text-[#2F6FAB] flex items-center justify-center">
                     {editingGigId ? <Edit2 className="w-5 h-5 stroke-[2.5]" /> : <Plus className="w-5 h-5 stroke-[2.5]" />}
                   </div>
                   <div>
@@ -1690,7 +1690,7 @@ export default function ClientDashboard() {
                     value={formData.title}
                     onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
                     placeholder="e.g. Full-Stack MERN Developer to build Hyperlocal Marketplace"
-                    className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] focus:ring-2 focus:ring-[#0F766E]/10 outline-none transition"
+                    className="w-full text-xs sm:text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:border-[#2F6FAB] focus:ring-2 focus:ring-[#2F6FAB]/10 outline-none transition"
                   />
                 </div>
 
@@ -1701,7 +1701,7 @@ export default function ClientDashboard() {
                     <select
                       value={formData.category}
                       onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
-                      className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none"
+                      className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#2F6FAB] outline-none"
                     >
                       {CATEGORIES.map(cat => (
                         <option key={cat} value={cat}>{cat}</option>
@@ -1714,7 +1714,7 @@ export default function ClientDashboard() {
                     <select
                       value={formData.experienceLevel}
                       onChange={(e) => setFormData(prev => ({ ...prev, experienceLevel: e.target.value }))}
-                      className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none"
+                      className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#2F6FAB] outline-none"
                     >
                       <option value="Entry">Entry Level (Junior friendly)</option>
                       <option value="Intermediate">Intermediate Developer</option>
@@ -1732,7 +1732,7 @@ export default function ClientDashboard() {
                     {formData.skillsRequired.map((skill, idx) => (
                       <span 
                         key={idx}
-                        className="inline-flex items-center gap-1 text-xs font-bold bg-[#0F766E] text-white px-2.5 py-1 rounded-lg shadow-xs"
+                        className="inline-flex items-center gap-1 text-xs font-bold bg-[#2F6FAB] text-white px-2.5 py-1 rounded-lg shadow-xs"
                       >
                         {skill}
                         <button
@@ -1769,7 +1769,7 @@ export default function ClientDashboard() {
                         key={skill}
                         type="button"
                         onClick={() => addSkill(skill)}
-                        className="text-[11px] font-semibold bg-white hover:bg-accent-tint hover:text-[#0F766E] text-slate-600 border border-slate-200 px-2 py-0.5 rounded-md transition cursor-pointer"
+                        className="text-[11px] font-semibold bg-white hover:bg-accent-tint hover:text-[#2F6FAB] text-slate-600 border border-slate-200 px-2 py-0.5 rounded-md transition cursor-pointer"
                       >
                         + {skill}
                       </button>
@@ -1793,7 +1793,7 @@ export default function ClientDashboard() {
                         value={formData.budget}
                         onChange={(e) => setFormData(prev => ({ ...prev, budget: e.target.value }))}
                         placeholder="15000"
-                        className="w-full text-xs sm:text-sm pl-8 pr-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none"
+                        className="w-full text-xs sm:text-sm pl-8 pr-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#2F6FAB] outline-none"
                       />
                     </div>
                   </div>
@@ -1803,7 +1803,7 @@ export default function ClientDashboard() {
                     <select
                       value={formData.duration}
                       onChange={(e) => setFormData(prev => ({ ...prev, duration: e.target.value }))}
-                      className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none"
+                      className="w-full text-xs sm:text-sm px-3 py-2.5 rounded-xl border border-slate-200 focus:border-[#2F6FAB] outline-none"
                     >
                       <option value="Less than 1 week">Less than 1 week</option>
                       <option value="1-4 weeks">1 to 4 weeks</option>
@@ -1821,7 +1821,7 @@ export default function ClientDashboard() {
                       type="date"
                       value={formData.deadline}
                       onChange={(e) => setFormData(prev => ({ ...prev, deadline: e.target.value }))}
-                      className="w-full text-xs sm:text-sm px-3 py-2 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none"
+                      className="w-full text-xs sm:text-sm px-3 py-2 rounded-xl border border-slate-200 focus:border-[#2F6FAB] outline-none"
                     />
                   </div>
                 </div>
@@ -1841,7 +1841,7 @@ export default function ClientDashboard() {
                         onClick={() => setFormData(prev => ({ ...prev, locationType: mode.id }))}
                         className={`py-2 px-3 rounded-xl border text-xs font-bold text-center transition cursor-pointer ${
                           formData.locationType === mode.id
-                            ? 'bg-[#0F766E] text-white border-[#0F766E]'
+                            ? 'bg-[#2F6FAB] text-white border-[#2F6FAB]'
                             : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
                         }`}
                       >
@@ -1862,7 +1862,7 @@ export default function ClientDashboard() {
                     value={formData.description}
                     onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                     placeholder="Describe what you need built, the tech you want to use, and what you expect to receive..."
-                    className="w-full text-xs sm:text-sm p-3 rounded-xl border border-slate-200 focus:border-[#0F766E] outline-none transition"
+                    className="w-full text-xs sm:text-sm p-3 rounded-xl border border-slate-200 focus:border-[#2F6FAB] outline-none transition"
                   />
                 </div>
 
@@ -1894,7 +1894,7 @@ export default function ClientDashboard() {
                       type="button"
                       disabled={isSubmittingGig}
                       onClick={() => handleSubmitProject('open')}
-                      className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 bg-[#0F766E] hover:bg-[#115E59] text-white font-bold text-xs sm:text-sm px-6 py-2.5 rounded-xl shadow-md transition cursor-pointer disabled:opacity-50"
+                      className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-1.5 bg-[#2F6FAB] hover:bg-[#255889] text-white font-bold text-xs sm:text-sm px-6 py-2.5 rounded-xl shadow-md transition cursor-pointer disabled:opacity-50"
                     >
                       <Send className="w-3.5 h-3.5" />
                       <span>{isSubmittingGig ? 'Processing...' : (editingGigId && !isEditingDraft ? 'Save & Update' : 'Publish Project Listing')}</span>
@@ -1964,7 +1964,7 @@ export default function ClientDashboard() {
                       placeholder="Be specific about what changes are needed (e.g., 'Please fix the header alignment on mobile view and check the checkout button click event...')"
                       value={revisionFeedback}
                       onChange={(e) => setRevisionFeedback(e.target.value)}
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#0F766E]"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#2F6FAB]"
                     />
                     <span className="text-[10px] text-slate-400 mt-0.5 block">
                       At least 5 characters. The freelancer will see this and send a new version.

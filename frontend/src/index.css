@@ -1,20 +1,30 @@
 @import "tailwindcss";
 
-/* 1. Design tokens (Tailwind v4 @theme). One accent, one dark sidebar, neutral surfaces. */
+/* 1. Design tokens (Tailwind v4 @theme). Sky Blue & Amber (PDF Palette #2) */
 @theme {
-  --color-navy: #030B3D;
-  --color-navy-soft: #0B1A5C;
-  --color-accent: #0D9488; /* icons, logo, tints. Not for white text */
-  --color-accent-hover: #0F766E;
-  --color-accent-deep: #115E59; /* button hover; white text on it passes AA */
-  --color-accent-text: #0F766E; /* accent for small text on white (contrast ok) */
-  --color-accent-tint: #F0FDFA;
-  --color-accent-soft: #CCFBF1;
-  --color-page: #F8FAFC;
+  --color-bg-main: #F7F9FB;
+  --color-alt: #EAF1F7;
+  --color-border: #DDE5ED;
+  --color-primary: #2F6FAB;
+  --color-primary-hover: #255889;
+  --color-primary-light: #EAF1F7;
+  --color-accent: #F2A541;
+  --color-accent-hover: #D9943A;
+  --color-text-main: #243040;
+  --color-text-secondary: #5A6675;
+  --color-btn-text: #243040;
+
+  /* Compatibility mappings */
+  --color-navy: #243040;
+  --color-navy-soft: #2F6FAB;
+  --color-accent-text: #2F6FAB;
+  --color-accent-deep: #D9943A;
+  --color-accent-tint: #EAF1F7;
+  --color-accent-soft: #FDE8CF;
+  --color-page: #F7F9FB;
   --color-surface: #FFFFFF;
-  --color-border: #E2E8F0;
-  --color-ink: #0F172A;
-  --color-muted: #64748B;
+  --color-ink: #243040;
+  --color-muted: #5A6675;
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
@@ -24,13 +34,13 @@ html {
 
 @layer base {
   body {
-    background-color: var(--color-page);
-    color: var(--color-ink);
+    background-color: var(--color-bg-main);
+    color: var(--color-text-main);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 }

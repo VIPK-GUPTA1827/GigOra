@@ -112,7 +112,7 @@ export default function Marketplace() {
   return (
     <div className="min-h-screen bg-slate-50">
       <header className="border-b border-stone-200/80 bg-white/90 backdrop-blur-md sticky top-0 z-50 py-4 px-6 sm:px-12 flex items-center justify-between">
-        <Link to={backUrl} className="flex items-center gap-2 text-sm font-semibold text-[#030B3D] hover:text-[#0F766E] transition-colors">
+        <Link to={backUrl} className="flex items-center gap-2 text-sm font-semibold text-[#030B3D] hover:text-[#2F6FAB] transition-colors">
           <ArrowLeft className="h-4 w-4" />
           <span>{backLabel}</span>
         </Link>
@@ -128,7 +128,7 @@ export default function Marketplace() {
             <div>
               <h1 className="text-2xl font-bold text-slate-900">Find your next project</h1>
               <p className="text-sm text-slate-500 mt-1">
-                Browse open gigs posted by verified clients. {!loading && totalCount > 0 && <span className="font-semibold text-[#0F766E]">({totalCount} available)</span>}
+                Browse open gigs posted by verified clients. {!loading && totalCount > 0 && <span className="font-semibold text-[#2F6FAB]">({totalCount} available)</span>}
               </p>
             </div>
             {hasActiveFilters && (
@@ -176,7 +176,7 @@ export default function Marketplace() {
               />
               <button
                 type="submit"
-                className="px-5 py-2.5 rounded-xl bg-[#0F766E] text-white font-medium text-sm hover:bg-[#115E59] transition"
+                className="px-5 py-2.5 rounded-xl bg-[#2F6FAB] text-white font-medium text-sm hover:bg-[#255889] transition"
               >
                 Filter
               </button>
@@ -204,7 +204,7 @@ export default function Marketplace() {
                   onClick={() => updateParams({ category: c === 'All' ? '' : c })}
                   className={`whitespace-nowrap rounded-lg px-3 py-1.5 text-xs font-medium transition ${
                     active
-                      ? 'bg-[#0F766E] text-white shadow-sm'
+                      ? 'bg-[#2F6FAB] text-white shadow-sm'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
                   }`}
                 >
@@ -241,7 +241,7 @@ export default function Marketplace() {
         ) : gigs.length === 0 ? (
           /* Empty State */
           <div className="text-center py-20 px-4 rounded-3xl border border-dashed border-slate-200 bg-white">
-            <div className="w-16 h-16 rounded-2xl bg-[#F0FDFA] text-[#0F766E] flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 rounded-2xl bg-[#EAF1F7] text-[#2F6FAB] flex items-center justify-center mx-auto mb-4">
               <Briefcase className="w-8 h-8 text-[#0D9488]" />
             </div>
             <h3 className="text-slate-800 font-bold text-lg">No open projects found</h3>
@@ -254,7 +254,7 @@ export default function Marketplace() {
               <button
                 type="button"
                 onClick={clearAllFilters}
-                className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0F766E] text-white text-xs font-semibold hover:bg-[#115E59] transition"
+                className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#2F6FAB] text-white text-xs font-semibold hover:bg-[#255889] transition"
               >
                 Clear all filters
               </button>
@@ -270,7 +270,7 @@ export default function Marketplace() {
                 className="group block rounded-2xl border border-slate-200 bg-white p-5 hover:border-[#0D9488] hover:shadow-md transition duration-200"
               >
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-[11px] font-semibold uppercase tracking-wide text-[#0F766E] bg-[#F0FDFA] px-2.5 py-0.5 rounded-full">
+                  <span className="text-[11px] font-semibold uppercase tracking-wide text-[#2F6FAB] bg-[#EAF1F7] px-2.5 py-0.5 rounded-full">
                     {gig.category}
                   </span>
                   <span className="text-xs text-slate-400 flex items-center gap-1">
@@ -278,7 +278,7 @@ export default function Marketplace() {
                     {new Date(gig.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
                   </span>
                 </div>
-                <h2 className="mt-3 text-base font-semibold text-slate-900 group-hover:text-[#0F766E] transition-colors line-clamp-2">
+                <h2 className="mt-3 text-base font-semibold text-slate-900 group-hover:text-[#2F6FAB] transition-colors line-clamp-2">
                   {gig.title}
                 </h2>
                 <p className="mt-1.5 text-sm text-slate-500 line-clamp-2 leading-relaxed">
@@ -334,7 +334,7 @@ export default function Marketplace() {
                     onClick={() => updateParams({ page: String(p) })}
                     className={`min-w-[36px] h-9 rounded-xl text-xs font-semibold transition ${
                       page === p
-                        ? 'bg-[#0F766E] text-white shadow-sm'
+                        ? 'bg-[#2F6FAB] text-white shadow-sm'
                         : 'border border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
                     }`}
                   >

@@ -10,7 +10,7 @@ import {
   Wallet,
   ChevronDown,
   Layers,
-  ChevronRight,
+  Search,
   Cpu,
   Palette,
   Smartphone,
@@ -18,10 +18,8 @@ import {
   Terminal,
   Database,
   Check,
-  Globe,
   Menu,
-  X,
-  Lock
+  X
 } from 'lucide-react';
 
 import AOS from 'aos';
@@ -34,6 +32,7 @@ export default function Home() {
   const [openFaq, setOpenFaq] = useState(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [featuredGigs, setFeaturedGigs] = useState([]);
 
   useEffect(() => {
@@ -46,7 +45,7 @@ export default function Home() {
     document.title = 'GigOra — Milestone-Based Marketplace for Technical Talent';
     AOS.refresh();
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 24);
+      setIsScrolled(window.scrollY > 20);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -56,656 +55,489 @@ export default function Home() {
     setOpenFaq(openFaq === index ? null : index);
   };
 
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/marketplace?search=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      navigate('/marketplace');
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-white font-sans text-slate-900 selection:bg-accent-text selection:text-white relative">
+    <div className="min-h-screen bg-[#F7F9FB] font-sans text-[#243040] selection:bg-[#2F6FAB] selection:text-white relative">
       
-      {/* 1. TOP FLOATING PILL NAVBAR */}
-      <div className={`fixed top-0 left-0 right-0 z-50 transition-colors py-3 sm:py-3.5 px-3 sm:px-4 flex justify-center ${
+      {/* 1. TOP FLOATING NAVBAR (Sky Blue & Amber Theme) */}
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 py-3 px-3 sm:px-6 flex justify-center ${
         isScrolled 
-          ? 'bg-[#FAF8F5]/95 backdrop-blur-md border-b border-stone-200/80 shadow-xs' 
+          ? 'bg-[#EAF1F7]/95 backdrop-blur-md border-b border-[#DDE5ED] shadow-xs' 
           : 'bg-transparent'
       }`}>
         <div className="w-full max-w-[1240px] flex flex-col items-center">
-          <nav className={`w-full rounded-full backdrop-blur-md px-4 sm:px-7 py-2.5 sm:py-3.5 flex items-center justify-between transition-all duration-300 ${
+          <nav className={`w-full rounded-full backdrop-blur-md px-4 sm:px-7 py-2.5 sm:py-3 flex items-center justify-between transition-all duration-300 ${
             isScrolled 
-              ? 'bg-white/95 border border-slate-200/90 shadow-[0_12px_36px_rgba(3,11,61,0.12)]' 
-              : 'bg-white/90 border border-white/60 shadow-[0_8px_32px_rgba(0,0,0,0.06)]'
+              ? 'bg-white/95 border border-[#DDE5ED] shadow-sm' 
+              : 'bg-white/90 border border-[#DDE5ED]/80 shadow-xs'
           }`}>
             
             {/* Brand Logo */}
-            <Link to="/" className="flex items-center gap-2 sm:gap-2.5 group shrink-0">
-              <div className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-full bg-[#030B3D] text-white font-black text-base sm:text-lg shadow-sm group-hover:scale-105 transition-transform">
+            <Link to="/" className="flex items-center gap-2.5 group shrink-0">
+              <div className="flex h-8 w-8 sm:h-9 sm:w-9 items-center justify-center rounded-xl bg-[#2F6FAB] text-white font-black text-base sm:text-lg shadow-xs group-hover:bg-[#255889] transition-colors">
                 G
               </div>
-              <span className="text-lg sm:text-xl font-display font-black text-[#030B3D] tracking-tight">GigOra</span>
+              <span className="text-lg sm:text-xl font-display font-black text-[#243040] tracking-tight">GigOra</span>
             </Link>
 
-            {/* Desktop Navigation Links — only on lg (1024px+) to prevent any cramping */}
-            <div className="hidden lg:flex items-center gap-6 xl:gap-8 text-[15px] font-medium text-[#030B3D]/80">
-              <a href="#how-it-works" className="hover:text-accent-text transition-colors relative group py-1">
-                <span>How It Works</span>
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-accent to-accent-soft group-hover:w-full transition-all duration-200"></span>
+            {/* Desktop Navigation Links */}
+            <div className="hidden lg:flex items-center gap-6 xl:gap-8 text-[14px] font-semibold text-[#5A6675]">
+              <a href="#how-it-works" className="hover:text-[#2F6FAB] transition-colors py-1">
+                How It Works
               </a>
-              <a href="#categories" className="hover:text-accent-text transition-colors relative group py-1">
-                <span>Tech Services</span>
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-accent to-accent-soft group-hover:w-full transition-all duration-200"></span>
+              <a href="#categories" className="hover:text-[#2F6FAB] transition-colors py-1">
+                Tech Services
               </a>
-              <a href="#choose-path" className="hover:text-accent-text transition-colors relative group py-1">
-                <span>Clients &amp; Devs</span>
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-accent to-accent-soft group-hover:w-full transition-all duration-200"></span>
+              <a href="#choose-path" className="hover:text-[#2F6FAB] transition-colors py-1">
+                Clients &amp; Devs
               </a>
-              <a href="#faq" className="hover:text-accent-text transition-colors relative group py-1">
-                <span>FAQ</span>
-                <span className="absolute bottom-0 left-0 w-0 h-[2px] bg-gradient-to-r from-accent to-accent-soft group-hover:w-full transition-all duration-200"></span>
+              <a href="#faq" className="hover:text-[#2F6FAB] transition-colors py-1">
+                FAQ
               </a>
             </div>
 
-            {/* Right Action: Sign In + Sign Up + Mobile Menu Toggle */}
+            {/* Right Action Buttons */}
             <div className="flex items-center gap-2 sm:gap-3 shrink-0">
               <Link 
                 to="/login"
-                className="hidden sm:inline-flex text-xs sm:text-sm font-bold text-[#030B3D] hover:text-accent-text px-3 py-1.5 transition-colors"
+                className="text-xs sm:text-sm font-bold text-[#243040] hover:text-[#2F6FAB] px-3 py-1.5 transition-colors"
               >
                 Sign In
               </Link>
               <Link 
                 to="/signup" 
-                className="rounded-full bg-[#030B3D] hover:bg-accent-deep px-3.5 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-bold text-white shadow-sm hover:shadow-md active:scale-95 transition-all cursor-pointer whitespace-nowrap"
+                className="rounded-full bg-[#F2A541] hover:bg-[#D9943A] px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-bold text-[#243040] shadow-xs hover:shadow-sm active:scale-95 transition-all cursor-pointer whitespace-nowrap"
               >
-                Sign Up
+                Post a Project
               </Link>
-              {/* Mobile Hamburger Button (visible on < lg) */}
+              {/* Mobile Hamburger Toggle */}
               <button
                 type="button"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label="Toggle Navigation Menu"
-                aria-expanded={mobileMenuOpen}
-                aria-controls="mobile-nav-menu"
-                className="lg:hidden p-2 rounded-full bg-stone-100 text-[#030B3D] hover:bg-stone-200 transition-colors cursor-pointer"
+                className="lg:hidden p-2 rounded-full bg-[#EAF1F7] text-[#243040] hover:bg-[#DDE5ED] transition-colors"
               >
                 {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
               </button>
             </div>
           </nav>
 
-          {/* Mobile Dropdown Menu (below pill navbar) */}
+          {/* Mobile Dropdown Menu */}
           {mobileMenuOpen && (
             <motion.div
-              id="mobile-nav-menu"
-              initial={{ opacity: 0, y: -10, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10 }}
-              className="lg:hidden w-full mt-2 rounded-3xl bg-white/95 backdrop-blur-md border border-stone-200/80 shadow-[0_16px_36px_rgba(0,0,0,0.12)] p-4 space-y-2 text-sm font-semibold text-[#030B3D]"
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="lg:hidden w-full mt-2 rounded-2xl bg-white border border-[#DDE5ED] shadow-lg p-4 space-y-2 text-sm font-semibold text-[#243040]"
             >
               <a 
                 href="#how-it-works" 
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-4 py-2.5 rounded-xl hover:bg-stone-100/80 transition-colors"
+                className="block px-4 py-2.5 rounded-xl hover:bg-[#EAF1F7] transition-colors"
               >
                 How It Works
               </a>
               <a 
                 href="#categories" 
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-4 py-2.5 rounded-xl hover:bg-stone-100/80 transition-colors"
+                className="block px-4 py-2.5 rounded-xl hover:bg-[#EAF1F7] transition-colors"
               >
                 Tech Services
               </a>
               <a 
                 href="#choose-path" 
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-4 py-2.5 rounded-xl hover:bg-stone-100/80 transition-colors"
+                className="block px-4 py-2.5 rounded-xl hover:bg-[#EAF1F7] transition-colors"
               >
                 Clients &amp; Devs
               </a>
               <a 
                 href="#faq" 
                 onClick={() => setMobileMenuOpen(false)}
-                className="block px-4 py-2.5 rounded-xl hover:bg-stone-100/80 transition-colors"
+                className="block px-4 py-2.5 rounded-xl hover:bg-[#EAF1F7] transition-colors"
               >
                 FAQ
               </a>
-              <div className="pt-3 border-t border-stone-100 flex items-center gap-2 px-2">
+              <div className="pt-3 border-t border-[#DDE5ED] flex items-center gap-2">
                 <Link
                   to="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex-1 text-center py-2.5 rounded-xl border border-stone-200 text-xs font-bold text-[#030B3D] hover:bg-stone-50"
+                  className="flex-1 text-center py-2.5 rounded-xl border border-[#DDE5ED] text-xs font-bold text-[#243040]"
                 >
                   Sign In
                 </Link>
                 <Link
                   to="/signup"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="flex-1 text-center py-2.5 rounded-xl bg-accent-text text-white text-xs font-bold shadow-xs hover:bg-accent-deep"
+                  className="flex-1 text-center py-2.5 rounded-xl bg-[#F2A541] text-[#243040] text-xs font-bold shadow-xs hover:bg-[#D9943A]"
                 >
-                  Sign Up
+                  Post a Project
                 </Link>
               </div>
             </motion.div>
           )}
         </div>
-      </div>
+      </header>
 
-      {/* 2. HERO SECTION — Clean product-first hero */}
-      <section className="relative min-h-[620px] md:min-h-[720px] lg:h-[88vh] lg:min-h-[720px] lg:max-h-[860px] flex items-center bg-[#FAF8F5] border-b border-stone-200/40 overflow-hidden">
-        
-        {/* Clean brand backdrop glows */}
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute -top-32 -left-24 w-[420px] h-[420px] rounded-full bg-accent-text/8 blur-3xl" />
-        </div>
-
-        {/* Hero Content Container */}
-        <div className="relative z-10 w-full max-w-[1520px] mx-auto px-5 sm:px-8 md:px-12 lg:px-16 pt-32 pb-14 md:pt-28 md:pb-16 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-14 items-center">
-          <div className="lg:col-span-7 xl:col-span-7 w-full max-w-xl lg:max-w-none bg-[#FAF8F5]/85 sm:bg-transparent backdrop-blur-xs sm:backdrop-blur-none p-5 sm:p-0 rounded-3xl border border-[#030B3D]/10 sm:border-0 shadow-xs sm:shadow-none">
-            
-            {/* Audience-Specific Choice Switcher */}
-            <motion.div
-              initial={{ opacity: 0, y: 24 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="mb-4 md:mb-6"
+      {/* 2. SUB-NAV CATEGORY PILLS (Mockup Feature) */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="pt-24 sm:pt-28 pb-4 px-4 flex justify-center"
+      >
+        <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto no-scrollbar py-1 max-w-full">
+          {[
+            { label: 'Fullstack Web', cat: 'Web Development' },
+            { label: 'Mobile Apps', cat: 'Mobile App Development' },
+            { label: 'AI & ML', cat: 'Data Science & AI' },
+            { label: 'UI/UX Design', cat: 'UI/UX Design' },
+            { label: 'Cloud & DevOps', cat: 'DevOps & Cloud' }
+          ].map((pill, i) => (
+            <motion.button
+              key={i}
+              whileHover={{ scale: 1.04 }}
+              whileTap={{ scale: 0.96 }}
+              transition={{ type: "spring", stiffness: 400, damping: 25 }}
+              onClick={() => navigate(`/marketplace?category=${encodeURIComponent(pill.cat)}`)}
+              className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#5A6675] bg-white border border-[#DDE5ED] hover:border-[#2F6FAB] hover:text-[#2F6FAB] hover:bg-[#EAF1F7] transition-colors whitespace-nowrap shadow-2xs cursor-pointer"
             >
-              <p className="text-xs sm:text-sm font-bold text-[#030B3D] tracking-[0.02em] opacity-80 mb-2">
-                What are you looking to do?
+              {pill.label}
+            </motion.button>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* 3. HERO SECTION (Editorial Layout with Angular Frame & Developer Visual) */}
+      <section className="relative pt-4 pb-12 sm:pb-16 overflow-hidden">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+            
+            {/* Left Column: Content, Search Bar, CTAs */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="lg:col-span-7 space-y-5"
+            >
+              
+              {/* Headline */}
+              <h1 className="font-display font-black text-[#243040] tracking-tight leading-[1.1] text-3xl sm:text-4xl md:text-5xl lg:text-5.5xl text-balance">
+                Hire Indian developers and designers, <span className="text-[#2F6FAB]">one milestone at a time.</span>
+              </h1>
+
+              {/* Subtitle */}
+              <p className="text-base sm:text-lg text-[#5A6675] font-normal max-w-xl leading-relaxed">
+                Find developers and designers, agree on what you expect, and track the work milestone by milestone.
               </p>
-              <div className="grid grid-cols-2 sm:inline-flex p-1 rounded-full bg-[#030B3D]/[0.06] backdrop-blur-xs border border-[#030B3D]/[0.12] w-full sm:w-auto shadow-xs">
-                <button
-                  onClick={() => setActiveTab('client')}
-                  className={`px-2.5 sm:px-5 py-2.5 sm:py-2 rounded-full text-xs sm:text-sm md:text-base font-bold transition-all min-h-[42px] text-center cursor-pointer ${
-                    activeTab === 'client'
-                      ? 'bg-accent-text text-white shadow-xs'
-                      : 'text-[#030B3D] hover:bg-[#030B3D]/[0.08]'
-                  }`}
-                >
-                  Hire Tech Talent
-                </button>
-                <button
-                  onClick={() => setActiveTab('freelancer')}
-                  className={`px-2.5 sm:px-5 py-2.5 sm:py-2 rounded-full text-xs sm:text-sm md:text-base font-bold transition-all min-h-[42px] text-center cursor-pointer ${
-                    activeTab === 'freelancer'
-                      ? 'bg-accent-text text-white shadow-xs'
-                      : 'text-[#030B3D] hover:bg-[#030B3D]/[0.08]'
-                  }`}
-                >
-                  Work as a Freelancer
-                </button>
+
+              {/* Honest Preview Notice */}
+              <div className="bg-[#EAF1F7] border border-[#DDE5ED] px-4 py-2.5 rounded-xl text-xs sm:text-sm text-[#243040] max-w-xl font-medium">
+                <strong>GigOra is in preview.</strong> Marketplace and workspaces are live; payments run in demo mode, so no real money moves yet.
               </div>
-              <p className="text-xs md:text-sm text-[#030B3D] opacity-75 mt-2 leading-[1.45]">
-                {activeTab === 'client' 
-                  ? "Hire developers and designers. Agree on the work first, pay in milestones, review as you go."
-                  : "Show your work and find projects where the scope is clear from day one."
-                }
-              </p>
-            </motion.div>
 
-            {/* Dynamic Content based on activeTab */}
-            {activeTab === 'client' ? (
-              <div key="client-content">
-                {/* Eyebrow Label */}
-                <motion.p
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="text-xs md:text-sm font-bold uppercase tracking-[0.08em] text-accent-text mb-2.5 md:mb-3"
-                >
-                  FOR FOUNDERS &amp; TECH TEAMS
-                </motion.p>
-
-                {/* Headline */}
-                <h1
-                  className="font-display font-black text-[#030B3D] tracking-[-0.03em] mb-4 md:mb-4 text-balance"
-                  style={{ fontSize: 'clamp(2.1rem, 3.4vw + 0.3rem, 3.3rem)', lineHeight: '1.1' }}
-                >
-                  <span className="block">
-                    Hire Indian developers and designers,
-                  </span>
-                  <span className="block text-accent-text">
-                    one milestone at a time.
-                  </span>
-                </h1>
-
-                {/* Body Text */}
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 0.95, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  className="text-[#030B3D] leading-[1.55] max-w-[32em] font-medium mb-3.5 md:mb-4"
-                  style={{ fontSize: 'clamp(0.95rem, 1.05vw + 0.15rem, 1.15rem)' }}
-                >
-                  Find developers and designers, agree on what you expect, and track the work milestone by milestone.
-                </motion.p>
-
-                {/* Offer Line */}
-                <div className="overflow-hidden mb-5 md:mb-6">
-                  <p 
-                    className="font-medium text-[#030B3D] leading-[1.45] max-w-[32em] text-xs sm:text-sm bg-accent-text/8 border border-accent/20 px-3.5 py-2.5 rounded-xl"
+              {/* Search Bar Input (Mockup Feature) */}
+              <form onSubmit={handleSearchSubmit} className="relative max-w-xl">
+                <div className="flex items-center bg-white border border-[#DDE5ED] rounded-full p-1.5 shadow-xs focus-within:border-[#2F6FAB] focus-within:ring-2 focus-within:ring-[#2F6FAB]/15 transition-all">
+                  <Search className="w-4 h-4 text-[#5A6675] ml-3 shrink-0" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="What skill are you looking for?"
+                    className="w-full bg-transparent px-3 py-2 text-sm text-[#243040] placeholder-[#5A6675]/70 focus:outline-hidden"
+                  />
+                  <button
+                    type="submit"
+                    className="rounded-full bg-[#F2A541] hover:bg-[#D9943A] text-[#243040] px-4 sm:px-6 py-2 text-xs sm:text-sm font-bold transition-colors cursor-pointer shrink-0"
                   >
-                    <strong>GigOra is in preview.</strong> Marketplace and workspaces are live; payments run in demo mode, so no real money moves yet.
-                  </p>
+                    Browse Gigs
+                  </button>
                 </div>
+              </form>
 
-                {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full">
-                  <Link
-                    to="/marketplace"
-                    className="rounded-full bg-accent-text hover:bg-accent-deep px-7 py-3.5 text-sm md:text-base font-bold text-white shadow-sm active:scale-95 transition-all text-center min-h-[48px] flex items-center justify-center cursor-pointer"
-                  >
-                    Browse open projects
-                  </Link>
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3 pt-1">
+                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={{ type: "spring", stiffness: 400, damping: 25 }}>
                   <Link
                     to="/signup"
-                    className="rounded-full bg-white border border-[#030B3D]/20 text-[#030B3D] hover:bg-stone-50 px-6 py-3.5 text-sm md:text-base font-bold shadow-xs active:scale-95 transition-all text-center min-h-[48px] flex items-center justify-center cursor-pointer"
+                    className="rounded-full bg-[#F2A541] hover:bg-[#D9943A] text-[#243040] px-6 py-3 text-sm font-bold shadow-xs transition-colors block text-center cursor-pointer"
                   >
-                    Post a project →
+                    Hire Tech Talent
                   </Link>
-                  <a
-                    href="#how-it-works"
-                    className="text-xs sm:text-sm font-bold text-[#030B3D] underline underline-offset-4 hover:no-underline text-center sm:text-left py-2 flex items-center justify-center sm:justify-start cursor-pointer"
-                  >
-                    See how milestones work →
-                  </a>
-                </div>
-              </div>
-            ) : (
-              <div key="freelancer-content">
-                {/* Eyebrow Label */}
-                <motion.p
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                  className="text-xs md:text-sm font-bold uppercase tracking-[0.08em] text-accent-text mb-2.5 md:mb-3"
-                >
-                  FOR SOFTWARE ENGINEERS &amp; DEVELOPERS
-                </motion.p>
-
-                {/* Headline */}
-                <h1
-                  className="font-display font-black text-[#030B3D] tracking-[-0.03em] mb-4 md:mb-4 text-balance"
-                  style={{ fontSize: 'clamp(2.1rem, 3.4vw + 0.3rem, 3.3rem)', lineHeight: '1.1' }}
-                >
-                  <span className="block">
-                    Show your work.
-                  </span>
-                  <span className="block text-accent-text">
-                    Find projects with a clear scope.
-                  </span>
-                </h1>
-
-                {/* Body Text */}
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 0.95, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.1 }}
-                  className="text-[#030B3D] leading-[1.55] max-w-[32em] font-medium mb-3.5 md:mb-4"
-                  style={{ fontSize: 'clamp(0.95rem, 1.05vw + 0.15rem, 1.15rem)' }}
-                >
-                  Put your work in front of clients and take on projects with agreed milestones.
-                </motion.p>
-
-                {/* Offer Line */}
-                <div className="overflow-hidden mb-5 md:mb-6">
-                  <p 
-                    className="font-medium text-[#030B3D] leading-[1.45] max-w-[32em] text-xs sm:text-sm bg-accent-text/8 border border-accent/20 px-3.5 py-2.5 rounded-xl"
-                  >
-                    <strong>GigOra is in preview.</strong> Marketplace and workspaces are live; payments run in demo mode, so no real money moves yet.
-                  </p>
-                </div>
-
-                {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full">
+                </motion.div>
+                <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={{ type: "spring", stiffness: 400, damping: 25 }}>
                   <Link
                     to="/marketplace"
-                    className="rounded-full bg-[#030B3D] hover:bg-accent-deep px-8 py-3.5 text-sm md:text-base font-bold text-white shadow-md active:scale-95 transition-all text-center min-h-[48px] flex items-center justify-center cursor-pointer"
+                    className="rounded-full bg-white border border-[#2F6FAB] text-[#2F6FAB] hover:bg-[#EAF1F7] px-6 py-3 text-sm font-bold shadow-xs transition-colors block text-center cursor-pointer"
                   >
-                    Find work as a freelancer
+                    Work as a Freelancer
                   </Link>
-                  <a
-                    href="#choose-path"
-                    className="text-xs sm:text-sm font-bold text-[#030B3D] underline underline-offset-4 hover:no-underline text-center sm:text-left py-2 flex items-center justify-center sm:justify-start cursor-pointer"
-                  >
-                    See what you get →
-                  </a>
-                </div>
+                </motion.div>
               </div>
-            )}
+
+            </motion.div>
+
+            {/* Right Column: Angular Geometric Frame with Developer Image */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
+              className="lg:col-span-5 relative flex justify-center"
+            >
+              <div className="relative w-full max-w-[420px] aspect-4/5 group">
+                
+                {/* Angular Geometric Background Frame (#2F6FAB) - subtle float feel on card hover */}
+                <div className="absolute inset-0 rounded-3xl bg-[#2F6FAB] translate-x-3 translate-y-3 -rotate-1 transition-transform duration-300 group-hover:translate-x-3.5 group-hover:translate-y-3.5" />
+                
+                {/* Alt Backdrop Card (#EAF1F7) */}
+                <div className="absolute inset-0 rounded-3xl bg-[#EAF1F7] -translate-x-1 -translate-y-1 transition-transform duration-300 group-hover:-translate-x-1.5 group-hover:-translate-y-1.5" />
+
+                {/* Main Visual Image (3D Developer Character) */}
+                <div className="relative w-full h-full rounded-2xl overflow-hidden border-2 border-white shadow-md bg-white transition-all duration-300 group-hover:shadow-lg">
+                  <img
+                    src="/images/gigora_3d_developer_hero.jpg"
+                    alt="GigOra 3D Developer working on milestone project"
+                    className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-[1.02]"
+                  />
+                </div>
+
+              </div>
+            </motion.div>
 
           </div>
 
-          {/* Right Column: Floating Product Browser Mockup Card */}
-          <div className="lg:col-span-5 xl:col-span-5 block mt-8 lg:mt-0 relative" data-aos="fade-up" data-aos-delay="150">
-            {/* Browser Frame */}
-            <div className="relative max-w-[460px] mx-auto lg:ml-auto rounded-2xl border border-slate-200 bg-white shadow-[0_24px_60px_-15px_rgba(3,11,61,0.18)] overflow-hidden">
-              {/* Window Header */}
-              <div className="flex items-center justify-between px-4 py-2.5 bg-slate-100/90 border-b border-slate-200">
-                <div className="flex items-center gap-1.5">
-                  <span className="w-2.5 h-2.5 rounded-full bg-rose-400 inline-block"></span>
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400 inline-block"></span>
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span>
-                </div>
-                <div className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-white border border-slate-200 text-[11px] text-slate-500 font-mono">
-                  <Lock className="w-3 h-3 text-emerald-600" />
-                  <span>gig-ora.vercel.app/marketplace</span>
-                </div>
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                  Live
-                </span>
-              </div>
-
-              {/* Window Body: Real Marketplace Preview */}
-              <div className="p-4 space-y-3 bg-slate-50/50">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-bold text-slate-800">Featured Open Gigs</span>
-                  <Link to="/marketplace" className="text-[11px] font-semibold text-accent-text hover:underline">
-                    View all →
-                  </Link>
-                </div>
-
-                {/* Dynamic Gigs from Database or Real Featured Samples */}
-                {(featuredGigs.length > 0 ? featuredGigs.slice(0, 2) : [
-                  {
-                    _id: 'sample-1',
-                    category: 'WEB DEVELOPMENT',
-                    budget: 38000,
-                    title: 'React & Tailwind Real-Time Analytics Dashboard',
-                    description: 'Build an interactive, modular web dashboard for monitoring live fleet metrics and performance.',
-                    skillsRequired: ['React', 'Tailwind CSS']
-                  },
-                  {
-                    _id: 'sample-2',
-                    category: 'GRAPHIC DESIGN',
-                    budget: 22000,
-                    title: 'Modern Tech Brand Identity, Logo & Social Collateral Kit',
-                    description: 'Create a distinctive, futuristic brand identity for an AI-powered SaaS product launch.',
-                    skillsRequired: ['Adobe Illustrator', 'Photoshop']
-                  }
-                ]).map((gig) => (
-                  <Link
-                    key={gig._id}
-                    to={gig._id.startsWith('sample') ? '/marketplace' : `/gigs/${gig._id}`}
-                    className="block rounded-xl border border-slate-200 bg-white p-3.5 hover:border-teal-300 hover:shadow-xs transition"
-                  >
-                    <div className="flex items-center justify-between">
-                      <span className="text-[10px] font-semibold uppercase tracking-wider text-accent-text bg-accent-tint px-2 py-0.5 rounded-full">
-                        {gig.category}
-                      </span>
-                      <span className="text-[11px] font-bold text-slate-900">
-                        ₹{Number(gig.budget || 0).toLocaleString('en-IN')}
-                      </span>
-                    </div>
-                    <h4 className="mt-2 text-xs font-bold text-slate-900 line-clamp-1">{gig.title}</h4>
-                    <p className="mt-1 text-[11px] text-slate-500 line-clamp-1">{gig.description}</p>
-                    <div className="mt-2.5 flex gap-1 border-t border-slate-100 pt-2">
-                      {(gig.skillsRequired || []).slice(0, 2).map((s) => (
-                        <span key={s} className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 font-medium text-[10px]">
-                          {s}
-                        </span>
-                      ))}
-                    </div>
-                  </Link>
-                ))}
-              </div>
-
-              {/* Bottom Quick Bar */}
-              <div className="px-4 py-2.5 bg-white border-t border-slate-100 flex items-center justify-between text-xs">
-                <span className="text-slate-500 text-[11px]">Demo data · No real payments</span>
-                <Link
-                  to="/marketplace"
-                  className="inline-flex items-center gap-1 font-bold text-[11px] text-accent-text hover:text-accent-deep"
-                >
-                  Explore marketplace →
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 2.5 TRUST STRIP: Proof you can genuinely give right now */}
-      <section className="bg-white border-b border-stone-200/80 py-5 sm:py-6 relative z-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 md:gap-6 items-stretch">
+          {/* 4. THREE PROOF CARDS STRIP (Mockup Layout) */}
+          <div className="mt-14 pt-8 border-t border-[#DDE5ED] grid grid-cols-1 md:grid-cols-3 gap-5">
             
-            <div className="flex items-center gap-2.5 sm:gap-3 justify-start p-2.5 sm:p-3 rounded-2xl bg-stone-50/80 md:bg-transparent border border-stone-200/60 md:border-0 shadow-xs md:shadow-none">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-accent-text/10 text-accent-text flex items-center justify-center shrink-0">
-                <Globe className="w-4 h-4 sm:w-5 sm:h-5" />
+            {/* Card 1: Milestone Escrow */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5 }}
+              className="bg-white rounded-2xl p-5 border border-[#DDE5ED] hover:border-[#2F6FAB] hover:shadow-xs transition-colors flex items-start gap-3.5"
+            >
+              <div className="w-10 h-10 rounded-xl bg-[#EAF1F7] text-[#2F6FAB] flex items-center justify-center shrink-0">
+                <ShieldCheck className="w-5 h-5" />
               </div>
-              <div className="min-w-0">
-                <h4 className="font-bold text-xs sm:text-sm text-[#030B3D] leading-tight">Built for Indian founders and developers</h4>
-                <p className="text-[10px] sm:text-xs text-stone-500 leading-tight mt-0.5 truncate sm:overflow-visible">Tech startups &amp; engineering talent</p>
+              <div>
+                <h3 className="font-display font-bold text-[#243040] text-sm sm:text-base">Milestone Escrow</h3>
+                <p className="text-xs text-[#5A6675] mt-1 leading-relaxed">
+                  Agree on milestones first. Payment stays safely locked until the agreed deliverable is submitted.
+                </p>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="flex items-center gap-2.5 sm:gap-3 justify-start p-2.5 sm:p-3 rounded-2xl bg-stone-50/80 md:bg-transparent border border-stone-200/60 md:border-0 shadow-xs md:shadow-none">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center shrink-0">
-                <Code2 className="w-4 h-4 sm:w-5 sm:h-5" />
+            {/* Card 2: PR & Staging Reviews */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: 0.08 }}
+              className="bg-white rounded-2xl p-5 border border-[#DDE5ED] hover:border-[#2F6FAB] hover:shadow-xs transition-colors flex items-start gap-3.5"
+            >
+              <div className="w-10 h-10 rounded-xl bg-[#EAF1F7] text-[#2F6FAB] flex items-center justify-center shrink-0">
+                <Code2 className="w-5 h-5" />
               </div>
-              <div className="min-w-0">
-                <h4 className="font-bold text-xs sm:text-sm text-[#030B3D] leading-tight">Developer profiles</h4>
-                <p className="text-[10px] sm:text-xs text-stone-500 leading-tight mt-0.5 truncate sm:overflow-visible">Web, Mobile, AI &amp; Cloud prototypes</p>
+              <div>
+                <h3 className="font-display font-bold text-[#243040] text-sm sm:text-base">PR &amp; Staging Reviews</h3>
+                <p className="text-xs text-[#5A6675] mt-1 leading-relaxed">
+                  Inspect code via pull requests and live staging links before approving each milestone release.
+                </p>
               </div>
-            </div>
+            </motion.div>
 
-            <div className="flex items-center gap-2.5 sm:gap-3 justify-start p-2.5 sm:p-3 rounded-2xl bg-stone-50/80 md:bg-transparent border border-stone-200/60 md:border-0 shadow-xs md:shadow-none">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" />
+            {/* Card 3: About GigOra */}
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: 0.16 }}
+              className="bg-white rounded-2xl p-5 border border-[#DDE5ED] hover:border-[#2F6FAB] hover:shadow-xs transition-colors flex items-start gap-3.5"
+            >
+              <div className="w-10 h-10 rounded-xl bg-[#EAF1F7] text-[#2F6FAB] flex items-center justify-center shrink-0">
+                <Users className="w-5 h-5" />
               </div>
-              <div className="min-w-0">
-                <h4 className="font-bold text-xs sm:text-sm text-[#030B3D] leading-tight">
-                  Milestone Tracking
-                </h4>
-                <p className="text-[10px] sm:text-xs text-stone-500 leading-tight mt-0.5 truncate sm:overflow-visible">Track progress • Demo payments</p>
+              <div>
+                <h3 className="font-display font-bold text-[#243040] text-sm sm:text-base">About GigOra</h3>
+                <p className="text-xs text-[#5A6675] mt-1 leading-relaxed">
+                  A dedicated milestone platform built for technical founders and Indian software developers.
+                </p>
               </div>
-            </div>
-
-            <div className="flex items-center gap-2.5 sm:gap-3 justify-start p-2.5 sm:p-3 rounded-2xl bg-stone-50/80 md:bg-transparent border border-stone-200/60 md:border-0 shadow-xs md:shadow-none">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
-              </div>
-              <div className="min-w-0">
-                <h4 className="font-bold text-xs sm:text-sm text-[#030B3D] leading-tight">
-                  Portfolios with real work
-                </h4>
-                <p className="text-[10px] sm:text-xs text-stone-500 leading-tight mt-0.5 truncate sm:overflow-visible">GitHub repos &amp; live prototypes</p>
-              </div>
-            </div>
+            </motion.div>
 
           </div>
+
         </div>
       </section>
 
-      {/* 3. POPULAR TECH SERVICES QUICK ROW */}
-      <section id="categories" className="scroll-mt-28 py-8 sm:py-10 bg-slate-50/70 border-b border-slate-200/80 w-full">
-        <div className="w-full px-4 sm:px-6 lg:px-10 xl:px-14">
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 xl:gap-5">
-            
-            {/* 1. AI & ML Services */}
-            <button 
-              onClick={() => navigate('/marketplace?category=Data%20Science%20%26%20AI')}
-              data-aos="fade-up" 
-              data-aos-delay="0"
-              className="text-left group p-3.5 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-teal-400 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
-            >
-              <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-accent-tint text-accent-text flex items-center justify-center mb-2.5 sm:mb-3 group-hover:bg-accent-text group-hover:text-white group-hover:scale-110 transition-all shadow-sm">
-                <Cpu className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
-              </div>
-              <p className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-accent-text transition-colors truncate sm:overflow-visible">AI &amp; ML Services</p>
-              <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 truncate sm:overflow-visible">LLMs &amp; Neural Nets</p>
-            </button>
-
-            {/* 2. Fullstack & Web */}
-            <button 
-              onClick={() => navigate('/marketplace?category=Web%20Development')}
-              data-aos="fade-up" 
-              data-aos-delay="30"
-              className="text-left group p-3.5 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-blue-400 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
-            >
-              <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-2.5 sm:mb-3 group-hover:bg-blue-600 group-hover:text-white group-hover:scale-110 transition-all shadow-sm">
-                <Code2 className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
-              </div>
-              <p className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-blue-600 transition-colors truncate sm:overflow-visible">Fullstack &amp; Web</p>
-              <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 truncate sm:overflow-visible">React, Next.js, Node</p>
-            </button>
-
-            {/* 3. Mobile Apps */}
-            <button 
-              onClick={() => navigate('/marketplace?category=Mobile%20App%20Development')}
-              data-aos="fade-up" 
-              data-aos-delay="60"
-              className="text-left group p-3.5 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-emerald-400 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
-            >
-              <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-2.5 sm:mb-3 group-hover:bg-emerald-600 group-hover:text-white group-hover:scale-110 transition-all shadow-sm">
-                <Smartphone className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
-              </div>
-              <p className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-emerald-600 transition-colors truncate sm:overflow-visible">Mobile Apps</p>
-              <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 truncate sm:overflow-visible">Flutter &amp; React Native</p>
-            </button>
-
-            {/* 4. UI/UX & Design */}
-            <button 
-              onClick={() => navigate('/marketplace?category=UI%2FUX%20Design')}
-              data-aos="fade-up" 
-              data-aos-delay="90"
-              className="text-left group p-3.5 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-pink-400 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
-            >
-              <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center mb-2.5 sm:mb-3 group-hover:bg-pink-600 group-hover:text-white group-hover:scale-110 transition-all shadow-sm">
-                <Palette className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
-              </div>
-              <p className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-pink-600 transition-colors truncate sm:overflow-visible">UI/UX &amp; Design</p>
-              <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 truncate sm:overflow-visible">Figma &amp; Prototypes</p>
-            </button>
-
-            {/* 5. Cloud & DevOps */}
-            <button 
-              onClick={() => navigate('/marketplace?category=DevOps%20%26%20Cloud')}
-              data-aos="fade-up" 
-              data-aos-delay="120"
-              className="text-left group p-3.5 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-amber-400 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
-            >
-              <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-2.5 sm:mb-3 group-hover:bg-amber-600 group-hover:text-white group-hover:scale-110 transition-all shadow-sm">
-                <Cloud className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
-              </div>
-              <p className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-amber-600 transition-colors truncate sm:overflow-visible">Cloud &amp; DevOps</p>
-              <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 truncate sm:overflow-visible">AWS, Docker &amp; CI/CD</p>
-            </button>
-
-            {/* 6. Data & Backend */}
-            <button 
-              onClick={() => navigate('/marketplace?category=Backend%20%26%20APIs')}
-              data-aos="fade-up" 
-              data-aos-delay="150"
-              className="text-left group p-3.5 sm:p-5 rounded-2xl bg-white border border-slate-200 hover:border-cyan-400 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 cursor-pointer"
-            >
-              <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl bg-cyan-50 text-cyan-600 flex items-center justify-center mb-2.5 sm:mb-3 group-hover:bg-cyan-600 group-hover:text-white group-hover:scale-110 transition-all shadow-sm">
-                <Database className="h-4.5 w-4.5 sm:h-5 sm:w-5" />
-              </div>
-              <p className="font-bold text-slate-900 text-xs sm:text-sm group-hover:text-cyan-600 transition-colors truncate sm:overflow-visible">Data &amp; Backend</p>
-              <p className="text-[10px] sm:text-[11px] text-slate-500 mt-0.5 truncate sm:overflow-visible">SQL, Python &amp; APIs</p>
-            </button>
-
-          </div>
-        </div>
-      </section>
-
-      {/* 4. HOW IT WORKS: 3 SIMPLE STEPS (Clear & Consolidated) */}
-      <section id="how-it-works" className="scroll-mt-28 py-16 sm:py-20 bg-[#FAF8F5] border-b border-stone-200/80">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* 5. POPULAR TECH SERVICES SECTION (Background: Alt #EAF1F7) */}
+      <section id="categories" className="scroll-mt-24 py-16 bg-[#EAF1F7] border-y border-[#DDE5ED]">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-2xl mx-auto mb-14" data-aos="fade-up">
-            <span className="text-xs font-black uppercase tracking-[0.12em] text-accent-text bg-accent-text/10 px-4 py-1.5 rounded-full border border-accent/20">
-              HOW IT WORKS
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#2F6FAB] bg-white px-3.5 py-1.5 rounded-full border border-[#DDE5ED]">
+              EXPLORE TALENT BY DOMAIN
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-[#030B3D] tracking-tight mt-3 mb-3">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-[#243040] mt-3 mb-2">
+              Popular Tech Services
+            </h2>
+            <p className="text-[#5A6675] text-sm">
+              Work with vetted freelancers across modern technical stacks.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
+            {[
+              { title: 'AI & ML', sub: 'LLMs & Vision', icon: Cpu, cat: 'Data Science & AI' },
+              { title: 'Fullstack Web', sub: 'React, Next, Node', icon: Code2, cat: 'Web Development' },
+              { title: 'Mobile Apps', sub: 'Flutter, React Native', icon: Smartphone, cat: 'Mobile App Development' },
+              { title: 'UI/UX Design', sub: 'Figma & Design Systems', icon: Palette, cat: 'UI/UX Design' },
+              { title: 'Cloud & DevOps', sub: 'AWS, Docker & CI/CD', icon: Cloud, cat: 'DevOps & Cloud' },
+              { title: 'Data & Backend', sub: 'SQL, Python & APIs', icon: Database, cat: 'Backend & APIs' }
+            ].map((item, idx) => (
+              <motion.button 
+                key={idx}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, margin: "-20px" }}
+                transition={{ duration: 0.4, delay: idx * 0.05 }}
+                whileHover={{ scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => navigate(`/marketplace?category=${encodeURIComponent(item.cat)}`)}
+                className="text-left group p-4 rounded-2xl bg-white border border-[#DDE5ED] hover:border-[#2F6FAB] hover:shadow-sm transition-colors cursor-pointer"
+              >
+                <div className="h-9 w-9 rounded-xl bg-[#EAF1F7] text-[#2F6FAB] flex items-center justify-center mb-3 group-hover:bg-[#2F6FAB] group-hover:text-white transition-colors">
+                  <item.icon className="h-4.5 w-4.5" />
+                </div>
+                <p className="font-bold text-[#243040] text-xs sm:text-sm group-hover:text-[#2F6FAB] transition-colors truncate">
+                  {item.title}
+                </p>
+                <p className="text-[11px] text-[#5A6675] mt-0.5 truncate">
+                  {item.sub}
+                </p>
+              </motion.button>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* 6. HOW IT WORKS: 3 STEPS (Background: Main #F7F9FB) */}
+      <section id="how-it-works" className="scroll-mt-24 py-16 sm:py-20 bg-[#F7F9FB]">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#2F6FAB] bg-[#EAF1F7] px-3.5 py-1.5 rounded-full border border-[#DDE5ED]">
+              SIMPLE 3-STEP PROCESS
+            </span>
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-[#243040] mt-3 mb-2">
               How GigOra Works
             </h2>
-            <p className="text-stone-600 text-sm sm:text-base">
+            <p className="text-[#5A6675] text-sm">
               Three steps from idea to delivered work.
             </p>
           </div>
 
-          {/* 3 Step Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             
             {/* Step 1 */}
-            <div 
-              data-aos="fade-up" 
-              data-aos-delay="0"
-              className="bg-white rounded-3xl p-7 sm:p-8 border border-stone-200 shadow-xs hover:shadow-md hover:border-accent/40 transition-all group flex flex-col justify-between"
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5 }}
+              whileHover={{ scale: 1.01 }}
+              className="bg-white rounded-2xl p-7 border border-[#DDE5ED] hover:border-[#2F6FAB] transition-colors flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between mb-5">
-                  <span className="text-3xl font-display font-black text-accent-text/30 group-hover:text-accent-text transition-colors">01</span>
-                  <div className="w-11 h-11 rounded-2xl bg-accent-tint text-accent-text flex items-center justify-center font-bold shadow-xs">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-2xl font-display font-black text-[#2F6FAB]/40">01</span>
+                  <div className="w-10 h-10 rounded-xl bg-[#EAF1F7] text-[#2F6FAB] flex items-center justify-center">
                     <Terminal className="w-5 h-5" />
                   </div>
                 </div>
-                <h3 className="text-xl font-display font-bold text-[#030B3D] mb-2.5">
+                <h3 className="text-lg font-display font-bold text-[#243040] mb-2">
                   1. Share your project
                 </h3>
-                <p className="text-sm text-stone-600 leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#5A6675] leading-relaxed">
                   Tell us what you're building, what skills you need and what you expect to get. Freelancers who fit will send you proposals.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-stone-100 flex items-center text-xs font-semibold text-accent-text">
+              <div className="mt-5 pt-3 border-t border-[#DDE5ED] text-xs font-semibold text-[#2F6FAB]">
                 Clear scope, no spam
               </div>
-            </div>
+            </motion.div>
 
             {/* Step 2 */}
-            <div 
-              data-aos="fade-up" 
-              data-aos-delay="50"
-              className="bg-white rounded-3xl p-7 sm:p-8 border border-stone-200 shadow-xs hover:shadow-md hover:border-accent/40 transition-all group flex flex-col justify-between"
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              whileHover={{ scale: 1.01 }}
+              className="bg-white rounded-2xl p-7 border border-[#DDE5ED] hover:border-[#2F6FAB] transition-colors flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between mb-5">
-                  <span className="text-3xl font-display font-black text-accent-text/30 group-hover:text-accent-text transition-colors">02</span>
-                  <div className="w-11 h-11 rounded-2xl bg-accent-tint text-accent-text flex items-center justify-center font-bold shadow-xs">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-2xl font-display font-black text-[#2F6FAB]/40">02</span>
+                  <div className="w-10 h-10 rounded-xl bg-[#EAF1F7] text-[#2F6FAB] flex items-center justify-center">
                     <Layers className="w-5 h-5" />
                   </div>
                 </div>
-                <h3 className="text-xl font-display font-bold text-[#030B3D] mb-2.5">
+                <h3 className="text-lg font-display font-bold text-[#243040] mb-2">
                   2. Agree on milestones
                 </h3>
-                <p className="text-sm text-stone-600 leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#5A6675] leading-relaxed">
                   Agree on what gets delivered, by when and for how much, before work starts. Milestones keep everyone on the same page.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-stone-100 flex items-center text-xs font-semibold text-accent-text">
+              <div className="mt-5 pt-3 border-t border-[#DDE5ED] text-xs font-semibold text-[#2F6FAB]">
                 Work in stages
               </div>
-            </div>
+            </motion.div>
 
             {/* Step 3 */}
-            <div 
-              data-aos="fade-up" 
-              data-aos-delay="100"
-              className="bg-white rounded-3xl p-7 sm:p-8 border border-stone-200 shadow-xs hover:shadow-md hover:border-accent/40 transition-all group flex flex-col justify-between"
+            <motion.div 
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true, margin: "-40px" }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              whileHover={{ scale: 1.01 }}
+              className="bg-white rounded-2xl p-7 border border-[#DDE5ED] hover:border-[#2F6FAB] transition-colors flex flex-col justify-between"
             >
               <div>
-                <div className="flex items-center justify-between mb-5">
-                  <span className="text-3xl font-display font-black text-accent-text/30 group-hover:text-accent-text transition-colors">03</span>
-                  <div className="w-11 h-11 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold shadow-xs">
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-2xl font-display font-black text-[#2F6FAB]/40">03</span>
+                  <div className="w-10 h-10 rounded-xl bg-[#EAF1F7] text-[#2F6FAB] flex items-center justify-center">
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
                 </div>
-                <h3 className="text-xl font-display font-bold text-[#030B3D] mb-2.5">
+                <h3 className="text-lg font-display font-bold text-[#243040] mb-2">
                   3. Review the work
                 </h3>
-                <p className="text-sm text-stone-600 leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#5A6675] leading-relaxed">
                   Check the work through a demo or a GitHub pull request, then mark the milestone as done.
                 </p>
               </div>
-              <div className="mt-6 pt-4 border-t border-stone-100 flex items-center text-xs font-semibold text-emerald-600">
+              <div className="mt-5 pt-3 border-t border-[#DDE5ED] text-xs font-semibold text-[#2F6FAB]">
                 Review and sign off
               </div>
-            </div>
+            </motion.div>
 
           </div>
 
-          {/* Live Workflow Note */}
-          <div className="mt-10 p-4 sm:p-5 rounded-2xl bg-accent-tint border border-accent/20 max-w-3xl mx-auto text-center" data-aos="fade-up">
-            <p className="text-xs sm:text-sm font-medium text-slate-800">
+          <div className="mt-8 p-3.5 rounded-xl bg-[#EAF1F7] border border-[#DDE5ED] text-center max-w-2xl mx-auto">
+            <p className="text-xs font-medium text-[#243040]">
               <strong>Notice:</strong> Proposals, milestones, reviews and tracking all work today. Payments are demo-only for now.
             </p>
           </div>
@@ -713,49 +545,45 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 5. CHOOSE YOUR PATH (Audience Specific Cards for Client & Freelancer) */}
-      <section id="choose-path" className="scroll-mt-28 py-14 lg:py-20 bg-white border-b border-stone-200/80">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* 7. CHOOSE YOUR PATH (Background: Alt #EAF1F7) */}
+      <section id="choose-path" className="scroll-mt-24 py-16 sm:py-20 bg-[#EAF1F7] border-y border-[#DDE5ED]">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-2xl mx-auto mb-14" data-aos="fade-up">
-            <span className="text-xs font-black uppercase tracking-[0.12em] text-accent-text bg-accent-text/10 px-4 py-1.5 rounded-full border border-accent/20">
-              ARE YOU HIRING OR FREELANCING?
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#2F6FAB] bg-white px-3.5 py-1.5 rounded-full border border-[#DDE5ED]">
+              FOR CLIENTS &amp; FREELANCERS
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-extrabold text-[#030B3D] tracking-tight mt-3 mb-3">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-[#243040] mt-3 mb-2">
               Made for clients and freelancers
             </h2>
-            <p className="text-stone-600 text-sm sm:text-base">
+            <p className="text-[#5A6675] text-sm">
               Hiring for your startup or looking for your next project? GigOra keeps both sides clear on what's expected.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
             
             {/* Client Card */}
-            <div 
-              data-aos="fade-up"
-              data-aos-delay="0"
-              className="rounded-3xl p-8 sm:p-10 bg-[#FAF8F5] border border-stone-200 hover:border-accent/50 hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
-            >
+            <div className="rounded-2xl p-7 sm:p-8 bg-white border border-[#DDE5ED] hover:border-[#2F6FAB] hover:shadow-sm transition-all flex flex-col justify-between">
               <div>
-                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-accent-tint text-accent-text border border-accent/20 text-xs font-bold mb-5">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EAF1F7] text-[#2F6FAB] text-xs font-bold mb-4">
                   <Users className="w-3.5 h-3.5" /> For Founders &amp; Clients
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-display font-black text-[#030B3D] mb-3">
+                <h3 className="text-xl sm:text-2xl font-display font-bold text-[#243040] mb-2.5">
                   Build your product in clear stages
                 </h3>
-                <p className="text-sm text-stone-600 mb-6 leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#5A6675] mb-5 leading-relaxed">
                   Talk through what you need and agree on the deliverables before work starts.
                 </p>
-                <ul className="space-y-3 mb-8">
+                <ul className="space-y-2.5 mb-7">
                   {[
                     'Deliverables, dates and budget fixed upfront',
                     'Review work on GitHub or a live staging site',
                     "Approve each milestone when you're happy with it",
                     'A shared workspace for you and your freelancer'
                   ].map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-stone-700">
-                      <Check className="w-4 h-4 text-accent-text shrink-0 mt-0.5" />
+                    <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-[#243040]">
+                      <Check className="w-4 h-4 text-[#2F6FAB] shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -763,37 +591,33 @@ export default function Home() {
               </div>
               <Link 
                 to="/signup" 
-                className="rounded-full bg-[#030B3D] hover:bg-accent-deep text-white text-center py-3.5 px-6 font-bold text-sm shadow-sm hover:shadow-md transition-all block cursor-pointer"
+                className="rounded-full bg-[#F2A541] hover:bg-[#D9943A] text-[#243040] text-center py-3 px-6 font-bold text-sm shadow-xs transition-all block cursor-pointer"
               >
                 Join as Client
               </Link>
             </div>
 
             {/* Freelancer Card */}
-            <div 
-              data-aos="fade-up" 
-              data-aos-delay="50"
-              className="rounded-3xl p-8 sm:p-10 bg-[#FAF8F5] border border-stone-200 hover:border-emerald-400 hover:shadow-xl transition-all duration-300 flex flex-col justify-between"
-            >
+            <div className="rounded-2xl p-7 sm:p-8 bg-white border border-[#DDE5ED] hover:border-[#2F6FAB] hover:shadow-sm transition-all flex flex-col justify-between">
               <div>
-                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-bold mb-5">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#EAF1F7] text-[#2F6FAB] text-xs font-bold mb-4">
                   <Code2 className="w-3.5 h-3.5" /> For Tech Freelancers &amp; Devs
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-display font-black text-[#030B3D] mb-3">
+                <h3 className="text-xl sm:text-2xl font-display font-bold text-[#243040] mb-2.5">
                   Show your work. Find projects with a clear scope.
                 </h3>
-                <p className="text-sm text-stone-600 mb-6 leading-relaxed">
+                <p className="text-xs sm:text-sm text-[#5A6675] mb-5 leading-relaxed">
                   You'll know the scope, timeline and terms before you start, so there are no surprises halfway through.
                 </p>
-                <ul className="space-y-3 mb-8">
+                <ul className="space-y-2.5 mb-7">
                   {[
                     'Share your GitHub repos and live projects',
                     'Scope agreed before you start',
                     'Milestone amounts in rupees (demo mode)',
                     'Quick signup and easy proposals'
                   ].map((item, idx) => (
-                    <li key={idx} className="flex items-start gap-2.5 text-xs sm:text-sm text-stone-700">
-                      <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm text-[#243040]">
+                      <Check className="w-4 h-4 text-[#2F6FAB] shrink-0 mt-0.5" />
                       <span>{item}</span>
                     </li>
                   ))}
@@ -801,7 +625,7 @@ export default function Home() {
               </div>
               <Link 
                 to="/signup" 
-                className="rounded-full bg-accent-text hover:bg-accent-deep text-white text-center py-3.5 px-6 font-bold text-sm shadow-sm hover:shadow-md transition-all block cursor-pointer"
+                className="rounded-full bg-white border border-[#2F6FAB] text-[#2F6FAB] hover:bg-[#EAF1F7] text-center py-3 px-6 font-bold text-sm shadow-xs transition-all block cursor-pointer"
               >
                 Join as Freelancer
               </Link>
@@ -812,48 +636,44 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 9. CORE FEATURES */}
-      <section id="features" className="scroll-mt-28 py-14 lg:py-20 bg-[#FAF8F5] border-b border-stone-200/80 relative">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      {/* 8. CORE PLATFORM FEATURES (Background: Main #F7F9FB) */}
+      <section id="features" className="scroll-mt-24 py-16 sm:py-20 bg-[#F7F9FB]">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-3xl mx-auto mb-16" data-aos="fade-up">
-            <span className="text-xs font-black uppercase tracking-[0.12em] text-accent-text bg-accent-text/10 px-4 py-1.5 rounded-full border border-accent/20">
-              WHAT YOU GET
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#2F6FAB] bg-[#EAF1F7] px-3.5 py-1.5 rounded-full border border-[#DDE5ED]">
+              EVERYTHING YOU NEED
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-[#030B3D] tracking-tight mt-4 mb-4">
-              Everything a project needs
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-bold text-[#243040] mt-3 mb-2">
+              Built for Technical Delivery
             </h2>
-            <p className="text-base sm:text-lg text-stone-600 max-w-2xl mx-auto">
-              Proposals, messages, files and milestones in one place.
+            <p className="text-[#5A6675] text-sm">
+              Proposals, messages, files and milestones in one clean workspace.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {[
-              { title: 'Proposals & Bidding', desc: 'Clients post projects, freelancers send proposals, and clients pick the best fit.', icon: Users, border: 'hover:border-teal-300' },
-              { title: 'Milestone Tracking', desc: "Break a project into milestones and approve each one as it's delivered.", icon: ShieldCheck, border: 'hover:border-emerald-300' },
-              { title: 'Real-time Chat', desc: 'Message your client or freelancer directly in your workspace.', icon: Zap, border: 'hover:border-blue-300' },
-              { title: 'Reviews & Ratings', desc: 'Leave reviews after a project ends.', icon: CheckCircle2, border: 'hover:border-amber-300' },
-              { title: 'Document Uploads', desc: 'Share briefs, designs and PDFs directly in your project workspace.', icon: Layers, border: 'hover:border-cyan-300' },
-              { title: 'Smart Notifications', desc: 'Get notified when proposals, milestones or messages come in.', icon: Wallet, border: 'hover:border-rose-300' }
+              { title: 'Proposals & Bidding', desc: 'Clients post projects, freelancers send proposals, and clients pick the best fit.', icon: Users },
+              { title: 'Milestone Tracking', desc: "Break a project into milestones and approve each one as it's delivered.", icon: ShieldCheck },
+              { title: 'Real-time Chat', desc: 'Message your client or freelancer directly in your workspace.', icon: Zap },
+              { title: 'Reviews & Ratings', desc: 'Leave reviews after a project ends.', icon: CheckCircle2 },
+              { title: 'Document Uploads', desc: 'Share briefs, designs and PDFs directly in your project workspace.', icon: Layers },
+              { title: 'Smart Notifications', desc: 'Get notified when proposals, milestones or messages come in.', icon: Wallet }
             ].map((feature, idx) => (
               <div 
                 key={idx} 
-                data-aos="fade-up"
-                data-aos-delay={idx * 25}
-                className={`group p-8 rounded-3xl bg-white border border-stone-200/80 ${feature.border} hover:shadow-[0_20px_40px_-15px_rgba(3,11,61,0.08)] hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between`}
+                className="p-6 rounded-2xl bg-white border border-[#DDE5ED] hover:border-[#2F6FAB] hover:shadow-xs transition-all"
               >
-                <div>
-                  <div className="w-12 h-12 rounded-2xl bg-white border border-stone-200 flex items-center justify-center text-accent-text shadow-xs group-hover:scale-110 group-hover:bg-accent-deep group-hover:text-white transition-all duration-300 mb-5">
-                    <feature.icon className="h-6 w-6" />
-                  </div>
-                  <h3 className="text-xl font-display font-bold text-[#030B3D] mb-2.5 group-hover:text-accent-text transition-colors">
-                    {feature.title}
-                  </h3>
-                  <p className="text-sm text-stone-600 leading-relaxed font-normal">
-                    {feature.desc}
-                  </p>
+                <div className="w-10 h-10 rounded-xl bg-[#EAF1F7] text-[#2F6FAB] flex items-center justify-center mb-4">
+                  <feature.icon className="h-5 w-5" />
                 </div>
+                <h3 className="text-base font-display font-bold text-[#243040] mb-1.5">
+                  {feature.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-[#5A6675] leading-relaxed">
+                  {feature.desc}
+                </p>
               </div>
             ))}
           </div>
@@ -861,23 +681,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 10. TRANSPARENT FAQ: Fees, Launch Timing, Verification, Payment Protection */}
-      <section id="faq" className="scroll-mt-28 py-14 lg:py-20 bg-white border-b border-stone-200/80">
-        <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+      {/* 9. TRANSPARENT FAQ (Background: Alt #EAF1F7) */}
+      <section id="faq" className="scroll-mt-24 py-16 sm:py-20 bg-[#EAF1F7] border-t border-[#DDE5ED]">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="text-center max-w-2xl mx-auto mb-14" data-aos="fade-up">
-            <span className="text-xs font-black uppercase tracking-[0.12em] text-accent-text bg-accent-text/10 px-4 py-1.5 rounded-full border border-accent/20">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#2F6FAB] bg-white px-3.5 py-1.5 rounded-full border border-[#DDE5ED]">
               STRAIGHT ANSWERS
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black text-[#030B3D] tracking-tight mt-4 mb-3">
+            <h2 className="text-2xl sm:text-3xl font-display font-bold text-[#243040] mt-3 mb-2">
               Frequently Asked Questions
             </h2>
-            <p className="text-stone-600 text-sm sm:text-base">
+            <p className="text-[#5A6675] text-sm">
               Honest answers about how GigOra works right now.
             </p>
           </div>
 
-          <div className="space-y-4" data-aos="fade-up" data-aos-delay="50">
+          <div className="space-y-3">
             {[
               { q: 'Is GigOra free right now?', a: 'Yes. Browsing projects, posting them and sending proposals are free during preview. Payments run in demo mode, so no real money moves.' },
               { q: 'How do milestones work?', a: 'Clients split a project into milestones. Freelancers submit work for each milestone, and clients review and approve it before it is marked complete.' },
@@ -886,27 +706,19 @@ export default function Home() {
             ].map((faq, idx) => (
               <div 
                 key={idx} 
-                className="rounded-2xl border border-stone-200/90 bg-white overflow-hidden shadow-xs hover:border-stone-300 transition-all"
+                className="rounded-xl border border-[#DDE5ED] bg-white overflow-hidden"
               >
                 <button
                   onClick={() => toggleFaq(idx)}
-                  id={`faq-btn-${idx}`}
-                  aria-expanded={openFaq === idx}
-                  aria-controls={`faq-answer-${idx}`}
-                  className="w-full flex items-center justify-between p-6 text-left text-base sm:text-lg font-display font-bold text-[#030B3D] hover:text-accent-text transition-colors cursor-pointer"
+                  className="w-full flex items-center justify-between p-5 text-left text-sm sm:text-base font-bold text-[#243040] hover:text-[#2F6FAB] transition-colors cursor-pointer"
                 >
                   <span>{faq.q}</span>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center bg-stone-100 shrink-0 ml-4 transition-transform duration-200 ${openFaq === idx ? 'rotate-180 bg-accent-text text-white' : 'text-stone-500'}`}>
-                    <ChevronDown className="h-4 w-4" />
+                  <div className={`w-7 h-7 rounded-full flex items-center justify-center bg-[#EAF1F7] shrink-0 ml-3 transition-transform duration-200 ${openFaq === idx ? 'rotate-180 bg-[#2F6FAB] text-white' : 'text-[#5A6675]'}`}>
+                    <ChevronDown className="h-3.5 w-3.5" />
                   </div>
                 </button>
                 {openFaq === idx && (
-                  <div 
-                    id={`faq-answer-${idx}`}
-                    role="region"
-                    aria-labelledby={`faq-btn-${idx}`}
-                    className="px-6 pb-6 pt-1 text-sm sm:text-base text-stone-600 border-t border-stone-100 leading-relaxed"
-                  >
+                  <div className="px-5 pb-5 pt-1 text-xs sm:text-sm text-[#5A6675] border-t border-[#DDE5ED]/60 leading-relaxed">
                     {faq.a}
                   </div>
                 )}
@@ -917,93 +729,98 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FINAL PRODUCT CTA BANNER */}
-      <section className="py-24 lg:py-28 bg-[#030B3D] text-white relative overflow-hidden">
-        <div className="absolute -top-20 right-1/4 w-96 h-96 bg-accent-text/30 rounded-full blur-3xl pointer-events-none" />
-        <div className="mx-auto max-w-4xl px-4 text-center relative z-10" data-aos="fade-up">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-display font-black tracking-tight mb-5 text-balance">
+      {/* 10. FINAL PRODUCT CTA BANNER (Soft Charcoal #243040 + Amber Accent #F2A541) */}
+      <section className="py-16 sm:py-20 bg-[#243040] text-white relative overflow-hidden">
+        <div className="max-w-3xl mx-auto px-4 text-center relative z-10 space-y-4">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-display font-black tracking-tight text-balance">
             Ready to start your next project?
           </h2>
-          <p className="text-base sm:text-lg text-white/70 mb-9 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-white/80 max-w-xl mx-auto">
             Post a project or find work with clear milestones. Free during preview, payments in demo mode.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link to="/signup" className="rounded-full bg-accent-text hover:bg-accent-deep px-8 py-4 font-bold text-sm active:scale-95 transition-all text-center">
+          <div className="flex flex-col sm:flex-row gap-3 justify-center pt-3">
+            <Link 
+              to="/signup" 
+              className="rounded-full bg-[#F2A541] hover:bg-[#D9943A] text-[#243040] px-7 py-3 text-sm font-bold shadow-xs active:scale-95 transition-all text-center"
+            >
               Post a project
             </Link>
-            <Link to="/marketplace" className="rounded-full bg-white/10 border border-white/20 hover:bg-white/15 px-8 py-4 font-bold text-sm active:scale-95 transition-all text-center">
+            <Link 
+              to="/marketplace" 
+              className="rounded-full bg-white/10 border border-white/25 hover:bg-white/20 text-white px-7 py-3 text-sm font-bold active:scale-95 transition-all text-center"
+            >
               Browse projects
             </Link>
           </div>
         </div>
       </section>
 
-      {/* 12. RESPONSIVE BALANCED FOOTER */}
-      <footer className="bg-slate-900 text-slate-400 py-14 border-t border-slate-800 text-xs">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-12">
+      {/* 11. FOOTER (Background: Alt #EAF1F7, Text: #5A6675, Links: #2F6FAB) */}
+      <footer className="bg-[#EAF1F7] text-[#5A6675] py-12 border-t border-[#DDE5ED] text-xs">
+        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 mb-10">
             
-            {/* Brand Col */}
-            <div className="md:col-span-4 space-y-3">
+            {/* Brand Column */}
+            <div className="md:col-span-4 space-y-2.5">
               <div className="flex items-center gap-2">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent-text text-white font-bold text-sm">G</div>
-                <span className="text-lg font-bold text-white tracking-tight flex items-center gap-1.5">
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#2F6FAB] text-white font-bold text-sm">G</div>
+                <span className="text-base font-bold text-[#243040] tracking-tight">
                   GigOra
-                  <span className="text-[9px] bg-white/10 text-teal-300 font-bold px-1.5 py-0.5 rounded border border-teal-400/30">IN</span>
                 </span>
+                <span className="text-[9px] bg-white text-[#2F6FAB] font-bold px-1.5 py-0.5 rounded border border-[#DDE5ED]">IN</span>
               </div>
-              <p className="text-slate-400 max-w-sm leading-relaxed text-xs">
+              <p className="text-[#5A6675] max-w-sm text-xs leading-relaxed">
                 India's milestone-based marketplace for technical talent.
               </p>
-              <div className="pt-1 text-[11px] text-slate-500 font-medium">
+              <div className="pt-0.5 text-[11px] text-[#5A6675]/80">
                 Milestones · Clear scope · Portfolios
               </div>
             </div>
             
-            {/* Nav Columns: 2 cols on mobile, 3 on sm/md */}
+            {/* Links Columns */}
             <div className="md:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-6">
               <div>
-                <h4 className="font-bold text-white mb-3.5 uppercase tracking-wider text-[11px]">Product</h4>
-                <ul className="space-y-2.5 font-medium">
-                  <li><a href="#how-it-works" className="hover:text-white transition-colors">How it works</a></li>
-                  <li><a href="#choose-path" className="hover:text-white transition-colors">Clients &amp; Devs</a></li>
-                  <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
-                  <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
-                  <li><Link to="/about" className="text-teal-300 hover:text-white transition-colors font-bold">About GigOra</Link></li>
+                <h4 className="font-bold text-[#243040] mb-3 uppercase tracking-wider text-[11px]">Product</h4>
+                <ul className="space-y-2 font-medium">
+                  <li><a href="#how-it-works" className="hover:text-[#2F6FAB] transition-colors">How it works</a></li>
+                  <li><a href="#choose-path" className="hover:text-[#2F6FAB] transition-colors">Clients &amp; Devs</a></li>
+                  <li><a href="#features" className="hover:text-[#2F6FAB] transition-colors">Features</a></li>
+                  <li><a href="#faq" className="hover:text-[#2F6FAB] transition-colors">FAQ</a></li>
+                  <li><Link to="/about" className="text-[#2F6FAB] hover:underline font-bold">About GigOra</Link></li>
                 </ul>
               </div>
 
               <div>
-                <h4 className="font-bold text-white mb-3.5 uppercase tracking-wider text-[11px]">Solutions</h4>
-                <ul className="space-y-2.5 font-medium">
-                  <li><Link to="/marketplace?category=Web%20Development" className="text-slate-300 hover:text-white transition-colors">Web &amp; Mobile Apps</Link></li>
-                  <li><Link to="/marketplace?category=Data%20Science%20%26%20AI" className="text-slate-300 hover:text-white transition-colors">AI &amp; Automation</Link></li>
-                  <li><Link to="/marketplace?category=UI%2FUX%20Design" className="text-slate-300 hover:text-white transition-colors">Product Design UI/UX</Link></li>
-                  <li><Link to="/marketplace?category=DevOps%20%26%20Cloud" className="text-slate-300 hover:text-white transition-colors">Cloud &amp; DevOps</Link></li>
+                <h4 className="font-bold text-[#243040] mb-3 uppercase tracking-wider text-[11px]">Solutions</h4>
+                <ul className="space-y-2 font-medium">
+                  <li><Link to="/marketplace?category=Web%20Development" className="hover:text-[#2F6FAB] transition-colors">Web &amp; Mobile Apps</Link></li>
+                  <li><Link to="/marketplace?category=Data%20Science%20%26%20AI" className="hover:text-[#2F6FAB] transition-colors">AI &amp; Automation</Link></li>
+                  <li><Link to="/marketplace?category=UI%2FUX%20Design" className="hover:text-[#2F6FAB] transition-colors">Product Design UI/UX</Link></li>
+                  <li><Link to="/marketplace?category=DevOps%20%26%20Cloud" className="hover:text-[#2F6FAB] transition-colors">Cloud &amp; DevOps</Link></li>
                 </ul>
               </div>
 
               <div className="col-span-2 sm:col-span-1">
-                <h4 className="font-bold text-white mb-3.5 uppercase tracking-wider text-[11px]">Legal &amp; Trust</h4>
-                <ul className="space-y-2.5 font-medium">
-                  <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
-                  <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-                  <li><span className="text-slate-300">Milestone Workflow</span></li>
-                  <li><span className="text-slate-300">Code Acceptance Criteria</span></li>
+                <h4 className="font-bold text-[#243040] mb-3 uppercase tracking-wider text-[11px]">Legal &amp; Trust</h4>
+                <ul className="space-y-2 font-medium">
+                  <li><Link to="/terms" className="hover:text-[#2F6FAB] transition-colors">Terms of Service</Link></li>
+                  <li><Link to="/privacy" className="hover:text-[#2F6FAB] transition-colors">Privacy Policy</Link></li>
+                  <li><span className="text-[#5A6675]">Milestone Workflow</span></li>
+                  <li><span className="text-[#5A6675]">Demo Payment Mode</span></li>
                 </ul>
               </div>
             </div>
 
           </div>
           
-          <div className="pt-8 border-t border-slate-800 flex flex-col sm:flex-row justify-between items-center gap-4 text-slate-500 text-xs text-center sm:text-left">
+          <div className="pt-6 border-t border-[#DDE5ED] flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-center sm:text-left">
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4">
               <p>© 2026 GigOra. All rights reserved.</p>
-              <Link to="/terms" className="hover:text-slate-300 transition-colors">Terms</Link>
-              <Link to="/privacy" className="hover:text-slate-300 transition-colors">Privacy</Link>
-              <Link to="/about" className="hover:text-slate-300 transition-colors">About</Link>
+              <Link to="/terms" className="hover:text-[#2F6FAB] transition-colors">Terms</Link>
+              <Link to="/privacy" className="hover:text-[#2F6FAB] transition-colors">Privacy</Link>
+              <Link to="/about" className="hover:text-[#2F6FAB] transition-colors">About</Link>
             </div>
-            <p className="font-medium text-slate-400">Built for people who build software.</p>
+            <p className="font-medium text-[#243040]">Built for people who build software.</p>
           </div>
         </div>
       </footer>
