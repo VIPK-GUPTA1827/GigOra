@@ -191,9 +191,9 @@ export default function Home() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="pt-24 sm:pt-28 pb-4 px-4 flex justify-center"
+        className="pt-24 sm:pt-28 pb-6 px-4 flex justify-center"
       >
-        <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto no-scrollbar py-1 max-w-full">
+        <div className="flex items-center gap-2.5 sm:gap-3.5 overflow-x-auto no-scrollbar py-1 max-w-full">
           {[
             { label: 'Fullstack Web', cat: 'Web Development' },
             { label: 'Mobile Apps', cat: 'Mobile App Development' },
@@ -207,7 +207,7 @@ export default function Home() {
               whileTap={{ scale: 0.96 }}
               transition={{ type: "spring", stiffness: 400, damping: 25 }}
               onClick={() => navigate(`/marketplace?category=${encodeURIComponent(pill.cat)}`)}
-              className="px-3.5 py-1.5 rounded-full text-xs font-semibold text-[#5A6675] bg-white border border-[#DDE5ED] hover:border-[#2F6FAB] hover:text-[#2F6FAB] hover:bg-[#EAF1F7] transition-colors whitespace-nowrap shadow-2xs cursor-pointer"
+              className="px-4 py-2 rounded-full text-xs font-semibold text-[#5A6675] bg-white border border-[#DDE5ED] hover:border-[#2F6FAB] hover:text-[#2F6FAB] hover:bg-[#EAF1F7] transition-colors whitespace-nowrap shadow-2xs cursor-pointer"
             >
               {pill.label}
             </motion.button>
@@ -215,39 +215,39 @@ export default function Home() {
         </div>
       </motion.div>
 
-      {/* 3. HERO SECTION (Editorial Layout with Angular Frame & Developer Visual) */}
-      <section className="relative pt-4 pb-12 sm:pb-16 overflow-hidden">
-        <div className="max-w-[1240px] mx-auto px-4 sm:px-6 lg:px-8">
+      {/* 3. HERO SECTION (Spacious Wide SaaS Layout) */}
+      <section className="relative pt-8 pb-20 sm:pb-24 overflow-hidden">
+        <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-16 xl:px-20">
           
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 xl:gap-20 items-center">
             
             {/* Left Column: Content, Search Bar, CTAs */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
-              className="lg:col-span-7 space-y-5"
+              className="lg:col-span-7 xl:col-span-7 space-y-6 max-w-2xl"
             >
               
               {/* Headline */}
-              <h1 className="font-display font-black text-[#243040] tracking-tight leading-[1.1] text-3xl sm:text-4xl md:text-5xl lg:text-5.5xl text-balance">
+              <h1 className="font-display font-black text-[#243040] tracking-tight leading-[1.14] text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem]">
                 Hire Indian developers and designers, <span className="text-[#2F6FAB]">one milestone at a time.</span>
               </h1>
 
               {/* Subtitle */}
-              <p className="text-base sm:text-lg text-[#5A6675] font-normal max-w-xl leading-relaxed">
+              <p className="text-base sm:text-lg text-[#5A6675] font-normal leading-relaxed">
                 Find developers and designers, agree on what you expect, and track the work milestone by milestone.
               </p>
 
               {/* Honest Preview Notice */}
-              <div className="bg-[#EAF1F7] border border-[#DDE5ED] px-4 py-2.5 rounded-xl text-xs sm:text-sm text-[#243040] max-w-xl font-medium">
+              <div className="bg-[#EAF1F7] border border-[#DDE5ED] px-4 py-3 rounded-xl text-xs sm:text-sm text-[#243040] font-medium leading-relaxed">
                 <strong>GigOra is in preview.</strong> Marketplace and workspaces are live; payments run in demo mode, so no real money moves yet.
               </div>
 
-              {/* Search Bar Input (Mockup Feature) */}
-              <form onSubmit={handleSearchSubmit} className="relative max-w-xl">
-                <div className="flex items-center bg-white border border-[#DDE5ED] rounded-full p-1.5 shadow-xs focus-within:border-[#2F6FAB] focus-within:ring-2 focus-within:ring-[#2F6FAB]/15 transition-all">
-                  <Search className="w-4 h-4 text-[#5A6675] ml-3 shrink-0" />
+              {/* Search Bar Input */}
+              <form onSubmit={handleSearchSubmit} className="relative w-full">
+                <div className="flex items-center bg-white border border-[#DDE5ED] rounded-full p-2 shadow-xs focus-within:border-[#2F6FAB] focus-within:ring-2 focus-within:ring-[#2F6FAB]/15 transition-all">
+                  <Search className="w-4 h-4 text-[#5A6675] ml-3.5 shrink-0" />
                   <input
                     type="text"
                     value={searchQuery}
@@ -257,7 +257,7 @@ export default function Home() {
                   />
                   <button
                     type="submit"
-                    className="rounded-full bg-[#F2A541] hover:bg-[#D9943A] text-[#243040] px-4 sm:px-6 py-2 text-xs sm:text-sm font-bold transition-colors cursor-pointer shrink-0"
+                    className="rounded-full bg-[#F2A541] hover:bg-[#D9943A] text-[#243040] px-6 py-2.5 text-xs sm:text-sm font-bold transition-colors cursor-pointer shrink-0"
                   >
                     Browse Gigs
                   </button>
@@ -265,11 +265,11 @@ export default function Home() {
               </form>
 
               {/* Action Buttons */}
-              <div className="flex flex-wrap items-center gap-3 pt-1">
+              <div className="flex flex-wrap items-center gap-4 pt-1">
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={{ type: "spring", stiffness: 400, damping: 25 }}>
                   <Link
                     to="/signup"
-                    className="rounded-full bg-[#F2A541] hover:bg-[#D9943A] text-[#243040] px-6 py-3 text-sm font-bold shadow-xs transition-colors block text-center cursor-pointer"
+                    className="rounded-full bg-[#F2A541] hover:bg-[#D9943A] text-[#243040] px-7 py-3.5 text-sm font-bold shadow-xs transition-colors block text-center cursor-pointer"
                   >
                     Hire Tech Talent
                   </Link>
@@ -277,7 +277,7 @@ export default function Home() {
                 <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }} transition={{ type: "spring", stiffness: 400, damping: 25 }}>
                   <Link
                     to="/marketplace"
-                    className="rounded-full bg-white border border-[#2F6FAB] text-[#2F6FAB] hover:bg-[#EAF1F7] px-6 py-3 text-sm font-bold shadow-xs transition-colors block text-center cursor-pointer"
+                    className="rounded-full bg-white border border-[#2F6FAB] text-[#2F6FAB] hover:bg-[#EAF1F7] px-7 py-3.5 text-sm font-bold shadow-xs transition-colors block text-center cursor-pointer"
                   >
                     Work as a Freelancer
                   </Link>
@@ -291,15 +291,15 @@ export default function Home() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.15, ease: "easeOut" }}
-              className="lg:col-span-5 relative flex justify-center"
+              className="lg:col-span-5 xl:col-span-5 relative flex justify-center lg:justify-end"
             >
-              <div className="relative w-full max-w-[420px] aspect-4/5 group">
+              <div className="relative w-full max-w-[460px] aspect-[4/4.5] group">
                 
-                {/* Angular Geometric Background Frame (#2F6FAB) - subtle float feel on card hover */}
-                <div className="absolute inset-0 rounded-3xl bg-[#2F6FAB] translate-x-3 translate-y-3 -rotate-1 transition-transform duration-300 group-hover:translate-x-3.5 group-hover:translate-y-3.5" />
+                {/* Angular Geometric Background Frame (#2F6FAB) */}
+                <div className="absolute inset-0 rounded-3xl bg-[#2F6FAB] translate-x-3.5 translate-y-3.5 -rotate-1 transition-transform duration-300 group-hover:translate-x-4 group-hover:translate-y-4" />
                 
                 {/* Alt Backdrop Card (#EAF1F7) */}
-                <div className="absolute inset-0 rounded-3xl bg-[#EAF1F7] -translate-x-1 -translate-y-1 transition-transform duration-300 group-hover:-translate-x-1.5 group-hover:-translate-y-1.5" />
+                <div className="absolute inset-0 rounded-3xl bg-[#EAF1F7] -translate-x-1.5 -translate-y-1.5 transition-transform duration-300 group-hover:-translate-x-2 group-hover:-translate-y-2" />
 
                 {/* Main Visual Image (3D Developer Character) */}
                 <div className="relative w-full h-full rounded-2xl overflow-hidden border-2 border-white shadow-md bg-white transition-all duration-300 group-hover:shadow-lg">
@@ -316,7 +316,7 @@ export default function Home() {
           </div>
 
           {/* 4. THREE PROOF CARDS STRIP (Mockup Layout) */}
-          <div className="mt-14 pt-8 border-t border-[#DDE5ED] grid grid-cols-1 md:grid-cols-3 gap-5">
+          <div className="mt-16 sm:mt-20 pt-10 border-t border-[#DDE5ED] grid grid-cols-1 md:grid-cols-3 gap-6">
             
             {/* Card 1: Milestone Escrow */}
             <motion.div 
