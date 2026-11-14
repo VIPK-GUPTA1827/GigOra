@@ -194,7 +194,7 @@ export default function Home() {
         transition={{ duration: 0.5 }}
         className="pt-24 sm:pt-28 pb-6 px-4 flex justify-center"
       >
-        <div className="flex items-center gap-2.5 sm:gap-3.5 overflow-x-auto no-scrollbar py-1 max-w-full">
+        <div className="flex items-center sm:justify-center gap-2.5 sm:gap-3.5 overflow-x-auto no-scrollbar py-1.5 px-1 max-w-full">
           {[
             { label: 'Fullstack Web', cat: 'Web Development' },
             { label: 'Mobile Apps', cat: 'Mobile App Development' },

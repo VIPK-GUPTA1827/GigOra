@@ -60,6 +60,17 @@ html {
   animation: gigora-fade-up 320ms ease-out both;
 }
 
+/* Hide scrollbar across all browsers while preserving scrollability */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, ::before, ::after {
