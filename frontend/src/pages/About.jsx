@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ArrowLeft, ShieldCheck, Code2, Users, AlertCircle, Compass } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Seo from '../components/Seo';
 
 export default function About() {
-  useEffect(() => {
-    document.title = 'About — GigOra';
-  }, []);
-
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-slate-900 font-sans selection:bg-accent-text selection:text-white">
+      <Seo 
+        title="About GigOra — Milestone-Based Tech Talent Marketplace"
+        description="Learn how GigOra helps founders and Indian developers collaborate safely through milestone escrows and real-time workspaces."
+        canonical="https://gig-ora.vercel.app/about"
+      />
       {/* Header */}
       <header className="border-b border-stone-200/80 bg-white/90 backdrop-blur-md sticky top-0 z-50 py-4 px-6 sm:px-12 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 text-sm font-bold text-[#030B3D] hover:text-accent-text transition-colors">

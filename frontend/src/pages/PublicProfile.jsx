@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import Seo from '../components/Seo';
 import {
   MapPin,
   Briefcase,
@@ -150,6 +151,11 @@ export default function PublicProfile() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] font-sans text-slate-900 pb-16">
+      <Seo 
+        title={`${profileData.name || profileData.username || 'Tech Talent'} — GigOra Profile`}
+        description={profileData.bio ? profileData.bio.slice(0, 150) : `View ${profileData.name || 'tech talent'}'s portfolio, verified skills, and project history on GigOra.`}
+        canonical={`https://gig-ora.vercel.app/profile/${username}`}
+      />
       {/* Top Navbar */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">

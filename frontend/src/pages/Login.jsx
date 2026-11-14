@@ -3,13 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Eye, EyeOff, AlertCircle, Loader2, ArrowLeft, ShieldCheck, Zap, Lock } from 'lucide-react';
 import GoogleAuthButton from '../components/GoogleAuthButton';
+import Seo from '../components/Seo';
 
 export default function Login() {
   const navigate = useNavigate();
   const { login, user } = useAuth();
 
   React.useEffect(() => {
-    document.title = 'Sign In — GigOra';
     if (user) {
       if (user.role === 'client') {
         navigate('/client/dashboard', { replace: true });
@@ -83,6 +83,11 @@ export default function Login() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col justify-between py-8 px-4 sm:px-6 relative overflow-hidden selection:bg-accent-text selection:text-white">
+      <Seo 
+        title="Sign In to Your Account — GigOra"
+        description="Log in to GigOra to access your client or freelancer dashboard, manage milestones, chat in real-time, and track payments."
+        canonical="https://gig-ora.vercel.app/login"
+      />
       
       {/* Ambient Gradient Background Glows */}
       <div className="absolute -top-32 -left-32 w-96 h-96 bg-accent-text/10 rounded-full blur-3xl pointer-events-none" />

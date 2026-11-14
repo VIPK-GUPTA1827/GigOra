@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Mail, CheckCircle2, AlertCircle, Loader2 } from 'lucide-react';
+import Seo from '../components/Seo';
 
 const BASE = import.meta.env.VITE_API_URL || '';
 
@@ -17,7 +18,6 @@ export default function CheckEmail() {
   const [previewUrl, setPreviewUrl] = useState('');
 
   useEffect(() => {
-    document.title = 'Check Your Email — GigOra';
     const qEmail = searchParams.get('email');
     if (qEmail) {
       setEmail(qEmail);
@@ -84,6 +84,11 @@ export default function CheckEmail() {
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-stone-900 flex flex-col justify-between py-8 px-4 sm:px-6 relative overflow-hidden selection:bg-accent-text selection:text-white">
+      <Seo 
+        title="Check Your Email — GigOra"
+        description="Verify your email address to activate your GigOra account."
+        noindex={true}
+      />
       {/* Corner glow */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-accent-text/8 rounded-full blur-3xl pointer-events-none" />
 

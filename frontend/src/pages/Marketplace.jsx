@@ -4,6 +4,7 @@ import { Search, ArrowLeft, MapPin, Clock, Briefcase, RefreshCw, X } from 'lucid
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import { SkeletonGrid } from '../components/Skeleton';
+import Seo from '../components/Seo';
 
 const CATEGORIES = [
   'All',
@@ -73,7 +74,6 @@ export default function Marketplace() {
   }, [search, minBudget, maxBudget]);
 
   useEffect(() => {
-    document.title = 'Marketplace — GigOra';
     let cancelled = false;
 
     const load = async () => {
@@ -111,6 +111,11 @@ export default function Marketplace() {
 
   return (
     <div className="min-h-screen bg-slate-50">
+      <Seo 
+        title="Explore Gigs & Tech Projects — GigOra Marketplace"
+        description="Browse open software, web development, mobile apps, and UI/UX projects on GigOra. Work with verified Indian clients with milestone safety."
+        canonical="https://gig-ora.vercel.app/marketplace"
+      />
       <header className="border-b border-stone-200/80 bg-white/90 backdrop-blur-md sticky top-0 z-50 py-4 px-6 sm:px-12 flex items-center justify-between">
         <Link to={backUrl} className="flex items-center gap-2 text-sm font-semibold text-[#030B3D] hover:text-[#2F6FAB] transition-colors">
           <ArrowLeft className="h-4 w-4" />

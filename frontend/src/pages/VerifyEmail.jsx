@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { CheckCircle2, AlertCircle, Loader2, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import Seo from '../components/Seo';
 
 const BASE = import.meta.env.VITE_API_URL || '';
 
@@ -84,6 +85,11 @@ export default function VerifyEmail() {
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-stone-900 flex flex-col justify-between py-8 px-4 sm:px-6 relative overflow-hidden selection:bg-accent-text selection:text-white">
+      <Seo 
+        title="Verify Email — GigOra"
+        description="Verify your GigOra email address."
+        noindex={true}
+      />
       {/* Corner glow */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-accent-text/8 rounded-full blur-3xl pointer-events-none" />
 

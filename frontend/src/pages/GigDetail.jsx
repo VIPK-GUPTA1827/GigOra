@@ -4,6 +4,7 @@ import { ArrowLeft, IndianRupee, MapPin, Clock, Briefcase, CheckCircle2, Loader2
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import Seo from '../components/Seo';
 
 const formatINR = (n) =>
   new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(n || 0);
@@ -93,6 +94,11 @@ export default function GigDetail() {
 
   return (
     <div className="min-h-screen bg-slate-50">
+      <Seo 
+        title={gig.title ? `${gig.title} — GigOra` : 'Project Detail — GigOra'}
+        description={gig.description ? gig.description.slice(0, 150) : 'Explore project deliverables and milestones on GigOra.'}
+        canonical={`https://gig-ora.vercel.app/gigs/${id}`}
+      />
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8">
         <Link to="/marketplace" className="inline-flex items-center gap-1.5 text-sm text-slate-500 hover:text-slate-800 mb-5">
           <ArrowLeft className="w-4 h-4" /> Back to marketplace

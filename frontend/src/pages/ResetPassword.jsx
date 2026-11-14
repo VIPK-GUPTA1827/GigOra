@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Lock, Eye, EyeOff, AlertCircle, CheckCircle2, Loader2, ArrowLeft, RefreshCw } from 'lucide-react';
 import PasswordStrengthMeter, { evaluatePassword } from '../components/PasswordStrengthMeter';
+import Seo from '../components/Seo';
 
 const BASE = import.meta.env.VITE_API_URL || '';
 
@@ -67,6 +68,11 @@ export default function ResetPassword() {
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-stone-900 flex flex-col justify-between py-6 px-4 sm:px-6 relative overflow-hidden selection:bg-accent-text selection:text-white">
+      <Seo 
+        title="Set New Password — GigOra"
+        description="Choose a new secure password for your GigOra account."
+        noindex={true}
+      />
       
       {/* Corner purple glow */}
       <div className="absolute top-0 right-0 w-96 h-96 bg-accent-text/8 rounded-full blur-3xl pointer-events-none" />

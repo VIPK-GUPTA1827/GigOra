@@ -25,6 +25,7 @@ import {
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import api from '../utils/api';
+import Seo from '../components/Seo';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -42,7 +43,6 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    document.title = 'GigOra — Milestone-Based Marketplace for Technical Talent';
     AOS.refresh();
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -66,6 +66,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#F7F9FB] font-sans text-[#243040] selection:bg-[#2F6FAB] selection:text-white relative">
+      <Seo canonical="https://gig-ora.vercel.app/" />
       
       {/* 1. TOP FLOATING NAVBAR (Sky Blue & Amber Theme) */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 py-3 px-3 sm:px-6 flex justify-center ${
@@ -782,10 +783,10 @@ export default function Home() {
               <div>
                 <h4 className="font-bold text-[#243040] mb-3 uppercase tracking-wider text-[11px]">Product</h4>
                 <ul className="space-y-2 font-medium">
-                  <li><a href="#how-it-works" className="hover:text-[#2F6FAB] transition-colors">How it works</a></li>
-                  <li><a href="#choose-path" className="hover:text-[#2F6FAB] transition-colors">Clients &amp; Devs</a></li>
-                  <li><a href="#features" className="hover:text-[#2F6FAB] transition-colors">Features</a></li>
-                  <li><a href="#faq" className="hover:text-[#2F6FAB] transition-colors">FAQ</a></li>
+                  <li><a href="/#how-it-works" className="hover:text-[#2F6FAB] transition-colors">How it works</a></li>
+                  <li><a href="/#choose-path" className="hover:text-[#2F6FAB] transition-colors">Clients &amp; Devs</a></li>
+                  <li><a href="/#features" className="hover:text-[#2F6FAB] transition-colors">Features</a></li>
+                  <li><a href="/#faq" className="hover:text-[#2F6FAB] transition-colors">FAQ</a></li>
                   <li><Link to="/about" className="text-[#2F6FAB] hover:underline font-bold">About GigOra</Link></li>
                 </ul>
               </div>
@@ -805,8 +806,8 @@ export default function Home() {
                 <ul className="space-y-2 font-medium">
                   <li><Link to="/terms" className="hover:text-[#2F6FAB] transition-colors">Terms of Service</Link></li>
                   <li><Link to="/privacy" className="hover:text-[#2F6FAB] transition-colors">Privacy Policy</Link></li>
-                  <li><span className="text-[#5A6675]">Milestone Workflow</span></li>
-                  <li><span className="text-[#5A6675]">Demo Payment Mode</span></li>
+                  <li><a href="/#how-it-works" className="hover:text-[#2F6FAB] transition-colors">Milestone Workflow</a></li>
+                  <li><a href="/#faq" className="hover:text-[#2F6FAB] transition-colors">Demo Payment Mode</a></li>
                 </ul>
               </div>
             </div>
@@ -815,7 +816,7 @@ export default function Home() {
           
           <div className="pt-6 border-t border-[#DDE5ED] flex flex-col sm:flex-row justify-between items-center gap-3 text-xs text-center sm:text-left">
             <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4">
-              <p>© 2026 GigOra. All rights reserved.</p>
+              <p>© {new Date().getFullYear()} GigOra. All rights reserved.</p>
               <Link to="/terms" className="hover:text-[#2F6FAB] transition-colors">Terms</Link>
               <Link to="/privacy" className="hover:text-[#2F6FAB] transition-colors">Privacy</Link>
               <Link to="/about" className="hover:text-[#2F6FAB] transition-colors">About</Link>

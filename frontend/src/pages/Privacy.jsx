@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { ArrowLeft, Shield, Lock, FileCode, CheckCircle2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Seo from '../components/Seo';
 
 export default function Privacy() {
-  useEffect(() => {
-    document.title = 'Privacy — GigOra';
-  }, []);
-
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-slate-900 font-sans selection:bg-accent-text selection:text-white">
+      <Seo 
+        title="Privacy Policy — GigOra Marketplace"
+        description="Learn how GigOra collects, stores, and protects your account information, workspace chats, and user data with strict privacy safeguards."
+        canonical="https://gig-ora.vercel.app/privacy"
+      />
       {/* Header */}
       <header className="border-b border-stone-200/80 bg-white/90 backdrop-blur-md sticky top-0 z-50 py-4 px-6 sm:px-12 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-2 text-sm font-bold text-[#030B3D] hover:text-accent-text transition-colors">

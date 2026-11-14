@@ -3,10 +3,17 @@ import { Link } from 'react-router-dom';
 import { ChevronDown, LogOut, Eye, ArrowRightLeft } from 'lucide-react';
 import Avatar from '../ui/Avatar';
 
-// Sets the browser tab title per page (fixes "Create Account — GigOra" on dashboards).
+// Sets the browser tab title per page (fixes "Create Account — GigOra" on dashboards) and ensures noindex.
 export function usePageTitle(title) {
   useEffect(() => {
     document.title = title ? `${title} · GigOra` : 'GigOra';
+    let el = document.querySelector('meta[name="robots"]');
+    if (!el) {
+      el = document.createElement('meta');
+      el.setAttribute('name', 'robots');
+      document.head.appendChild(el);
+    }
+    el.setAttribute('content', 'noindex, nofollow');
   }, [title]);
 }
 

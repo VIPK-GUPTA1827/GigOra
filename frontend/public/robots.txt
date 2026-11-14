@@ -1,0 +1,13 @@
+User-agent: *
+Allow: /
+Disallow: /client/
+Disallow: /freelancer/
+Disallow: /setup-profile/
+Disallow: /login
+Disallow: /signup
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /verify-email
+Disallow: /check-email
+
+Sitemap: https://gig-ora.vercel.app/sitemap.xml

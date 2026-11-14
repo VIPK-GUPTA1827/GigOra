@@ -25,6 +25,7 @@ const FreelancerSetupWizard = lazy(() => import('./pages/FreelancerSetupWizard')
 const PublicProfile = lazy(() => import('./pages/PublicProfile'));
 const Marketplace = lazy(() => import('./pages/Marketplace'));
 const GigDetail = lazy(() => import('./pages/GigDetail'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 const PageLoader = () => (
   <div className="min-h-[60vh] flex flex-col items-center justify-center p-8">
@@ -76,7 +77,7 @@ function App() {
                       <Route path="/gigs" element={<Marketplace />} />
                       <Route path="/gigs/:id" element={<GigDetail />} />
                       <Route path="/jobs" element={<Marketplace />} />
-                      <Route path="*" element={<Navigate to="/" replace />} />
+                      <Route path="*" element={<NotFound />} />
                     </Routes>
                   </Suspense>
                 </main>

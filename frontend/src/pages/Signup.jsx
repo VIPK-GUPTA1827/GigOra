@@ -4,13 +4,13 @@ import { useAuth } from '../context/AuthContext';
 import { Eye, EyeOff, AlertCircle, Loader2, ArrowLeft, ShieldCheck, Zap, Lock } from 'lucide-react';
 import PasswordStrengthMeter, { evaluatePassword } from '../components/PasswordStrengthMeter';
 import GoogleAuthButton from '../components/GoogleAuthButton';
+import Seo from '../components/Seo';
 
 export default function Signup() {
   const navigate = useNavigate();
   const { register, user } = useAuth();
 
   React.useEffect(() => {
-    document.title = 'Create Account — GigOra';
     if (user) {
       if (user.role === 'client') {
         navigate('/client/dashboard', { replace: true });
@@ -113,6 +113,11 @@ export default function Signup() {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900 flex flex-col justify-between py-8 px-4 sm:px-6 relative overflow-hidden selection:bg-accent-text selection:text-white">
+      <Seo 
+        title="Create Your Account — Join GigOra Today"
+        description="Join GigOra as a client or freelancer. Hire verified Indian technical talent or find freelance projects with secure milestone escrow protection."
+        canonical="https://gig-ora.vercel.app/signup"
+      />
       
       {/* Ambient Gradient Background Glows */}
       <div className="absolute -top-32 -left-32 w-96 h-96 bg-accent-text/10 rounded-full blur-3xl pointer-events-none" />
